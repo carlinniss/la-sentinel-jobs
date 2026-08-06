@@ -8,7 +8,41 @@
     $profileUrl = $employer ? route('employers.show', $employer) : null;
 @endphp
 
-@if ($variant === 'detail')
+@if ($variant === 'feature-strip')
+    <div class="rounded-2xl border border-[#b9d8f2] bg-gradient-to-r from-[#eef6ff] via-white to-[#fff5f5] p-4 shadow-sm">
+        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            @if ($profileUrl)
+                <a href="{{ $profileUrl }}" class="flex items-center gap-4" aria-label="View {{ $employerName }} employer profile">
+                    <span class="flex min-h-20 w-40 shrink-0 items-center justify-center rounded-2xl border border-[#d8e8f8] bg-white px-5 py-4 shadow-sm">
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-14 w-auto max-w-full">
+                    </span>
+                    <span>
+                        <span class="block text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</span>
+                        <span class="mt-1 block text-xl font-black text-slate-950">{{ $employerName }}</span>
+                        <span class="mt-1 block text-sm font-semibold text-slate-600">BMO is hiring through LA Sentinel Jobs with community banking roles and advancement pathways.</span>
+                    </span>
+                </a>
+            @else
+                <div class="flex items-center gap-4">
+                    <span class="flex min-h-20 w-40 shrink-0 items-center justify-center rounded-2xl border border-[#d8e8f8] bg-white px-5 py-4 shadow-sm">
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-14 w-auto max-w-full">
+                    </span>
+                    <span>
+                        <span class="block text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</span>
+                        <span class="mt-1 block text-xl font-black text-slate-950">{{ $employerName }}</span>
+                        <span class="mt-1 block text-sm font-semibold text-slate-600">Community banking roles and advancement pathways.</span>
+                    </span>
+                </div>
+            @endif
+
+            @if ($profileUrl)
+                <a href="{{ $profileUrl }}" class="inline-flex h-11 shrink-0 items-center justify-center rounded-full bg-[#005eb8] px-5 text-sm font-black text-white hover:bg-[#004b93]">
+                    View featured profile
+                </a>
+            @endif
+        </div>
+    </div>
+@elseif ($variant === 'detail')
     <div class="rounded-2xl border border-[#cfe2f3] bg-gradient-to-br from-white via-[#f8fbff] to-[#eef6ff] p-4 shadow-sm">
         <div class="space-y-4">
             @if ($profileUrl)
@@ -41,18 +75,24 @@
     </div>
 @else
     @if ($profileUrl)
-        <a href="{{ $profileUrl }}" aria-label="View {{ $employerName }} employer profile" class="inline-flex min-w-0 max-w-full items-center gap-2 rounded-full border border-[#d8e8f8] bg-white px-2.5 py-1.5 shadow-sm transition hover:border-[#005eb8] hover:shadow-md">
+        <a href="{{ $profileUrl }}" aria-label="View {{ $employerName }} employer profile" class="inline-flex min-w-0 max-w-full items-center gap-2 rounded-2xl border border-[#b9d8f2] bg-[#f8fbff] px-2.5 py-2 shadow-sm transition hover:border-[#005eb8] hover:shadow-md">
             <span class="flex h-8 w-24 shrink-0 items-center justify-center">
                 <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto">
             </span>
-            <span class="truncate text-xs font-bold text-slate-700">{{ $employerName }}</span>
+            <span class="min-w-0">
+                <span class="block truncate text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#005eb8]">Featured employer</span>
+                <span class="block truncate text-xs font-bold text-slate-800">{{ $employerName }}</span>
+            </span>
         </a>
     @else
-        <div class="inline-flex min-w-0 max-w-full items-center gap-2 rounded-full border border-[#d8e8f8] bg-white px-2.5 py-1.5 shadow-sm">
+        <div class="inline-flex min-w-0 max-w-full items-center gap-2 rounded-2xl border border-[#b9d8f2] bg-[#f8fbff] px-2.5 py-2 shadow-sm">
             <span class="flex h-8 w-24 shrink-0 items-center justify-center">
                 <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto">
             </span>
-            <span class="truncate text-xs font-bold text-slate-700">{{ $employerName }}</span>
+            <span class="min-w-0">
+                <span class="block truncate text-[0.62rem] font-black uppercase tracking-[0.16em] text-[#005eb8]">Featured employer</span>
+                <span class="block truncate text-xs font-bold text-slate-800">{{ $employerName }}</span>
+            </span>
         </div>
     @endif
 @endif

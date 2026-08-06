@@ -30,22 +30,35 @@
     $mainImage = $galleryImages->first();
     $breadcrumbs = collect($breadcrumbCategories ?? []);
     $sentinelUrl = 'https://lasentinel.net';
+    $detailEmployerName = trim((string) ($listing->user?->name ?? ''));
+    $detailIsBmoEmployer = $detailEmployerName !== '' && str_contains(strtolower($detailEmployerName), 'bmo');
 @endphp
 <div class="max-w-[1120px] mx-auto px-4 py-8">
-    <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+    <div class="community-sentinel-strip mb-5 flex flex-col gap-3 rounded-2xl border px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
         <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="flex items-center gap-3">
-            <span class="rounded-xl bg-white px-3 py-2 shadow-sm">
+            <span class="community-sentinel-logo rounded-xl px-3 py-2 shadow-sm">
                 <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-11 w-auto">
             </span>
             <span>
-                <span class="block text-sm font-extrabold text-[#7b1a1f]">Published on LA Sentinel Jobs</span>
-                <span class="block text-xs font-semibold text-slate-600">A Los Angeles Sentinel and Bakewell Media hiring platform.</span>
+                <span class="block text-sm font-extrabold text-[#7b1a1f]">Published on LA Sentinel Community Jobs</span>
+                <span class="block text-xs font-semibold text-slate-600">A Los Angeles Sentinel and Bakewell Media hiring platform for local workforce outreach.</span>
             </span>
         </a>
-        <a href="{{ route('listings.index') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#7b1a1f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
+        <a href="{{ route('listings.index') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#14110f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
             Browse LA Sentinel Jobs
         </a>
     </div>
+
+    @if($detailIsBmoEmployer)
+        <div class="mb-5">
+            @include('listing::partials.bmo-employer-badge', [
+                'employerName' => $detailEmployerName,
+                'variant' => 'feature-strip',
+                'profile' => $listing->user?->profile,
+                'employer' => $listing->user,
+            ])
+        </div>
+    @endif
 
     @if($breadcrumbs->isNotEmpty())
     <nav class="text-xs text-[var(--oc-muted)] mb-4 flex flex-wrap items-center gap-1">
@@ -154,10 +167,6 @@
                 <div class="mt-6 border-t border-[var(--oc-border)] pt-5">
                     <h2 class="text-base font-semibold text-[var(--oc-text)] mb-3">{{ __('listing::messages.contact_seller') }}</h2>
                     @if($listing->user)
-                    @php
-                        $detailEmployerName = trim((string) $listing->user->name);
-                        $detailIsBmoEmployer = str_contains(strtolower($detailEmployerName), 'bmo');
-                    @endphp
                     @if($detailIsBmoEmployer)
                         <div class="mb-4">
                             @include('listing::partials.bmo-employer-badge', [

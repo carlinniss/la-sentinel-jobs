@@ -32,7 +32,7 @@ final class RequestAppData
         $fallbackName = config('app.name', 'LA Sentinel Jobs');
         $fallbackLocale = config('app.locale', 'en');
         $fallbackCurrencies = $this->normalizeCurrencies(config('app.currencies', ['USD']));
-        $fallbackDescription = 'Find local jobs and hiring opportunities across Los Angeles.';
+        $fallbackDescription = 'A community jobs and outreach platform connecting Black Los Angeles with trusted employers, training partners, and career pathways.';
         $fallbackHomeSlides = HomeSlideDefaults::defaults();
         $fallbackGoogleMapsApiKey = config('services.google_maps.api_key');
         $fallbackGoogleClientId = config('services.google.client_id');

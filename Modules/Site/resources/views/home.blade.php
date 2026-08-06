@@ -32,11 +32,32 @@
     $homeSlide = collect($generalSettings['home_slides'] ?? [])
         ->first(fn ($slide): bool => is_array($slide));
 
-    $heroBadge = trim((string) ($homeSlide['badge'] ?? '')) ?: 'LA Sentinel Jobs';
-    $heroTitle = trim((string) ($homeSlide['title'] ?? '')) ?: 'Find local jobs and hiring opportunities across Los Angeles.';
-    $heroSubtitle = trim((string) ($homeSlide['subtitle'] ?? '')) ?: 'A community jobs board for employers, applicants, and Sentinel readers.';
+    $heroBadge = trim((string) ($homeSlide['badge'] ?? '')) ?: 'LA Sentinel Community Jobs';
+    $heroTitle = trim((string) ($homeSlide['title'] ?? '')) ?: 'Jobs, hiring events, and career pathways for Black Los Angeles.';
+    $heroSubtitle = trim((string) ($homeSlide['subtitle'] ?? '')) ?: 'A trusted community jobs platform connecting Sentinel readers with employers, training partners, and neighborhood opportunities.';
     $heroPrimaryLabel = trim((string) ($homeSlide['primary_button_text'] ?? '')) ?: 'Browse Jobs';
     $heroSecondaryLabel = trim((string) ($homeSlide['secondary_button_text'] ?? '')) ?: 'Post a Job';
+    $legacyHeroTitles = [
+        'Find local jobs and hiring opportunities across Los Angeles.',
+        'Connect Los Angeles talent with community-centered employers.',
+    ];
+    $legacyHeroSubtitles = [
+        'A community jobs board for employers, applicants, and Sentinel readers.',
+        'A focused jobs board for Sentinel readers, local businesses, nonprofits, schools, healthcare teams, and public agencies.',
+    ];
+
+    if (in_array($heroTitle, $legacyHeroTitles, true)) {
+        $heroTitle = 'Jobs, hiring events, and career pathways for Black Los Angeles.';
+    }
+
+    if (in_array($heroSubtitle, $legacyHeroSubtitles, true)) {
+        $heroSubtitle = 'A trusted community jobs platform connecting Sentinel readers with employers, training partners, and neighborhood opportunities.';
+    }
+
+    if ($heroBadge === 'LA Sentinel Jobs') {
+        $heroBadge = 'LA Sentinel Community Jobs';
+    }
+
     $sentinelUrl = 'https://lasentinel.net';
     $formatCompensation = static function ($listing): string {
         if (! $listing->price || (float) $listing->price <= 0) {
@@ -85,17 +106,22 @@
     </form>
 </div>
 @else
-<div class="max-w-[1120px] mx-auto px-4 py-8 md:py-14 space-y-10 md:space-y-16">
-    <section class="grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-center">
+<div class="community-home-shell max-w-[1120px] mx-auto px-4 py-8 md:py-14 space-y-10 md:space-y-16">
+    <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-center">
         <div>
-            <p class="text-xs uppercase text-[var(--oc-muted)] font-semibold mb-3">{{ $heroBadge }}</p>
-            <h1 class="text-3xl md:text-5xl leading-[1.1] font-semibold text-[var(--oc-text)] max-w-xl">{{ $heroTitle }}</h1>
-            <p class="mt-4 text-[var(--oc-muted)] text-base md:text-lg max-w-xl leading-7">{{ $heroSubtitle }}</p>
-            <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="mt-5 inline-flex items-center gap-3 rounded-2xl border border-[#d9c08a] bg-white px-4 py-3 shadow-sm hover:border-[#b99548]">
+            <p class="community-kicker mb-3">{{ $heroBadge }}</p>
+            <h1 class="max-w-xl text-3xl font-black leading-[1.05] text-[var(--oc-text)] md:text-5xl">{{ $heroTitle }}</h1>
+            <p class="mt-4 max-w-xl text-base leading-7 text-[var(--oc-muted)] md:text-lg">{{ $heroSubtitle }}</p>
+            <div class="mt-5 flex flex-wrap gap-2">
+                <span class="community-proof-pill">Hiring fairs</span>
+                <span class="community-proof-pill">Career training</span>
+                <span class="community-proof-pill">Local employers</span>
+            </div>
+            <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="community-brand-card mt-6 inline-flex items-center gap-3">
                 <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-12 w-auto">
                 <span class="text-left">
                     <span class="block text-sm font-extrabold text-[#7b1a1f]">Published with the Los Angeles Sentinel</span>
-                    <span class="block text-xs font-semibold text-[var(--oc-muted)]">A Bakewell Media jobs platform for Sentinel readers.</span>
+                    <span class="block text-xs font-semibold text-[var(--oc-muted)]">Built for community hiring, outreach, and workforce access.</span>
                 </span>
                 <span class="hidden items-center gap-2 rounded-full bg-black py-1 pl-1 pr-3 text-xs font-bold text-white sm:inline-flex">
                     <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media" class="h-10 w-10 rounded-full object-contain">
@@ -117,14 +143,14 @@
                 @endauth
             </div>
         </div>
-        <div class="rounded-[28px] border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5 shadow-[0_18px_45px_rgba(29,29,31,0.08)]">
+        <div class="community-jobs-panel rounded-[28px] border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5 shadow-[0_18px_45px_rgba(29,29,31,0.08)]">
             <div class="flex items-center justify-between gap-4 border-b border-[var(--oc-border)] pb-4">
                 <div>
-                    <p class="text-xs uppercase text-[#8b1d22] font-bold">Now Hiring</p>
-                    <h2 class="mt-1 text-2xl font-semibold text-[var(--oc-text)]">LA Sentinel Jobs Board</h2>
-                    <p class="mt-1 text-sm font-semibold text-[var(--oc-muted)]">Published by the Los Angeles Sentinel and Bakewell Media</p>
+                    <p class="community-kicker">Community Hiring</p>
+                    <h2 class="mt-1 text-2xl font-black text-[var(--oc-text)]">LA Sentinel Jobs Board</h2>
+                    <p class="mt-1 text-sm font-semibold text-[var(--oc-muted)]">Jobs, outreach, and pathways for Black Los Angeles.</p>
                 </div>
-                <div class="rounded-2xl bg-[#8b1d22] px-4 py-3 text-right text-white">
+                <div class="rounded-2xl bg-[#14110f] px-4 py-3 text-right text-white ring-2 ring-[#d6a641]">
                     <p class="text-2xl font-semibold leading-none">{{ number_format($listingCount ?? $spotlightListings->count()) }}</p>
                     <p class="mt-1 text-[11px] uppercase text-white/75">Open roles</p>
                 </div>
@@ -149,7 +175,7 @@
                     </div>
                     @endif
                     <div class="flex items-center justify-between gap-3">
-                        <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">{{ $spotlightCategory }}</span>
+                        <span class="community-proof-pill">{{ $spotlightCategory }}</span>
                         <span class="text-sm font-semibold text-[var(--oc-text)]">{{ $formatCompensation($spotlightListing) }}</span>
                     </div>
                     <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">{{ $spotlightListing->title }}</h3>
@@ -159,7 +185,7 @@
                 <div class="space-y-4">
                     <div class="border-b border-slate-100 pb-4">
                         <div class="flex items-center justify-between gap-3">
-                            <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">Healthcare</span>
+                            <span class="community-proof-pill">Healthcare</span>
                             <span class="text-sm font-semibold text-[var(--oc-text)]">$28/hr</span>
                         </div>
                         <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">Community Clinic Intake Coordinator</h3>
@@ -167,7 +193,7 @@
                     </div>
                     <div>
                         <div class="flex items-center justify-between gap-3">
-                            <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">Education</span>
+                            <span class="community-proof-pill">Education</span>
                             <span class="text-sm font-semibold text-[var(--oc-text)]">$52,000/yr</span>
                         </div>
                         <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">After-School Literacy Instructor</h3>
@@ -179,41 +205,41 @@
 
             <div class="mt-6 grid grid-cols-3 gap-3 text-center">
                 <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4">
-                    <p class="text-xl font-semibold text-[#8b1d22]">Local</p>
-                    <p class="mt-1 text-xs font-medium text-[var(--oc-muted)]">employers</p>
+                    <p class="text-xl font-black text-[#8b1d22]">Local</p>
+                    <p class="mt-1 text-xs font-bold text-[var(--oc-muted)]">employers</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4">
-                    <p class="text-xl font-semibold text-[#8b1d22]">Career</p>
-                    <p class="mt-1 text-xs font-medium text-[var(--oc-muted)]">resources</p>
+                    <p class="text-xl font-black text-[#8b1d22]">Career</p>
+                    <p class="mt-1 text-xs font-bold text-[var(--oc-muted)]">pathways</p>
                 </div>
                 <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4">
-                    <p class="text-xl font-semibold text-[#8b1d22]">Fast</p>
-                    <p class="mt-1 text-xs font-medium text-[var(--oc-muted)]">messaging</p>
+                    <p class="text-xl font-black text-[#8b1d22]">Trusted</p>
+                    <p class="mt-1 text-xs font-bold text-[var(--oc-muted)]">outreach</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-            <p class="text-xs uppercase text-[#8b1d22] font-bold">Jobs</p>
-            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Fresh local listings</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Roles across healthcare, education, trades, media, hospitality, public service, and technology.</p>
+    <section class="community-outreach-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="community-kicker">Access</p>
+            <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Good jobs close to home</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Roles across healthcare, education, banking, trades, media, hospitality, public service, and technology.</p>
         </article>
-        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-            <p class="text-xs uppercase text-[#8b1d22] font-bold">Employers</p>
-            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Profiles that build trust</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Hiring teams can show mission, pay, benefits, location, and next steps before applicants apply.</p>
+        <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="community-kicker">Trust</p>
+            <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Employers show up clearly</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Hiring teams can share mission, pay, benefits, location, and next steps before applicants apply.</p>
         </article>
-        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-            <p class="text-xs uppercase text-[#8b1d22] font-bold">Resources</p>
-            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Career support</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A natural home for resume help, hiring events, training pathways, and community workforce programs.</p>
+        <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="community-kicker">Outreach</p>
+            <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Hiring events and training</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A natural home for resume help, career fairs, certification programs, and workforce partners.</p>
         </article>
-        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-            <p class="text-xs uppercase text-[#8b1d22] font-bold">Wellness</p>
-            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Better work, better future</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A demo-ready path from finding work to building stability for families and communities.</p>
+        <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="community-kicker">Impact</p>
+            <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Families and futures</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A pathway from better work to financial stability, stronger families, and stronger neighborhoods.</p>
         </article>
     </section>
 
@@ -311,11 +337,11 @@
         </div>
     </section>
 
-    <section class="rounded-2xl border border-[var(--oc-border)] px-6 py-8 md:px-10 md:py-12">
+    <section class="community-cta-band rounded-2xl border border-[var(--oc-border)] px-6 py-8 md:px-10 md:py-12">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <h2 class="text-xl md:text-2xl font-semibold text-[var(--oc-text)]">{{ __('site::messages.sell_something') }}</h2>
-                <p class="text-[var(--oc-muted)] mt-2 text-sm md:text-base">Post a local job in minutes and reach LA Sentinel readers who are ready for the next step.</p>
+                <p class="text-[var(--oc-muted)] mt-2 text-sm md:text-base">Post a local job, hiring event, or career pathway and reach Sentinel readers who are ready for the next step.</p>
             </div>
             @auth
             <a href="{{ route('panel.listings.create') }}" class="btn-primary px-6 py-3 font-semibold whitespace-nowrap">

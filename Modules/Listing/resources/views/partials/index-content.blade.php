@@ -47,18 +47,18 @@
 <div class="listing-index-shell max-w-[1320px] mx-auto px-4 py-7 lg:py-8">
     <h1 class="sr-only">{{ $seoHeading }}</h1>
 
-    <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+    <div class="community-sentinel-strip mb-5 flex flex-col gap-3 rounded-2xl border px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
         <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="flex items-center gap-3">
-            <span class="rounded-xl bg-white px-3 py-2 shadow-sm">
+            <span class="community-sentinel-logo rounded-xl px-3 py-2 shadow-sm">
                 <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-11 w-auto">
             </span>
             <span>
-                <span class="block text-sm font-extrabold text-[#7b1a1f]">LA Sentinel Jobs</span>
-                <span class="block text-xs font-semibold text-slate-600">Local hiring opportunities published with the Los Angeles Sentinel.</span>
+                <span class="block text-sm font-extrabold text-[#7b1a1f]">LA Sentinel Community Jobs</span>
+                <span class="block text-xs font-semibold text-slate-600">Jobs, hiring events, and pathways for Black Los Angeles.</span>
             </span>
         </a>
-        <a href="{{ route('home') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#7b1a1f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
-            Sentinel Jobs Home
+        <a href="{{ route('home') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#14110f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
+            Community Jobs Home
         </a>
     </div>
 

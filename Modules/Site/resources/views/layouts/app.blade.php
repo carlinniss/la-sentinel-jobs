@@ -1,6 +1,6 @@
 @php
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
-    $siteDescription = $generalSettings['site_description'] ?? 'A local hiring platform connecting Los Angeles employers with Sentinel readers and community talent.';
+    $siteDescription = $generalSettings['site_description'] ?? 'A community jobs and outreach platform connecting Black Los Angeles with trusted employers, training partners, and career pathways.';
     $siteLogoUrl = $generalSettings['site_logo_url'] ?? asset('images/la-sentinel/logo.webp');
     $sentinelUrl = 'https://lasentinel.net';
     $linkedinUrl = $generalSettings['linkedin_url'] ?? null;
@@ -103,10 +103,6 @@
                 <img src="{{ $siteLogoUrl }}" alt="Los Angeles Sentinel" class="oc-brand-image w-auto">
                 <span class="brand-copy">
                     <span class="brand-text leading-none">Jobs</span>
-                    <span class="brand-partner-logo" aria-label="Bakewell Media">
-                        <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media">
-                        <span>Bakewell Media</span>
-                    </span>
                 </span>
             </a>
             <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="hidden items-center gap-2 rounded-full border border-[#d9c08a] bg-white px-3 py-2 text-xs font-extrabold uppercase text-[#7b1a1f] shadow-sm hover:border-[#b99548] hover:text-[#5c1015] md:inline-flex">
@@ -148,10 +144,6 @@
                         <img src="{{ $siteLogoUrl }}" alt="Los Angeles Sentinel" class="oc-brand-image w-auto">
                         <span class="brand-copy">
                             <span class="brand-text leading-none">Jobs</span>
-                            <span class="brand-partner-logo" aria-label="Bakewell Media">
-                                <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media">
-                                <span>Bakewell Media</span>
-                            </span>
                         </span>
                     </a>
                     <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="hidden items-center gap-2 rounded-full border border-[#d9c08a] bg-white px-3 py-2 text-xs font-extrabold uppercase text-[#7b1a1f] shadow-sm hover:border-[#b99548] hover:text-[#5c1015] xl:inline-flex">
@@ -439,7 +431,7 @@
                     </div>
                     <h3 class="text-slate-900 font-semibold text-lg mb-3">{{ $siteName }}</h3>
                     <p class="text-sm text-slate-500 leading-relaxed">{{ $siteDescription }}</p>
-                    <p class="mt-3 text-xs font-semibold text-slate-500">A Bakewell Media platform published with the Los Angeles Sentinel.</p>
+                    <p class="mt-3 text-xs font-semibold text-slate-500">A Bakewell Media platform published with the Los Angeles Sentinel for community hiring and workforce outreach.</p>
                 </div>
                 <div>
                     <h4 class="text-slate-900 font-medium mb-4">Quick Links</h4>

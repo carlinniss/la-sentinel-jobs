@@ -12,25 +12,25 @@ final class HomeSlideDefaults
     {
         return [
             [
-                'badge' => 'LA Sentinel Jobs',
-                'title' => 'Connect Los Angeles talent with community-centered employers.',
-                'subtitle' => 'A focused jobs board for Sentinel readers, local businesses, nonprofits, schools, healthcare teams, and public agencies.',
+                'badge' => 'LA Sentinel Community Jobs',
+                'title' => 'Jobs, hiring events, and career pathways for Black Los Angeles.',
+                'subtitle' => 'A trusted community jobs platform connecting Sentinel readers with employers, training partners, nonprofits, schools, healthcare teams, and public agencies.',
                 'primary_button_text' => 'Browse Jobs',
                 'secondary_button_text' => 'Post a Job',
                 'image_path' => null,
             ],
             [
-                'badge' => 'Local Hiring Categories',
-                'title' => 'Find roles across healthcare, education, trades, media, public service, and technology.',
-                'subtitle' => 'Applicants can save searches, message hiring teams, and compare pay, schedule, location, and benefits in one clean flow.',
+                'badge' => 'Community Hiring Network',
+                'title' => 'Find roles across healthcare, education, skilled trades, banking, media, and public service.',
+                'subtitle' => 'Applicants can save searches, message hiring teams, and compare pay, schedule, location, benefits, and advancement pathways in one clean flow.',
                 'primary_button_text' => 'See Categories',
                 'secondary_button_text' => 'Create Profile',
                 'image_path' => null,
             ],
             [
                 'badge' => 'Demo Ready',
-                'title' => 'Show employers a jobs board that already feels built for South LA.',
-                'subtitle' => 'Seeded listings, saved searches, inbox conversations, and admin workflows are ready for a live walkthrough.',
+                'title' => 'Show employers a jobs board that feels built for outreach, trust, and local impact.',
+                'subtitle' => 'Seeded listings, employer profiles, saved searches, inbox conversations, and admin workflows are ready for a live walkthrough.',
                 'primary_button_text' => 'View Jobs',
                 'secondary_button_text' => 'Open Dashboard',
                 'image_path' => null,
