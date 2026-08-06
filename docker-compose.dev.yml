@@ -21,9 +21,9 @@ services:
       SESSION_DRIVER: redis
       QUEUE_CONNECTION: redis
     volumes:
-      - .:/workspace
-      - /workspace/vendor
-      - /workspace/node_modules
+      - .:/workspaces/la-sentinel-jobs
+      - /workspaces/la-sentinel-jobs/vendor
+      - /workspaces/la-sentinel-jobs/node_modules
     depends_on:
       db:
         condition: service_healthy
