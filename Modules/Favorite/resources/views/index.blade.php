@@ -12,7 +12,7 @@
             <div class="border-b border-slate-200 px-5 py-4 bg-slate-50 flex flex-wrap items-center justify-between gap-3">
                 <div>
                     <h1 class="text-xl font-semibold text-slate-900">Favorites</h1>
-                    <p class="text-sm text-slate-500 mt-1">Stay on this page and log in when you want to sync saved listings, searches, and sellers.</p>
+                    <p class="text-sm text-slate-500 mt-1">Stay on this page and log in when you want to sync saved jobs, searches, and employers.</p>
                 </div>
                 <a href="{{ route('login', ['redirect' => request()->fullUrl()]) }}" class="inline-flex items-center justify-center rounded-full bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white hover:bg-slate-800">
                     Log in
@@ -29,7 +29,7 @@
                 ], fn ($value) => !is_null($value) && $value !== '');
             @endphp
             <div class="border-b-2 border-blue-900 px-4 py-3 flex flex-wrap items-center gap-3">
-                <h1 class="text-3xl font-bold text-slate-800 mr-auto">Saved Listings</h1>
+                <h1 class="text-3xl font-bold text-slate-800 mr-auto">Saved Jobs</h1>
                 <div class="inline-flex border border-slate-300 overflow-hidden">
                     <a href="{{ route('favorites.index', array_merge($listingTabQuery, ['status' => 'all'])) }}" class="px-5 py-2 text-sm font-semibold {{ $statusFilter === 'all' ? 'bg-slate-700 text-white' : 'bg-white text-slate-700 hover:bg-slate-100' }}">
                         All
@@ -56,7 +56,7 @@
                     <thead>
                         <tr class="bg-slate-50 text-slate-700 text-sm">
                             <th class="text-left px-4 py-3 w-[58%]">Listing</th>
-                            <th class="text-left px-4 py-3 w-[16%]">Price</th>
+                            <th class="text-left px-4 py-3 w-[16%]">Compensation</th>
                             <th class="text-left px-4 py-3 w-[14%]">Messaging</th>
                             <th class="text-right px-4 py-3 w-[12%]"></th>
                         </tr>
@@ -65,7 +65,8 @@
                         @forelse($favoriteListings as $listing)
                         @php
                             $listingImage = $listing->primaryImageData('card');
-                            $priceLabel = $listing->price ? number_format((float) $listing->price, 0).' '.$listing->currency : 'Free';
+                            $amount = $listing->price ? (float) $listing->price : null;
+                            $priceLabel = $amount ? (($listing->currency ?? 'USD') === 'USD' ? '$' : '').number_format($amount, 0).($amount < 1000 ? '/hr' : '/yr') : 'Pay on request';
                             $meta = collect([
                                 $listing->category?->name,
                                 $listing->city,
@@ -114,7 +115,7 @@
                                     </form>
                                     @endif
                                 @else
-                                <span class="text-xs text-slate-400">{{ $isOwnListing ? 'Your own listing' : 'Seller unavailable' }}</span>
+                                <span class="text-xs text-slate-400">{{ $isOwnListing ? 'Your own job' : 'Employer unavailable' }}</span>
                                 @endif
                             </td>
                             <td class="px-4 py-4 text-right">
@@ -127,7 +128,7 @@
                         @empty
                         <tr class="border-t border-slate-200">
                             <td colspan="4" class="px-4 py-10 text-center text-slate-500">
-                                No saved listings yet.
+                                No saved jobs yet.
                             </td>
                         </tr>
                         @endforelse
@@ -136,7 +137,7 @@
             </div>
 
             <div class="px-4 py-4 border-t border-slate-200 text-sm text-slate-500">
-                * Listings saved within the last year are shown here.
+                * Jobs saved within the last year are shown here.
             </div>
 
             @if($favoriteListings?->hasPages())
@@ -192,8 +193,8 @@
 
             @if($activeTab === 'sellers')
             <div class="px-4 py-4 border-b border-slate-200">
-                <h1 class="text-3xl font-bold text-slate-800">Saved Sellers</h1>
-                <p class="text-sm text-slate-500 mt-1">Manage the sellers you want to follow here.</p>
+                <h1 class="text-3xl font-bold text-slate-800">Saved Employers</h1>
+                <p class="text-sm text-slate-500 mt-1">Manage the employers you want to follow here.</p>
             </div>
             <div class="divide-y divide-slate-200">
                 @forelse($favoriteSellers as $seller)
@@ -205,19 +206,19 @@
                         <div>
                             <h2 class="font-semibold text-slate-800">{{ $seller->name }}</h2>
                             <p class="text-sm text-slate-500">{{ $seller->email }}</p>
-                            <p class="text-xs text-slate-400 mt-1">Active listings: {{ (int) $seller->active_listings_count }}</p>
+                            <p class="text-xs text-slate-400 mt-1">Active jobs: {{ (int) $seller->active_listings_count }}</p>
                         </div>
                     </a>
                     <form method="POST" action="{{ route('favorites.sellers.toggle', $seller) }}">
                         @csrf
                         <button type="submit" class="inline-flex items-center h-10 px-4 border border-rose-200 text-sm font-semibold text-rose-600 hover:bg-rose-50">
-                            Remove seller
+                            Remove employer
                         </button>
                     </form>
                 </article>
                 @empty
                 <div class="px-4 py-10 text-center text-slate-500">
-                    No saved sellers yet.
+                    No saved employers yet.
                 </div>
                 @endforelse
             </div>

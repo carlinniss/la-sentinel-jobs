@@ -251,14 +251,14 @@
                         </svg>
                     </a>
                     <a href="{{ $panelCreateRoute }}" class="btn-primary oc-cta">
-                        Sell
+                        Post
                     </a>
                     @else
                     <a href="{{ $loginRoute }}" class="oc-text-link oc-auth-link">
                         {{ __('site::messages.login') }}
                     </a>
                     <a href="{{ $panelCreateRoute }}" class="btn-primary oc-cta">
-                        Sell
+                        Post
                     </a>
                     @endauth
                 </div>
@@ -416,7 +416,7 @@
                     <ul class="space-y-2 text-sm">
                         <li><a href="{{ route('home') }}" class="hover:text-slate-900">Home</a></li>
                         <li><a href="{{ route('categories.index') }}" class="hover:text-slate-900">Categories</a></li>
-                        <li><a href="{{ route('listings.index') }}" class="hover:text-slate-900">All Listings</a></li>
+                        <li><a href="{{ route('listings.index') }}" class="hover:text-slate-900">All Jobs</a></li>
                     </ul>
                 </div>
                 <div>

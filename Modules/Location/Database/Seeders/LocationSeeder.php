@@ -24,25 +24,36 @@ class LocationSeeder extends Seeder
             );
         }
 
+        $unitedStates = Country::query()->where('code', 'US')->first();
+
+        if ($unitedStates) {
+            $laCities = $this->losAngelesCities();
+
+            foreach ($laCities as $city) {
+                City::updateOrCreate(
+                    ['country_id' => (int) $unitedStates->id, 'name' => $city],
+                    ['is_active' => true]
+                );
+            }
+        }
+
         $turkey = Country::query()->where('code', 'TR')->first();
 
-        if (! $turkey) {
-            return;
+        if ($turkey) {
+            $turkeyCities = $this->turkeyCities();
+
+            foreach ($turkeyCities as $city) {
+                City::updateOrCreate(
+                    ['country_id' => (int) $turkey->id, 'name' => $city],
+                    ['is_active' => true]
+                );
+            }
+
+            City::query()
+                ->where('country_id', (int) $turkey->id)
+                ->whereNotIn('name', $turkeyCities)
+                ->delete();
         }
-
-        $turkeyCities = $this->turkeyCities();
-
-        foreach ($turkeyCities as $city) {
-            City::updateOrCreate(
-                ['country_id' => (int) $turkey->id, 'name' => $city],
-                ['is_active' => true]
-            );
-        }
-
-        City::query()
-            ->where('country_id', (int) $turkey->id)
-            ->whereNotIn('name', $turkeyCities)
-            ->delete();
     }
 
     private function countries(): array
@@ -109,6 +120,22 @@ class LocationSeeder extends Seeder
         $normalized = str_replace(' ', '', $normalized);
 
         return substr($normalized, 0, 10);
+    }
+
+    private function losAngelesCities(): array
+    {
+        return [
+            'Baldwin Hills',
+            'Compton',
+            'Crenshaw',
+            'Downtown Los Angeles',
+            'Inglewood',
+            'Leimert Park',
+            'South Los Angeles',
+            'View Park',
+            'Watts',
+            'West Adams',
+        ];
     }
 
     private function turkeyCities(): array

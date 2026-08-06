@@ -10,51 +10,79 @@ use Illuminate\Support\Str;
 use Modules\Category\Models\Category;
 use Modules\Listing\Models\Listing;
 use Modules\Listing\Support\SampleListingImageCatalog;
-use Modules\Location\Models\City;
-use Modules\Location\Models\Country;
 use Modules\User\App\Models\User;
 use Modules\User\App\Support\DemoUserCatalog;
 
 class ListingSeeder extends Seeder
 {
-    private const TITLE_PREFIXES = [
-        'Clean',
-        'Lightly used',
-        'Special offer',
-        'Well priced',
-        'Owner listed',
-        'Must-see',
-        'Well kept',
+    private const JOB_TITLES = [
+        'clinical' => ['Community Clinic Intake Coordinator', 'Medical Assistant - Family Practice', 'Patient Benefits Navigator'],
+        'caregiving' => ['Home Care Aide - South LA', 'Senior Companion Program Lead', 'Residential Support Specialist'],
+        'operations' => ['Clinic Operations Scheduler', 'Healthcare Office Coordinator', 'Mobile Outreach Dispatcher'],
+        'teaching' => ['After-School Literacy Instructor', 'STEM Teaching Fellow', 'Substitute Teacher Pool'],
+        'youth-programs' => ['Youth Mentor Coordinator', 'College Access Coach', 'Summer Program Site Lead'],
+        'administration' => ['School Office Assistant', 'Enrollment Services Associate', 'Program Data Clerk'],
+        'construction' => ['Construction Apprentice', 'Site Safety Assistant', 'Facilities Maintenance Technician'],
+        'electrical' => ['Electrical Trainee', 'Solar Installation Helper', 'Low Voltage Technician'],
+        'transportation' => ['Transit Ambassador', 'Class B Shuttle Driver', 'Logistics Route Coordinator'],
+        'editorial' => ['Community News Reporter', 'Newsletter Editor', 'Culture Desk Contributor'],
+        'production' => ['Video Production Assistant', 'Podcast Studio Operator', 'Event Livestream Technician'],
+        'marketing' => ['Digital Campaign Coordinator', 'Social Media Producer', 'Brand Partnerships Associate'],
+        'city-services' => ['Neighborhood Services Representative', 'Permit Center Assistant', 'Community Desk Specialist'],
+        'public-safety' => ['Emergency Preparedness Outreach Aide', 'Traffic Safety Educator', 'Public Safety Records Clerk'],
+        'community-outreach' => ['Small Business Outreach Coordinator', 'Housing Resource Navigator', 'Civic Engagement Organizer'],
+        'case-management' => ['Family Services Case Manager', 'Reentry Resource Specialist', 'Tenant Support Advocate'],
+        'development' => ['Grants Associate', 'Donor Relations Coordinator', 'Corporate Giving Assistant'],
+        'program-coordination' => ['Food Access Program Coordinator', 'Workforce Program Assistant', 'Volunteer Services Lead'],
+        'food-service' => ['Line Cook - Cultural Center Cafe', 'Catering Prep Lead', 'Barista Trainer'],
+        'events' => ['Event Operations Coordinator', 'Venue Setup Crew Lead', 'Guest Check-In Supervisor'],
+        'guest-services' => ['Museum Guest Services Associate', 'Hotel Front Desk Agent', 'Community Event Host'],
+        'it-support' => ['Help Desk Technician', 'Field IT Support Specialist', 'Device Deployment Coordinator'],
+        'data' => ['Workforce Data Analyst', 'CRM Data Coordinator', 'Research Assistant'],
+        'product' => ['Junior Product Coordinator', 'No-Code Automation Specialist', 'Community Platform Associate'],
+    ];
+
+    private const EMPLOYERS = [
+        'LA Sentinel Talent Desk',
+        'Kedren Community Health',
+        'Destination Crenshaw',
+        'South LA Transit Partners',
+        'Watts Community Action Network',
+        'Inner City Arts Workforce',
+        'Baldwin Hills Hospitality Group',
+        'Vermont Slauson Economic Development',
+    ];
+
+    private const LA_AREAS = [
+        'Leimert Park',
+        'Crenshaw',
+        'View Park',
+        'Baldwin Hills',
+        'Watts',
+        'Inglewood',
+        'West Adams',
+        'Downtown Los Angeles',
     ];
 
     public function run(): void
     {
         $users = $this->resolveSeederUsers();
         $categories = $this->resolveSeedableCategories();
-        $imagePool = SampleListingImageCatalog::uniquePaths();
 
-        if ($users->isEmpty() || $categories->isEmpty() || $imagePool->isEmpty()) {
+        if ($users->isEmpty() || $categories->isEmpty()) {
             return;
         }
 
-        $countries = $this->resolveCountries();
-        $turkeyCities = $this->resolveTurkeyCities();
         $plannedSlugs = [];
         $assignedImageIndex = 0;
 
         foreach ($categories as $category) {
             foreach ($users as $user) {
-                if ($assignedImageIndex >= $imagePool->count()) {
-                    continue;
-                }
-
                 $listingData = $this->buildListingData(
                     $category,
                     $assignedImageIndex,
-                    $countries,
-                    $turkeyCities,
                     $user,
-                    $imagePool->get($assignedImageIndex)
+                    SampleListingImageCatalog::pathFor($category, $assignedImageIndex)
                 );
                 $listing = $this->upsertListing($listingData, $category, $user);
                 $plannedSlugs[] = $listing->slug;
@@ -88,7 +116,7 @@ class ListingSeeder extends Seeder
         $leafCategories = Category::query()
             ->where('is_active', true)
             ->whereDoesntHave('children')
-            ->with('parent:id,name')
+            ->with('parent:id,name,slug')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
@@ -99,145 +127,101 @@ class ListingSeeder extends Seeder
 
         return Category::query()
             ->where('is_active', true)
-            ->with('parent:id,name')
+            ->with('parent:id,name,slug')
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get()
             ->values();
     }
 
-    private function resolveCountries(): Collection
-    {
-        return Country::query()
-            ->where('is_active', true)
-            ->orderBy('name')
-            ->get(['id', 'name', 'code'])
-            ->values();
-    }
-
-    private function resolveTurkeyCities(): Collection
-    {
-        $turkey = Country::query()
-            ->where('code', 'TR')
-            ->first(['id']);
-
-        if (! $turkey) {
-            return collect(['Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya']);
-        }
-
-        $cities = City::query()
-            ->where('country_id', (int) $turkey->id)
-            ->where('is_active', true)
-            ->orderBy('name')
-            ->pluck('name')
-            ->map(fn ($name): string => trim((string) $name))
-            ->filter(fn (string $name): bool => $name !== '')
-            ->values();
-
-        return $cities->isNotEmpty()
-            ? $cities
-            : collect(['Istanbul', 'Ankara', 'Izmir', 'Bursa', 'Antalya']);
-    }
-
     private function buildListingData(
         Category $category,
         int $index,
-        Collection $countries,
-        Collection $turkeyCities,
         User $user,
         ?string $imagePath
     ): array {
-        $location = $this->resolveLocation($index, $countries, $turkeyCities);
-        $title = $this->buildTitle($category, $index, $user);
+        $location = $this->resolveLocation($index);
+        $title = $this->buildTitle($category, $index);
         $slug = 'demo-'.Str::slug($user->email).'-'.$category->slug;
 
         return [
             'slug' => $slug,
             'title' => $title,
-            'description' => $this->buildDescription($category, $location['city'], $location['country'], $user),
+            'description' => $this->buildDescription($title, $location['city'], $index),
             'price' => $this->priceForIndex($index),
             'city' => $location['city'],
             'country' => $location['country'],
             'contact_phone' => DemoUserCatalog::phoneFor($user->email),
             'is_featured' => $index % 7 === 0,
-            'expires_at' => now()->addDays(21 + ($index % 9)),
+            'expires_at' => now()->addDays(28 + ($index % 14)),
             'created_at' => now()->subHours(6 + $index),
             'image_path' => $imagePath,
         ];
     }
 
-    private function resolveLocation(int $index, Collection $countries, Collection $turkeyCities): array
+    private function resolveLocation(int $index): array
     {
-        $turkeyCountry = $countries->first(fn ($country): bool => strtoupper((string) $country->code) === 'TR');
-        $turkeyName = trim((string) ($turkeyCountry->name ?? 'Turkey')) ?: 'Turkey';
-        $useForeignCountry = $countries->count() > 1 && $index % 4 === 0;
-
-        if ($useForeignCountry) {
-            $foreignCountries = $countries
-                ->filter(fn ($country): bool => strtoupper((string) $country->code) !== 'TR')
-                ->values();
-
-            if ($foreignCountries->isNotEmpty()) {
-                $selected = $foreignCountries->get($index % $foreignCountries->count());
-                $countryName = trim((string) ($selected->name ?? ''));
-
-                return [
-                    'country' => $countryName !== '' ? $countryName : 'Turkey',
-                    'city' => $countryName !== '' ? $countryName : 'Istanbul',
-                ];
-            }
-        }
-
-        $city = trim((string) $turkeyCities->get($index % max(1, $turkeyCities->count())));
-
         return [
-            'country' => $turkeyName,
-            'city' => $city !== '' ? $city : 'Istanbul',
+            'country' => 'United States',
+            'city' => self::LA_AREAS[$index % count(self::LA_AREAS)],
         ];
     }
 
-    private function buildTitle(Category $category, int $index, User $user): string
+    private function buildTitle(Category $category, int $index): string
     {
-        $prefix = self::TITLE_PREFIXES[$index % count(self::TITLE_PREFIXES)];
-        $categoryName = trim((string) $category->name);
-        $ownerFragment = trim(Str::before($user->name, ' '));
+        $fragment = $this->jobTypeSlug($category);
+        $titles = self::JOB_TITLES[$fragment] ?? [
+            'Community Hiring Opportunity',
+            'Local Workforce Role',
+            'LA Sentinel Featured Job',
+        ];
 
-        return sprintf(
-            '%s %s for %s',
-            $prefix,
-            $categoryName !== '' ? $categoryName : 'item',
-            $ownerFragment !== '' ? $ownerFragment : 'demo'
-        );
+        return $titles[$index % count($titles)];
     }
 
-    private function buildDescription(Category $category, string $city, string $country, User $user): string
+    private function jobTypeSlug(Category $category): string
     {
-        $categoryName = trim((string) $category->name);
-        $location = trim(collect([$city, $country])->filter()->join(', '));
+        $categorySlug = (string) $category->slug;
+        $parentSlug = (string) ($category->parent?->slug ?? '');
+
+        if ($parentSlug !== '' && str_starts_with($categorySlug, $parentSlug.'-')) {
+            return Str::after($categorySlug, $parentSlug.'-');
+        }
+
+        return Str::after($categorySlug, 'jobs-');
+    }
+
+    private function buildDescription(string $title, string $city, int $index): string
+    {
+        $employer = self::EMPLOYERS[$index % count(self::EMPLOYERS)];
+        $schedule = ['full-time', 'part-time', 'hybrid', 'weekend-friendly', 'contract-to-hire'][$index % 5];
+        $benefit = ['paid training', 'health benefits', 'transit stipend', 'career coaching', 'bilingual candidates encouraged'][$index % 5];
 
         return sprintf(
-            '%s listed by %s. Clean demo condition, sample product photo assigned from the provided catalog, and ready for browsing, favorites, inbox, and panel testing. Pickup area: %s.',
-            $categoryName !== '' ? $categoryName : 'Item',
-            trim((string) $user->name) !== '' ? trim((string) $user->name) : 'a marketplace user',
-            $location !== '' ? $location : 'Turkey'
+            '%s is hiring for %s in %s. This %s demo posting highlights %s, clear next steps, and a fast message flow so LA Sentinel can show employers how job seekers discover, save, and respond to local opportunities.',
+            $employer,
+            $title,
+            $city,
+            $schedule,
+            $benefit
         );
     }
 
     private function priceForIndex(int $index): int
     {
         $basePrices = [
-            1499,
-            3250,
-            6490,
-            11800,
-            26500,
-            44990,
-            82000,
-            135000,
+            22,
+            28,
+            34,
+            42000,
+            52000,
+            68000,
+            75000,
+            92000,
         ];
 
         $base = $basePrices[$index % count($basePrices)];
-        $step = (int) floor($index / count($basePrices)) * 750;
+        $step = (int) floor($index / count($basePrices)) * 2;
 
         return $base + $step;
     }
@@ -250,7 +234,7 @@ class ListingSeeder extends Seeder
                 'title' => $data['title'],
                 'description' => $data['description'],
                 'price' => $data['price'],
-                'currency' => 'TRY',
+                'currency' => 'USD',
                 'city' => $data['city'],
                 'country' => $data['country'],
                 'category_id' => $category->id,

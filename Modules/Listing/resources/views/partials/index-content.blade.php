@@ -3,8 +3,8 @@
     $resultListingsCount = isset($filteredListingsTotal) ? (int) $filteredListingsTotal : (int) $listings->total();
     $activeCategoryName = $selectedCategory?->name ? trim((string) $selectedCategory->name) : '';
     $seoHeading = $activeCategoryName !== ''
-        ? $activeCategoryName.' Listings and Prices'
-        : 'All Listings and Prices';
+        ? $activeCategoryName.' Jobs and Compensation'
+        : 'All Jobs and Compensation';
     $canSaveSearch = $search !== '' || ! is_null($categoryId);
     $normalizeQuery = static fn ($value): bool => ! is_null($value) && $value !== '';
     $baseCategoryQuery = array_filter([
@@ -30,6 +30,17 @@
         $maxPriceInput !== '' ? $maxPriceInput : null,
         $dateFilter !== 'all' ? $dateFilter : null,
     ])->filter($normalizeQuery)->count();
+    $formatCompensation = static function ($listing): string {
+        if (is_null($listing->price) || (float) $listing->price <= 0) {
+            return __('listing::messages.price_on_request');
+        }
+
+        $amount = (float) $listing->price;
+        $prefix = ($listing->currency ?? 'USD') === 'USD' ? '$' : '';
+        $suffix = $amount < 1000 ? '/hr' : '/yr';
+
+        return $prefix.number_format($amount, 0).$suffix;
+    };
 @endphp
 
 <div class="listing-index-shell max-w-[1320px] mx-auto px-4 py-7 lg:py-8">
@@ -53,7 +64,7 @@
                             $allCategoriesLink = route('listings.index', $baseCategoryQuery);
                         @endphp
                         <a href="{{ $allCategoriesLink }}" class="flex items-center justify-between rounded-lg px-2.5 py-2 text-sm font-semibold {{ is_null($categoryId) ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100' }}">
-                            <span>All Listings</span>
+                            <span>All Jobs</span>
                             <span>{{ number_format($allListingsCount) }}</span>
                         </a>
 
@@ -136,7 +147,7 @@
                 </section>
 
                 <section>
-                    <h3 class="text-base font-extrabold text-slate-900 mb-3">Price</h3>
+                    <h3 class="text-base font-extrabold text-slate-900 mb-3">Compensation</h3>
                     <div class="grid grid-cols-2 gap-2">
                         <input type="number" name="min_price" value="{{ $minPriceInput }}" min="0" step="1" placeholder="Min" class="h-10 rounded-lg border border-slate-300 bg-slate-50 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200">
                         <input type="number" name="max_price" value="{{ $maxPriceInput }}" min="0" step="1" placeholder="Max" class="h-10 rounded-lg border border-slate-300 bg-slate-50 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200">
@@ -217,22 +228,22 @@
                                 <option value="smart" @selected($sort === 'smart')>Recommended</option>
                                 <option value="newest" @selected($sort === 'newest')>Newest</option>
                                 <option value="oldest" @selected($sort === 'oldest')>Oldest</option>
-                                <option value="price_asc" @selected($sort === 'price_asc')>Price ↑</option>
-                                <option value="price_desc" @selected($sort === 'price_desc')>Price ↓</option>
+                                <option value="price_asc" @selected($sort === 'price_asc')>Pay ↑</option>
+                                <option value="price_desc" @selected($sort === 'price_desc')>Pay ↓</option>
                             </select>
                         </label>
                     </form>
                 </div>
                 <p class="listing-mobile-toolbar-meta">
                     <strong>{{ number_format($resultListingsCount) }}</strong>
-                    {{ $activeCategoryName !== '' ? ' listings in '.$activeCategoryName : ' listings found' }}
+                    {{ $activeCategoryName !== '' ? ' jobs in '.$activeCategoryName : ' jobs found' }}
                 </p>
             </div>
 
             <div class="listing-results-bar listing-filter-card hidden lg:flex">
                 <p class="listing-results-meta">
                     <strong>{{ number_format($resultListingsCount) }}</strong>
-                    {{ $activeCategoryName !== '' ? ' listings found in '.$activeCategoryName : ' listings found' }}
+                    {{ $activeCategoryName !== '' ? ' jobs found in '.$activeCategoryName : ' jobs found' }}
                 </p>
                 <div class="listing-results-actions">
                     @auth
@@ -282,8 +293,8 @@
                                 <option value="smart" @selected($sort === 'smart')>Recommended</option>
                                 <option value="newest" @selected($sort === 'newest')>Newest</option>
                                 <option value="oldest" @selected($sort === 'oldest')>Oldest</option>
-                                <option value="price_asc" @selected($sort === 'price_asc')>Price: low to high</option>
-                                <option value="price_desc" @selected($sort === 'price_desc')>Price: high to low</option>
+                                <option value="price_asc" @selected($sort === 'price_asc')>Pay: low to high</option>
+                                <option value="price_desc" @selected($sort === 'price_desc')>Pay: high to low</option>
                             </select>
                         </label>
                     </form>
@@ -351,7 +362,7 @@
                                 <a href="{{ route('listings.show', $listing) }}" class="block">
                                     <p class="text-xl sm:text-2xl lg:text-3xl leading-none font-bold text-slate-900">
                                         @if(!is_null($priceValue) && $priceValue > 0)
-                                            {{ number_format($priceValue, 0) }} {{ $listing->currency }}
+                                            {{ $formatCompensation($listing) }}
                                         @else
                                             Free
                                         @endif

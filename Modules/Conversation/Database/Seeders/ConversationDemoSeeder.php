@@ -124,27 +124,27 @@ class ConversationDemoSeeder extends Seeder
     private function messagePayloads(int $index, bool $secondary): array
     {
         $openingMessages = [
-            'Is this listing still available?',
-            'Can you share the best price?',
-            'Would pickup this evening work for you?',
-            'Can you confirm the condition details?',
-            'Do you have any more photos?',
+            'Is this job still accepting applications?',
+            'Can you share the pay range and schedule?',
+            'Would this role be open to someone changing careers?',
+            'Can you confirm whether bilingual candidates are preferred?',
+            'Do you have more detail on training and benefits?',
         ];
 
         $sellerReplies = [
-            'Yes, it is available.',
-            'I can offer a small discount.',
-            'This evening works for me.',
-            'Everything is in clean condition.',
-            'I can send more photos in a minute.',
+            'Yes, we are reviewing candidates this week.',
+            'The posted range is current and the schedule is flexible.',
+            'Yes, transferable experience is welcome.',
+            'Bilingual applicants are encouraged but not required.',
+            'Paid onboarding is included and benefits depend on hours.',
         ];
 
         $closingMessages = [
-            'Great, I will message again before I leave.',
-            'Perfect. I can arrange pickup.',
-            'Thanks. That sounds good to me.',
-            'Understood. I am interested.',
-            'Nice. I will keep this saved.',
+            'Great, I will send my resume today.',
+            'Perfect. I saved the job and will apply.',
+            'Thanks. That sounds like a strong fit.',
+            'Understood. I am interested in next steps.',
+            'Nice. I will share this with my workforce coach.',
         ];
 
         $offset = ($index + ($secondary ? 2 : 0)) % count($openingMessages);

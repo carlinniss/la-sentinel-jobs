@@ -1,21 +1,21 @@
 @extends('app::layouts.app')
 
-@section('title', 'My Listings')
+@section('title', 'My Jobs')
 
 @section('content')
 @php
     $statusTabs = [
         [
             'key' => 'all',
-            'label' => 'All Listings',
+            'label' => 'All Jobs',
             'count' => (int) ($counts['all'] ?? 0),
-            'description' => 'All listings in your account',
+            'description' => 'All job posts in your account',
         ],
         [
             'key' => 'sold',
-            'label' => 'Sold',
+            'label' => 'Filled',
             'count' => (int) ($counts['sold'] ?? 0),
-            'description' => 'Closed sales',
+            'description' => 'Roles marked as filled',
         ],
         [
             'key' => 'expired',
@@ -26,9 +26,9 @@
     ];
     $overviewCards = [
         [
-            'label' => 'Total Listings',
+            'label' => 'Total Jobs',
             'value' => (int) ($counts['all'] ?? 0),
-            'hint' => 'Every listing in your panel',
+            'hint' => 'Every job post in your panel',
         ],
         [
             'label' => 'Live',
@@ -36,14 +36,14 @@
             'hint' => 'Visible to visitors right now',
         ],
         [
-            'label' => 'Sold',
+            'label' => 'Filled',
             'value' => (int) ($counts['sold'] ?? 0),
-            'hint' => 'Listings closed by sale',
+            'hint' => 'Roles marked as filled',
         ],
         [
             'label' => 'Expired',
             'value' => (int) ($counts['expired'] ?? 0),
-            'hint' => 'Listings waiting to be republished',
+            'hint' => 'Jobs waiting to be republished',
         ],
     ];
     $hasFilters = $search !== '' || $status !== 'all';
@@ -59,9 +59,9 @@
             <div class="listings-dashboard-hero">
                 <div class="min-w-0">
                     <p class="account-section-kicker">Panel</p>
-                    <h1 class="mt-2 text-[2.3rem] font-semibold leading-tight tracking-[-0.04em] text-slate-950">My Listings</h1>
+                    <h1 class="mt-2 text-[2.3rem] font-semibold leading-tight tracking-[-0.04em] text-slate-950">My Jobs</h1>
                     <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-500">
-                        Track all your listings from one screen. Dates, status, and engagement are clearer, while search and filters stay compact.
+                        Track all your job posts from one screen. Dates, status, and engagement are clearer, while search and filters stay compact.
                     </p>
                 </div>
 
@@ -70,7 +70,7 @@
                         <a href="{{ route('panel.listings.index') }}" class="account-secondary-button">Clear Filters</a>
                     @endif
 
-                    <a href="{{ route('panel.listings.create') }}" class="account-primary-button">New Listing</a>
+                    <a href="{{ route('panel.listings.create') }}" class="account-primary-button">New Job</a>
                 </div>
             </div>
 
@@ -90,7 +90,7 @@
                         <p class="account-section-kicker">Filter</p>
                         <h2 class="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">Search and status</h2>
                         <p class="mt-2 text-sm leading-6 text-slate-500">
-                            Search by title or narrow the view within {{ number_format($listings->total()) }} results.
+                            Search by job title or narrow the view within {{ number_format($listings->total()) }} results.
                         </p>
                     </div>
 
@@ -102,7 +102,7 @@
                             type="text"
                             name="search"
                             value="{{ $search }}"
-                            placeholder="Search by listing title"
+                            placeholder="Search by job title"
                             class="listings-dashboard-search-input"
                         >
                         <input type="hidden" name="status" value="{{ $status }}">
@@ -188,7 +188,7 @@
                                     </div>
 
                                     <div class="listings-dashboard-info-card">
-                                        <span class="listings-dashboard-info-label">{{ $listing->expires_at ? 'End date' : 'Listing duration' }}</span>
+                                        <span class="listings-dashboard-info-label">{{ $listing->expires_at ? 'Apply by' : 'Post duration' }}</span>
                                         <strong>{{ $expiresLabel }}</strong>
                                         <span>{{ $listing->panelExpirySummary() }}</span>
                                     </div>
@@ -210,17 +210,17 @@
 
                             @if ($listing->statusValue() === 'expired')
                                 <div class="listings-dashboard-alert is-danger">
-                                    This listing has expired. If it is sold you can keep it closed, otherwise republish it.
+                                    This job has expired. If the role is filled you can keep it closed, otherwise republish it.
                                 </div>
                             @elseif ($listing->statusValue() === 'pending')
                                 <div class="listings-dashboard-alert is-warning">
-                                    This listing is in moderation review. It will go live automatically once approved.
+                                    This job is in moderation review. It will go live automatically once approved.
                                 </div>
                             @endif
 
                             <div class="flex flex-col gap-4 border-t border-slate-200/80 pt-5 xl:flex-row xl:items-center xl:justify-between">
                                 <div class="flex flex-wrap gap-3">
-                                    <a href="{{ route('listings.show', $listing) }}" class="account-secondary-button">View Listing</a>
+                                    <a href="{{ route('listings.show', $listing) }}" class="account-secondary-button">View Job</a>
                                     <a href="{{ route('panel.listings.edit', $listing) }}" class="account-primary-button">Edit</a>
                                 </div>
 
@@ -236,7 +236,7 @@
                                         <form method="POST" action="{{ route('panel.listings.mark-sold', $listing) }}">
                                             @csrf
                                             <button type="submit" class="listings-dashboard-text-button">
-                                                Mark as Sold
+                                                Mark as Filled
                                             </button>
                                         </form>
                                     @endif
@@ -244,7 +244,7 @@
                                     <form method="POST" action="{{ route('panel.listings.destroy', $listing) }}">
                                         @csrf
                                         <button type="submit" class="listings-dashboard-text-button is-danger">
-                                            Remove Listing
+                                            Remove Job
                                         </button>
                                     </form>
                                 </div>
@@ -259,16 +259,16 @@
                 @empty
                     <div class="listings-dashboard-empty">
                         <p class="account-section-kicker">Empty State</p>
-                        <h2 class="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">No listings match this filter</h2>
+                        <h2 class="mt-2 text-2xl font-semibold tracking-[-0.03em] text-slate-950">No jobs match this filter</h2>
                         <p class="mt-3 max-w-xl text-sm leading-6 text-slate-500">
-                            Clear the search term, pick another status, or create a new listing to fill this space.
+                            Clear the search term, pick another status, or create a new job to fill this space.
                         </p>
                         <div class="mt-6 flex flex-col gap-3 sm:flex-row">
                             @if ($hasFilters)
                                 <a href="{{ route('panel.listings.index') }}" class="account-secondary-button">Clear Filters</a>
                             @endif
 
-                            <a href="{{ route('panel.listings.create') }}" class="account-primary-button">New Listing</a>
+                            <a href="{{ route('panel.listings.create') }}" class="account-primary-button">New Job</a>
                         </div>
                     </div>
                 @endforelse

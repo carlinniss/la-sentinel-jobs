@@ -14,14 +14,14 @@
     $memberSince = $user->created_at?->format('M Y');
     $stats = [
         [
-            'label' => 'Listings',
+            'label' => 'Jobs',
             'value' => (int) ($user->listings_count ?? 0),
-            'hint' => 'Ads you manage from your dashboard.',
+            'hint' => 'Job posts you manage from your dashboard.',
         ],
         [
-            'label' => 'Saved Listings',
+            'label' => 'Saved Jobs',
             'value' => (int) ($user->favorite_listings_count ?? 0),
-            'hint' => 'Items you bookmarked for later.',
+            'hint' => 'Jobs you bookmarked for later.',
         ],
         [
             'label' => 'Saved Searches',
@@ -29,9 +29,9 @@
             'hint' => 'Searches you can revisit instantly.',
         ],
         [
-            'label' => 'Saved Sellers',
+            'label' => 'Saved Employers',
             'value' => (int) ($user->favorite_sellers_count ?? 0),
-            'hint' => 'Sellers you want to keep an eye on.',
+            'hint' => 'Employers you want to keep an eye on.',
         ],
     ];
 @endphp

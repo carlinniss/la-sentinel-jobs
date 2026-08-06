@@ -15,6 +15,17 @@
 
     $hasPrice = !is_null($listing->price);
     $priceValue = $hasPrice ? (float) $listing->price : null;
+    $formatCompensation = static function ($amount, $currency = 'USD'): string {
+        if (is_null($amount) || (float) $amount <= 0) {
+            return __('listing::messages.price_on_request');
+        }
+
+        $amount = (float) $amount;
+        $prefix = $currency === 'USD' ? '$' : '';
+        $suffix = $amount < 1000 ? '/hr' : '/yr';
+
+        return $prefix.number_format($amount, 0).$suffix;
+    };
     $galleryImages = collect($gallery ?? []);
     $mainImage = $galleryImages->first();
     $breadcrumbs = collect($breadcrumbCategories ?? []);
@@ -97,15 +108,7 @@
         <div>
             <div class="rounded-2xl border border-[var(--oc-border)] p-5 sticky top-24">
                 <p class="text-3xl font-semibold text-[var(--oc-text)]">
-                    @if($hasPrice)
-                        @if($priceValue > 0)
-                            {{ number_format($priceValue, 0) }} {{ $listing->currency ?? 'USD' }}
-                        @else
-                            {{ __('listing::messages.free') }}
-                        @endif
-                    @else
-                        {{ __('listing::messages.price_on_request') }}
-                    @endif
+                    {{ $formatCompensation($priceValue, $listing->currency ?? 'USD') }}
                 </p>
                 <h1 class="mt-2 text-lg font-semibold text-[var(--oc-text)]">{{ $displayTitle }}</h1>
                 <p class="mt-1 text-sm text-[var(--oc-muted)]">{{ $location !== '' ? $location : __('listing::messages.location_not_specified') }}</p>
@@ -170,7 +173,7 @@
             @foreach($relatedListings as $related)
             @php
                 $relatedImage = $related->primaryImageData('card');
-                $relatedPrice = $related->price ? number_format((float) $related->price, 0).' '.$related->currency : 'Free';
+                $relatedPrice = $formatCompensation($related->price, $related->currency ?? 'USD');
             @endphp
             <a href="{{ route('listings.show', $related) }}" class="rounded-xl border border-[var(--oc-border)] overflow-hidden block">
                 <div class="h-32 bg-[var(--oc-bg)]">

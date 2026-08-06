@@ -15,37 +15,37 @@ final class DemoUserCatalog
         return [
             [
                 'email' => 'a@a.com',
-                'name' => 'Admin',
+                'name' => 'LA Sentinel Admin',
                 'password' => $password,
-                'phone' => '+905551112233',
+                'phone' => '+13235550100',
                 'is_admin' => true,
             ],
             [
                 'email' => 'b@b.com',
-                'name' => 'Member',
+                'name' => 'Sentinel Talent Desk',
                 'password' => $password,
-                'phone' => '+905551112244',
+                'phone' => '+13235550101',
                 'is_admin' => false,
             ],
             [
                 'email' => 'c@c.com',
-                'name' => 'Ava Carter',
+                'name' => 'Kedren Health Careers',
                 'password' => $password,
-                'phone' => '+905551112255',
+                'phone' => '+13235550102',
                 'is_admin' => false,
             ],
             [
                 'email' => 'd@d.com',
-                'name' => 'Liam Stone',
+                'name' => 'South LA Transit Partners',
                 'password' => $password,
-                'phone' => '+905551112266',
+                'phone' => '+13235550103',
                 'is_admin' => false,
             ],
             [
                 'email' => 'e@e.com',
-                'name' => 'Mila Reed',
+                'name' => 'Crenshaw Creative Studio',
                 'password' => $password,
-                'phone' => '+905551112277',
+                'phone' => '+13235550104',
                 'is_admin' => false,
             ],
         ];
@@ -75,7 +75,7 @@ final class DemoUserCatalog
             }
         }
 
-        return '+905551110000';
+        return '+13235550199';
     }
 
     public static function isAdmin(string $email): bool

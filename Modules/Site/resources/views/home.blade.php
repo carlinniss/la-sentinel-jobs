@@ -31,11 +31,22 @@
     $homeSlide = collect($generalSettings['home_slides'] ?? [])
         ->first(fn ($slide): bool => is_array($slide));
 
-    $heroBadge = trim((string) ($homeSlide['badge'] ?? '')) ?: 'OpenClassify Marketplace';
-    $heroTitle = trim((string) ($homeSlide['title'] ?? '')) ?: 'A cleaner local marketplace.';
-    $heroSubtitle = trim((string) ($homeSlide['subtitle'] ?? '')) ?: 'Buy and sell everything in your area.';
-    $heroPrimaryLabel = trim((string) ($homeSlide['primary_button_text'] ?? '')) ?: 'Browse Listings';
-    $heroSecondaryLabel = trim((string) ($homeSlide['secondary_button_text'] ?? '')) ?: 'Post Listing';
+    $heroBadge = trim((string) ($homeSlide['badge'] ?? '')) ?: 'LA Sentinel Jobs';
+    $heroTitle = trim((string) ($homeSlide['title'] ?? '')) ?: 'Find local jobs and hiring opportunities across Los Angeles.';
+    $heroSubtitle = trim((string) ($homeSlide['subtitle'] ?? '')) ?: 'A community jobs board for employers, applicants, and Sentinel readers.';
+    $heroPrimaryLabel = trim((string) ($homeSlide['primary_button_text'] ?? '')) ?: 'Browse Jobs';
+    $heroSecondaryLabel = trim((string) ($homeSlide['secondary_button_text'] ?? '')) ?: 'Post a Job';
+    $formatCompensation = static function ($listing): string {
+        if (! $listing->price || (float) $listing->price <= 0) {
+            return __('listing::messages.price_on_request');
+        }
+
+        $amount = (float) $listing->price;
+        $prefix = ($listing->currency ?? 'USD') === 'USD' ? '$' : '';
+        $suffix = $amount < 1000 ? '/hr' : '/yr';
+
+        return $prefix.number_format($amount, 0).$suffix;
+    };
 @endphp
 
 @if($demoLandingMode && $prepareDemoRoute)
@@ -143,7 +154,7 @@
             @forelse($listingCards as $listing)
             @php
                 $listingImage = $listing->primaryImageData('card');
-                $priceLabel = $listing->price ? number_format((float) $listing->price, 0).' '.$listing->currency : __('messages.free');
+                $priceLabel = $formatCompensation($listing);
                 $locationLabel = trim(collect([$listing->city, $listing->country])->filter()->join(', '));
                 $isFavorited = in_array($listing->id, $favoriteListingIds ?? [], true);
             @endphp
@@ -197,7 +208,7 @@
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
                 <h2 class="text-xl md:text-2xl font-semibold text-[var(--oc-text)]">{{ __('site::messages.sell_something') }}</h2>
-                <p class="text-[var(--oc-muted)] mt-2 text-sm md:text-base">Create a free listing in minutes and reach buyers in your area.</p>
+                <p class="text-[var(--oc-muted)] mt-2 text-sm md:text-base">Post a local job in minutes and reach LA Sentinel readers who are ready for the next step.</p>
             </div>
             @auth
             <a href="{{ route('panel.listings.create') }}" class="btn-primary px-6 py-3 font-semibold whitespace-nowrap">

@@ -125,9 +125,9 @@ class ManageGeneralSettings extends SettingsPage
                     ->helperText('Used as the default country in panel forms.'),
                 TagsInput::make('currencies')
                     ->label('Currencies')
-                    ->placeholder('TRY')
+                    ->placeholder('USD')
                     ->default($defaults['currencies'])
-                    ->helperText('Add 3-letter currency codes such as TRY, USD, or EUR.')
+                    ->helperText('Add 3-letter currency codes such as USD, EUR, or CAD.')
                     ->required()
                     ->rules(['array', 'min:1'])
                     ->afterStateHydrated(fn (TagsInput $component, $state) => $component->state($this->normalizeCurrencies($state)))
@@ -150,7 +150,7 @@ class ManageGeneralSettings extends SettingsPage
                     ->default($defaults['whatsapp'])
                     ->nullable()
                     ->formatAsYouType()
-                    ->helperText('Use international format. Example: +905551112233'),
+                    ->helperText('Use international format. Example: +13235550100'),
                 Toggle::make('enable_google_maps')
                     ->label('Google Maps Enabled')
                     ->default($defaults['enable_google_maps']),
@@ -205,21 +205,21 @@ class ManageGeneralSettings extends SettingsPage
 
     private function defaultFormData(): array
     {
-        $siteName = (string) config('app.name', 'OpenClassify');
+        $siteName = (string) config('app.name', 'LA Sentinel Jobs');
         $siteHost = parse_url((string) config('app.url', 'https://oc2.test'), PHP_URL_HOST) ?: 'oc2.test';
 
         return [
             'site_name' => $siteName,
-            'site_description' => 'A fast and secure marketplace for buying and selling.',
+            'site_description' => 'A local hiring marketplace connecting Los Angeles employers with Sentinel readers and community talent.',
             'home_slides' => $this->defaultHomeSlides(),
             'sender_name' => $siteName,
             'sender_email' => (string) config('mail.from.address', 'info@'.$siteHost),
             'default_language' => in_array(config('app.locale'), array_keys($this->localeOptions()), true) ? (string) config('app.locale') : 'en',
-            'default_country_code' => CountryCodeManager::normalizeCountryCode(config('app.default_country_code', '+90')),
-            'currencies' => $this->normalizeCurrencies(config('app.currencies', ['TRY'])),
-            'linkedin_url' => 'https://www.linkedin.com/company/openclassify',
-            'instagram_url' => 'https://www.instagram.com/openclassify',
-            'whatsapp' => '+905551112233',
+            'default_country_code' => CountryCodeManager::normalizeCountryCode(config('app.default_country_code', '+1')),
+            'currencies' => $this->normalizeCurrencies(config('app.currencies', ['USD'])),
+            'linkedin_url' => null,
+            'instagram_url' => null,
+            'whatsapp' => '+13235550100',
             'enable_google_maps' => false,
             'enable_google_login' => false,
             'enable_facebook_login' => false,

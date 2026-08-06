@@ -10,8 +10,9 @@ class QuickMessageCatalog
     {
         return [
             'Hi',
-            'Is this listing still available?',
-            'What is your best price?',
+            'Is this job still open?',
+            'Can you share the schedule?',
+            'I am interested in applying.',
             'Thanks',
         ];
     }

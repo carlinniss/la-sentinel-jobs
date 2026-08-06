@@ -134,14 +134,14 @@ class FavoriteDemoSeeder extends Seeder
     private function searchPayloadsForUser(int $index): array
     {
         $blueprints = [
-            ['search' => 'phone', 'slug' => 'electronics'],
-            ['search' => 'car', 'slug' => 'vehicles'],
-            ['search' => 'apartment', 'slug' => 'real-estate'],
-            ['search' => 'style', 'slug' => 'fashion'],
-            ['search' => 'furniture', 'slug' => 'home-garden'],
-            ['search' => 'fitness', 'slug' => 'sports'],
-            ['search' => 'remote', 'slug' => 'jobs'],
-            ['search' => 'cleaning', 'slug' => 'services'],
+            ['search' => 'healthcare', 'slug' => 'jobs-healthcare'],
+            ['search' => 'after school', 'slug' => 'jobs-education'],
+            ['search' => 'apprentice', 'slug' => 'jobs-skilled-trades'],
+            ['search' => 'reporter', 'slug' => 'jobs-media-creative'],
+            ['search' => 'city services', 'slug' => 'jobs-public-sector'],
+            ['search' => 'case manager', 'slug' => 'jobs-nonprofit'],
+            ['search' => 'events', 'slug' => 'jobs-hospitality'],
+            ['search' => 'data', 'slug' => 'jobs-technology'],
         ];
 
         return collect(range(0, 2))

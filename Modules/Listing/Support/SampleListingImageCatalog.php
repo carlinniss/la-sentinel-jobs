@@ -195,17 +195,17 @@ final class SampleListingImageCatalog
 
     public static function pathFor(Category $category, int $seed): ?string
     {
-        $paths = self::uniquePaths();
+        $paths = self::resolvePathsForCategory($category);
+
+        if ($paths->isEmpty()) {
+            $paths = self::uniquePaths();
+        }
 
         if ($paths->isEmpty()) {
             return null;
         }
 
-        if ($seed < 0 || $seed >= $paths->count()) {
-            return null;
-        }
-
-        return $paths->get($seed);
+        return $paths->get(abs($seed) % $paths->count());
     }
 
     public static function fileNameFor(string $absolutePath, string $slug): string
@@ -221,12 +221,36 @@ final class SampleListingImageCatalog
 
     private static function resolvePathsForSlug(string $slug): Collection
     {
-        $fileNames = self::CATEGORY_IMAGES[$slug] ?? self::FAMILY_IMAGES[$slug] ?? [];
+        $fileNames = self::CATEGORY_IMAGES[$slug] ?? self::FAMILY_IMAGES[$slug] ?? self::familyImagesForSlug($slug);
 
         return collect($fileNames)
             ->map(fn (string $fileName): string => public_path(self::DIRECTORY.'/'.$fileName))
             ->filter(fn (string $path): bool => self::isAllowed($path))
             ->values();
+    }
+
+    private static function resolvePathsForCategory(Category $category): Collection
+    {
+        $categoryPaths = self::resolvePathsForSlug((string) $category->slug);
+
+        if ($categoryPaths->isNotEmpty()) {
+            return $categoryPaths;
+        }
+
+        $parentSlug = (string) ($category->parent?->slug ?? '');
+
+        return $parentSlug !== ''
+            ? self::resolvePathsForSlug($parentSlug)
+            : collect();
+    }
+
+    private static function familyImagesForSlug(string $slug): array
+    {
+        if (str_starts_with($slug, 'jobs-')) {
+            return self::FAMILY_IMAGES['jobs'];
+        }
+
+        return [];
     }
 
     private static function allPaths(): Collection

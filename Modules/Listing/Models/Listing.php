@@ -418,24 +418,28 @@ class Listing extends Model implements HasMedia
     public function panelPriceLabel(): string
     {
         if (is_null($this->price)) {
-            return 'Free';
+            return 'Pay on request';
         }
 
-        return number_format((float) $this->price, 2, ',', '.').' '.($this->currency ?? 'TL');
+        $amount = (float) $this->price;
+        $prefix = ($this->currency ?? 'USD') === 'USD' ? '$' : '';
+        $suffix = $amount < 1000 ? '/hr' : '/yr';
+
+        return $prefix.number_format($amount, 0).$suffix;
     }
 
     public function panelStatusMeta(): array
     {
         return match ($this->statusValue()) {
             'sold' => [
-                'label' => 'Sold',
+                'label' => 'Filled',
                 'badge_class' => 'is-success',
-                'hint' => 'This listing is marked as sold.',
+                'hint' => 'This job is marked as filled.',
             ],
             'expired' => [
                 'label' => 'Expired',
                 'badge_class' => 'is-danger',
-                'hint' => 'This listing is waiting to be republished.',
+                'hint' => 'This job is waiting to be republished.',
             ],
             'pending' => [
                 'label' => 'Pending review',

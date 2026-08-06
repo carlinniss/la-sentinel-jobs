@@ -13,14 +13,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Electronics', 'slug' => 'electronics', 'icon' => 'img/category/electronics.png', 'children' => ['Phones', 'Computers', 'Tablets', 'TVs']],
-            ['name' => 'Vehicles', 'slug' => 'vehicles', 'icon' => 'img/category/car.png', 'children' => ['Cars', 'Motorcycles', 'Trucks', 'Boats']],
-            ['name' => 'Real Estate', 'slug' => 'real-estate', 'icon' => 'img/category/home_garden.png', 'children' => ['For Sale', 'For Rent', 'Commercial']],
-            ['name' => 'Fashion', 'slug' => 'fashion', 'icon' => 'img/category/phone.png', 'children' => ['Men', 'Women', 'Kids', 'Shoes']],
-            ['name' => 'Home', 'slug' => 'home-garden', 'icon' => 'img/category/home_tools.png', 'children' => ['Furniture', 'Garden', 'Appliances']],
-            ['name' => 'Sports', 'slug' => 'sports', 'icon' => 'img/category/sports.png', 'children' => ['Outdoor', 'Fitness', 'Team Sports']],
-            ['name' => 'Jobs', 'slug' => 'jobs', 'icon' => 'img/category/education.png', 'children' => ['Full Time', 'Part Time', 'Freelance']],
-            ['name' => 'Services', 'slug' => 'services', 'icon' => 'img/category/home_tools.png', 'children' => ['Cleaning', 'Repair', 'Education']],
+            ['name' => 'Healthcare', 'slug' => 'jobs-healthcare', 'icon' => 'img/category/education.png', 'children' => ['Clinical', 'Caregiving', 'Operations']],
+            ['name' => 'Education', 'slug' => 'jobs-education', 'icon' => 'img/category/education.png', 'children' => ['Teaching', 'Youth Programs', 'Administration']],
+            ['name' => 'Skilled Trades', 'slug' => 'jobs-skilled-trades', 'icon' => 'img/category/home_tools.png', 'children' => ['Construction', 'Electrical', 'Transportation']],
+            ['name' => 'Media & Creative', 'slug' => 'jobs-media-creative', 'icon' => 'img/category/electronics.png', 'children' => ['Editorial', 'Production', 'Marketing']],
+            ['name' => 'Public Sector', 'slug' => 'jobs-public-sector', 'icon' => 'img/category/home_garden.png', 'children' => ['City Services', 'Public Safety', 'Community Outreach']],
+            ['name' => 'Nonprofit', 'slug' => 'jobs-nonprofit', 'icon' => 'img/category/sports.png', 'children' => ['Case Management', 'Development', 'Program Coordination']],
+            ['name' => 'Hospitality', 'slug' => 'jobs-hospitality', 'icon' => 'img/category/home_garden.png', 'children' => ['Food Service', 'Events', 'Guest Services']],
+            ['name' => 'Technology', 'slug' => 'jobs-technology', 'icon' => 'img/category/electronics.png', 'children' => ['IT Support', 'Data', 'Product']],
         ];
 
         foreach ($categories as $index => $data) {
@@ -37,5 +37,35 @@ class CategorySeeder extends Seeder
                 );
             }
         }
+
+        Category::query()
+            ->whereIn('slug', $this->legacyDemoSlugs())
+            ->update(['is_active' => false]);
+    }
+
+    private function legacyDemoSlugs(): array
+    {
+        $legacyCategories = [
+            'electronics' => ['Phones', 'Computers', 'Tablets', 'TVs'],
+            'vehicles' => ['Cars', 'Motorcycles', 'Trucks', 'Boats'],
+            'real-estate' => ['For Sale', 'For Rent', 'Commercial'],
+            'fashion' => ['Men', 'Women', 'Kids', 'Shoes'],
+            'home-garden' => ['Furniture', 'Garden', 'Appliances'],
+            'sports' => ['Outdoor', 'Fitness', 'Team Sports'],
+            'jobs' => ['Full Time', 'Part Time', 'Freelance'],
+            'services' => ['Cleaning', 'Repair', 'Education'],
+        ];
+
+        return collect($legacyCategories)
+            ->flatMap(function (array $children, string $slug): array {
+                return array_merge(
+                    [$slug],
+                    collect($children)
+                        ->map(fn (string $child): string => $slug.'-'.Str::slug($child))
+                        ->all()
+                );
+            })
+            ->values()
+            ->all();
     }
 }

@@ -29,10 +29,10 @@ final class RequestAppData
 
     private function resolveGeneralSettings(): array
     {
-        $fallbackName = config('app.name', 'OpenClassify');
+        $fallbackName = config('app.name', 'LA Sentinel Jobs');
         $fallbackLocale = config('app.locale', 'en');
         $fallbackCurrencies = $this->normalizeCurrencies(config('app.currencies', ['USD']));
-        $fallbackDescription = 'Buy and sell everything in your area.';
+        $fallbackDescription = 'Find local jobs and hiring opportunities across Los Angeles.';
         $fallbackHomeSlides = HomeSlideDefaults::defaults();
         $fallbackGoogleMapsApiKey = config('services.google_maps.api_key');
         $fallbackGoogleClientId = config('services.google.client_id');
@@ -41,7 +41,7 @@ final class RequestAppData
         $fallbackFacebookClientSecret = config('services.facebook.client_secret');
         $fallbackAppleClientId = config('services.apple.client_id');
         $fallbackAppleClientSecret = config('services.apple.client_secret');
-        $fallbackDefaultCountryCode = (string) config('app.default_country_code', '+90');
+        $fallbackDefaultCountryCode = (string) config('app.default_country_code', '+1');
 
         $generalSettings = [
             'site_name' => $fallbackName,
@@ -146,8 +146,8 @@ final class RequestAppData
             'services.apple.stateless' => true,
             'services.apple.enabled' => (bool) $generalSettings['apple_login_enabled'],
             'money.defaults.currency' => $generalSettings['currencies'][0] ?? 'USD',
-            'app.default_country_code' => $generalSettings['default_country_code'] ?? '+90',
-            'app.default_country_iso2' => CountryCodeManager::iso2FromCountryCode($generalSettings['default_country_code'] ?? '+90') ?? 'TR',
+            'app.default_country_code' => $generalSettings['default_country_code'] ?? '+1',
+            'app.default_country_iso2' => CountryCodeManager::iso2FromCountryCode($generalSettings['default_country_code'] ?? '+1') ?? 'US',
         ]);
     }
 

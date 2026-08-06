@@ -3,12 +3,12 @@
     $activeFavoritesTab = $activeFavoritesTab ?? '';
     $primaryItems = [
         [
-            'label' => 'Sell',
+            'label' => 'Post Job',
             'route' => route('panel.listings.create'),
             'key' => 'create',
         ],
         [
-            'label' => 'My Listings',
+            'label' => 'My Jobs',
             'route' => route('panel.listings.index'),
             'key' => 'listings',
         ],
@@ -30,7 +30,7 @@
     ];
     $favoriteItems = [
         [
-            'label' => 'Saved Listings',
+            'label' => 'Saved Jobs',
             'route' => route('favorites.index', ['tab' => 'listings']),
             'key' => 'listings',
         ],
@@ -40,7 +40,7 @@
             'key' => 'searches',
         ],
         [
-            'label' => 'Saved Sellers',
+            'label' => 'Saved Employers',
             'route' => route('favorites.index', ['tab' => 'sellers']),
             'key' => 'sellers',
         ],

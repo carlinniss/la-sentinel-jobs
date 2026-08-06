@@ -304,16 +304,16 @@
                         <div class="qc-fields">
                             <div class="qc-field">
                                 <label for="quick-title">Title</label>
-                                <input id="quick-title" type="text" class="qc-input" placeholder="Listing title" wire:model.live.debounce.300ms="listingTitle" maxlength="70">
+                                <input id="quick-title" type="text" class="qc-input" placeholder="Job title" wire:model.live.debounce.300ms="listingTitle" maxlength="70">
                                 <div class="qc-counter">{{ $this->titleCharacters }}/70</div>
                                 @error('listingTitle')<div class="qc-error">{{ $message }}</div>@enderror
                             </div>
 
                             <div class="qc-fields two-col">
                                 <div class="qc-field">
-                                    <label for="quick-price">Price</label>
+                                    <label for="quick-price">Compensation</label>
                                     <div class="qc-input-row">
-                                        <input id="quick-price" type="number" step="0.01" class="qc-input" placeholder="Price" wire:model.live.debounce.300ms="price">
+                                        <input id="quick-price" type="number" step="0.01" class="qc-input" placeholder="Hourly or annual pay" wire:model.live.debounce.300ms="price">
                                         <span class="qc-input-suffix">{{ $currency }}</span>
                                     </div>
                                     @error('price')<div class="qc-error">{{ $message }}</div>@enderror
@@ -472,7 +472,7 @@
                                     </div>
                                 </div>
 
-                                <h2 class="qc-review-title">{{ $listingTitle ?: 'Untitled listing' }}</h2>
+                                <h2 class="qc-review-title">{{ $listingTitle ?: 'Untitled job' }}</h2>
                                 <p class="qc-review-description">{{ $description ?: 'No description added.' }}</p>
 
                                 <div class="qc-feature-list">
@@ -520,7 +520,7 @@
                                         wire:loading.attr="disabled"
                                         wire:target="publishListing"
                                     >
-                                        <span wire:loading.remove wire:target="publishListing">Publish listing</span>
+                                        <span wire:loading.remove wire:target="publishListing">Publish job</span>
                                         <span wire:loading wire:target="publishListing">Publishing...</span>
                                     </button>
                                     <button type="button" class="qc-button-secondary" wire:click="goToStep(4)" wire:loading.attr="disabled" wire:target="publishListing">Back</button>

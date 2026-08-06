@@ -53,6 +53,15 @@ final class ListingCustomFieldSeedCatalog
 
     private static function familyDefinitions(string $rootSlug): array
     {
+        if (str_starts_with($rootSlug, 'jobs-')) {
+            return [
+                self::text('employer_name', 'Employer Name', 'LA Sentinel Jobs partner'),
+                self::select('workplace_type', 'Workplace Type', ['On-site', 'Hybrid', 'Remote', 'Field-based']),
+                self::select('experience_level', 'Experience Level', ['Entry', 'Mid', 'Senior', 'Lead']),
+                self::date('start_date', 'Target Start Date'),
+            ];
+        }
+
         return match ($rootSlug) {
             'electronics' => [
                 self::text('brand', 'Brand', 'Apple, Samsung, Sony'),
@@ -90,12 +99,6 @@ final class ListingCustomFieldSeedCatalog
                 self::select('age_group', 'Age Group', ['Kids', 'Teen', 'Adult']),
                 self::text('sport_level', 'Skill Level', 'Beginner, Intermediate'),
             ],
-            'jobs' => [
-                self::text('company_name', 'Company Name', 'OpenClassify'),
-                self::select('experience_level', 'Experience Level', ['Entry', 'Mid', 'Senior', 'Lead']),
-                self::boolean('remote', 'Remote'),
-                self::date('start_date', 'Start Date'),
-            ],
             'services' => [
                 self::text('provider_name', 'Provider Name', 'Company or individual name'),
                 self::text('response_time', 'Response Time', 'Within 2 hours'),
@@ -108,6 +111,62 @@ final class ListingCustomFieldSeedCatalog
 
     private static function categoryDefinitions(string $categorySlug): array
     {
+        if (str_contains($categorySlug, 'clinical') || str_contains($categorySlug, 'caregiving')) {
+            return [
+                self::text('credential', 'Credential', 'CNA, LVN, RN, BLS'),
+                self::select('shift', 'Shift', ['Day', 'Evening', 'Night', 'Weekend']),
+                self::textarea('benefits', 'Benefits', 'Medical, dental, paid training'),
+            ];
+        }
+
+        if (str_contains($categorySlug, 'teaching') || str_contains($categorySlug, 'youth-programs')) {
+            return [
+                self::text('age_group', 'Age Group', 'Elementary, high school, young adults'),
+                self::select('schedule', 'Schedule', ['School day', 'After school', 'Weekend', 'Summer']),
+                self::textarea('requirements', 'Requirements', 'Live Scan, classroom experience, bilingual preferred'),
+            ];
+        }
+
+        if (str_contains($categorySlug, 'construction') || str_contains($categorySlug, 'electrical') || str_contains($categorySlug, 'transportation')) {
+            return [
+                self::text('certification', 'Certification', 'OSHA 10, CDL, apprentice card'),
+                self::select('job_type', 'Job Type', ['Apprenticeship', 'Journey-level', 'Union', 'Contract']),
+                self::boolean('paid_training', 'Paid Training'),
+            ];
+        }
+
+        if (str_contains($categorySlug, 'editorial') || str_contains($categorySlug, 'production') || str_contains($categorySlug, 'marketing')) {
+            return [
+                self::text('portfolio', 'Portfolio', 'Portfolio or reel URL'),
+                self::select('format', 'Format', ['Staff', 'Freelance', 'Contract', 'Internship']),
+                self::textarea('tools', 'Tools', 'Adobe, Canva, CMS, camera, analytics'),
+            ];
+        }
+
+        if (str_contains($categorySlug, 'public') || str_contains($categorySlug, 'community') || str_contains($categorySlug, 'case-management')) {
+            return [
+                self::text('clearance', 'Clearance', 'Background check, driving record'),
+                self::select('language', 'Language', ['English', 'Spanish preferred', 'Korean preferred', 'Bilingual required']),
+                self::textarea('community_focus', 'Community Focus', 'Families, seniors, reentry, small businesses'),
+            ];
+        }
+
+        if (str_contains($categorySlug, 'food-service') || str_contains($categorySlug, 'events') || str_contains($categorySlug, 'guest-services')) {
+            return [
+                self::select('schedule', 'Schedule', ['Morning', 'Evening', 'Weekend', 'Flexible']),
+                self::boolean('tips', 'Tips Eligible'),
+                self::text('food_card', 'Food Handler Card', 'Required or provided'),
+            ];
+        }
+
+        if (str_contains($categorySlug, 'it-support') || str_contains($categorySlug, 'data') || str_contains($categorySlug, 'product')) {
+            return [
+                self::text('stack', 'Stack', 'Google Workspace, SQL, React, Helpdesk'),
+                self::select('workplace_type', 'Workplace Type', ['On-site', 'Hybrid', 'Remote']),
+                self::textarea('technical_screen', 'Technical Screen', 'Short practical exercise or portfolio review'),
+            ];
+        }
+
         return match ($categorySlug) {
             'electronics-phones' => [
                 self::number('storage_gb', 'Storage (GB)', '128'),
