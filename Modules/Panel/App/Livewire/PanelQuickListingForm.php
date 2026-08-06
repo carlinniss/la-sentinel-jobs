@@ -360,23 +360,6 @@ class PanelQuickListingForm extends Component
         };
     }
 
-    public function temporaryPhotoUrl(int $index): ?string
-    {
-        $photo = $this->photos[$index] ?? null;
-
-        if (! $photo instanceof TemporaryUploadedFile) {
-            return null;
-        }
-
-        try {
-            return $photo->temporaryUrl();
-        } catch (Throwable $exception) {
-            report($exception);
-
-            return null;
-        }
-    }
-
     public function getSelectedCategoryNameProperty(): ?string
     {
         if (! $this->selectedCategoryId) {

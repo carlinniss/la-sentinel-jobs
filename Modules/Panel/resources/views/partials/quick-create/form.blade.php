@@ -29,7 +29,7 @@
 
             @if ($currentStep === 1)
                 <div class="qc-body">
-                    <div class="qc-stack">
+                    <div class="qc-stack" x-data="{ photoUploadError: '' }">
                         <label class="qc-upload-zone" for="quick-listing-photo-input">
                             <span class="qc-upload-icon">
                                 <x-heroicon-o-photo class="h-7 w-7" />
@@ -46,7 +46,12 @@
                             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/bmp"
                             multiple
                             class="hidden"
+                            x-on:livewire-upload-start="photoUploadError = ''"
+                            x-on:livewire-upload-error="photoUploadError = 'Photo upload failed. Try a smaller JPG or PNG, or continue without photos for now.'"
                         >
+
+                        <div wire:loading wire:target="photos" class="qc-empty">Uploading photos...</div>
+                        <div x-cloak x-show="photoUploadError" x-text="photoUploadError" class="qc-error"></div>
 
                         @error('photos')
                             <div class="qc-error">{{ $message }}</div>
@@ -68,11 +73,11 @@
                                 <div class="qc-photo-grid">
                                     @for ($index = 0; $index < $visiblePhotoSlotCount; $index++)
                                         <div class="qc-photo-slot">
-                                            @php
-                                                $photoUrl = $this->temporaryPhotoUrl($index);
-                                            @endphp
-                                            @if ($photoUrl)
-                                                <img src="{{ $photoUrl }}" alt="Uploaded photo {{ $index + 1 }}">
+                                            @if (isset($photos[$index]))
+                                                <div class="flex h-full w-full flex-col items-center justify-center gap-1 bg-slate-100 text-slate-500">
+                                                    <x-heroicon-o-photo class="h-8 w-8" />
+                                                    <span class="text-xs font-bold">Photo {{ $index + 1 }}</span>
+                                                </div>
                                                 <button type="button" class="qc-remove" wire:click="removePhoto({{ $index }})">×</button>
                                                 @if ($index === 0)
                                                     <div class="qc-cover">Cover</div>
@@ -287,14 +292,10 @@
                         <div class="qc-photo-strip">
                             @foreach (array_slice($photos, 0, 4) as $index => $photo)
                                 <div class="qc-photo-slot">
-                                    @php
-                                        $photoUrl = $this->temporaryPhotoUrl($index);
-                                    @endphp
-                                    @if ($photoUrl)
-                                        <img src="{{ $photoUrl }}" alt="Selected photo {{ $index + 1 }}">
-                                    @else
-                                        <x-heroicon-o-photo class="h-8 w-8 text-slate-400" />
-                                    @endif
+                                    <div class="flex h-full w-full flex-col items-center justify-center gap-1 bg-slate-100 text-slate-500">
+                                        <x-heroicon-o-photo class="h-8 w-8" />
+                                        <span class="text-xs font-bold">Photo {{ $index + 1 }}</span>
+                                    </div>
                                     <button type="button" class="qc-remove" wire:click="removePhoto({{ $index }})">×</button>
                                     @if ($index === 0)
                                         <div class="qc-cover">Cover</div>
@@ -445,11 +446,11 @@
                         <div class="qc-stack">
                             <div class="qc-review-gallery">
                                 <div class="qc-gallery-main">
-                                    @php
-                                        $coverPhotoUrl = $this->temporaryPhotoUrl(0);
-                                    @endphp
-                                    @if ($coverPhotoUrl)
-                                        <img src="{{ $coverPhotoUrl }}" alt="Preview cover photo">
+                                    @if (isset($photos[0]))
+                                        <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-100 text-slate-500">
+                                            <x-heroicon-o-photo class="h-12 w-12" />
+                                            <span class="text-sm font-bold">Cover photo added</span>
+                                        </div>
                                     @else
                                         <x-heroicon-o-photo class="h-12 w-12 text-slate-400" />
                                     @endif
@@ -458,14 +459,7 @@
                                 <div class="qc-review-thumbs">
                                     @foreach (array_slice($photos, 0, 4) as $index => $photo)
                                         <div class="qc-review-thumb">
-                                            @php
-                                                $photoUrl = $this->temporaryPhotoUrl($index);
-                                            @endphp
-                                            @if ($photoUrl)
-                                                <img src="{{ $photoUrl }}" alt="Preview photo">
-                                            @else
-                                                <x-heroicon-o-photo class="h-6 w-6 text-slate-400" />
-                                            @endif
+                                            <x-heroicon-o-photo class="h-6 w-6 text-slate-400" />
                                         </div>
                                     @endforeach
                                 </div>
