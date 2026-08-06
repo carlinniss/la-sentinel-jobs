@@ -8,6 +8,7 @@ RUN apk add --no-cache \
     curl \
     zip \
     unzip \
+    $PHPIZE_DEPS \
     icu-dev \
     libzip-dev \
     libpng-dev \
