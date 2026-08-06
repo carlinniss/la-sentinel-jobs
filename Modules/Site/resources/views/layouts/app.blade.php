@@ -1,7 +1,7 @@
 @php
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
     $siteDescription = $generalSettings['site_description'] ?? 'The marketplace for buying and selling everything.';
-    $siteLogoUrl = $generalSettings['site_logo_url'] ?? null;
+    $siteLogoUrl = $generalSettings['site_logo_url'] ?? asset('images/la-sentinel/logo.svg');
     $linkedinUrl = $generalSettings['linkedin_url'] ?? null;
     $instagramUrl = $generalSettings['instagram_url'] ?? null;
     $whatsappNumber = $generalSettings['whatsapp'] ?? null;
@@ -99,12 +99,11 @@
     <nav class="sticky top-0 z-50 border-b border-black/5 bg-white/80">
         <div class="mx-auto flex min-h-[76px] max-w-[1120px] items-center justify-between gap-4 px-4">
             <a href="{{ route('home') }}" class="oc-brand">
-                @if($siteLogoUrl)
-                <img src="{{ $siteLogoUrl }}" alt="{{ $siteName }}" class="oc-brand-image w-auto rounded-xl">
-                @else
-                <span class="brand-logo" aria-hidden="true"></span>
-                @endif
-                <span class="brand-text leading-none">{{ $siteName }}</span>
+                <img src="{{ $siteLogoUrl }}" alt="Los Angeles Sentinel" class="oc-brand-image w-auto">
+                <span class="brand-copy">
+                    <span class="brand-text leading-none">Jobs</span>
+                    <span class="brand-subtext">Bakewell Media</span>
+                </span>
             </a>
 
             <div class="flex items-center gap-3">
@@ -138,12 +137,11 @@
                     </button>
 
                     <a href="{{ route('home') }}" class="oc-brand">
-                        @if($siteLogoUrl)
-                        <img src="{{ $siteLogoUrl }}" alt="{{ $siteName }}" class="oc-brand-image w-auto rounded-xl">
-                        @else
-                        <span class="brand-logo" aria-hidden="true"></span>
-                        @endif
-                        <span class="brand-text leading-none">{{ $siteName }}</span>
+                        <img src="{{ $siteLogoUrl }}" alt="Los Angeles Sentinel" class="oc-brand-image w-auto">
+                        <span class="brand-copy">
+                            <span class="brand-text leading-none">Jobs</span>
+                            <span class="brand-subtext">Bakewell Media</span>
+                        </span>
                     </a>
                 </div>
 
@@ -412,6 +410,7 @@
                 <div>
                     <h3 class="text-slate-900 font-semibold text-lg mb-3">{{ $siteName }}</h3>
                     <p class="text-sm text-slate-500 leading-relaxed">{{ $siteDescription }}</p>
+                    <p class="mt-3 text-xs font-semibold text-slate-500">A Bakewell Media platform.</p>
                 </div>
                 <div>
                     <h4 class="text-slate-900 font-medium mb-4">Quick Links</h4>
@@ -455,7 +454,7 @@
                 </div>
             </div>
             <div class="border-t border-slate-300 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-sm text-slate-500">
-                <p>© {{ date('Y') }} {{ $siteName }}. All rights reserved.</p>
+                <p>© {{ date('Y') }} {{ $siteName }} by Bakewell Media. All rights reserved.</p>
             </div>
         </div>
     </footer>

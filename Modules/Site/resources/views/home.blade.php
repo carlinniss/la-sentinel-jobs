@@ -90,6 +90,7 @@
             <p class="text-xs uppercase text-[var(--oc-muted)] font-semibold mb-3">{{ $heroBadge }}</p>
             <h1 class="text-3xl md:text-5xl leading-[1.1] font-semibold text-[var(--oc-text)] max-w-xl">{{ $heroTitle }}</h1>
             <p class="mt-4 text-[var(--oc-muted)] text-base md:text-lg max-w-xl leading-7">{{ $heroSubtitle }}</p>
+            <p class="mt-4 text-sm font-semibold text-[#7b1a1f]">A Bakewell Media jobs platform for LA Sentinel readers.</p>
             <div class="mt-8 flex flex-wrap items-center gap-3">
                 <a href="{{ route('listings.index') }}" class="btn-primary px-6 py-3 text-sm font-semibold">
                     {{ $heroPrimaryLabel }}
@@ -110,6 +111,7 @@
                 <div>
                     <p class="text-xs uppercase text-[#8b1d22] font-bold">Now Hiring</p>
                     <h2 class="mt-1 text-2xl font-semibold text-[var(--oc-text)]">LA Sentinel Jobs Board</h2>
+                    <p class="mt-1 text-sm font-semibold text-[var(--oc-muted)]">Published with Bakewell Media</p>
                 </div>
                 <div class="rounded-2xl bg-[#8b1d22] px-4 py-3 text-right text-white">
                     <p class="text-2xl font-semibold leading-none">{{ number_format($listingCount ?? $spotlightListings->count()) }}</p>

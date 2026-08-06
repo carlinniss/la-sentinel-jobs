@@ -70,14 +70,26 @@ h6 {
 }
 
 .brand-text {
-    max-width: 7.5rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 1.12rem;
-    font-weight: 700;
+    font-size: 1.05rem;
+    font-weight: 800;
     color: var(--oc-text);
     letter-spacing: 0;
+}
+
+.brand-copy {
+    display: grid;
+    gap: 0.18rem;
+    min-width: 0;
+}
+
+.brand-subtext {
+    color: #7b1a1f;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .market-nav-surface {
@@ -117,13 +129,13 @@ body.oc-header-menu-open .oc-nav-wrap {
 .oc-brand {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     min-width: 0;
 }
 
 .oc-brand-image {
-    height: 2.35rem;
-    max-width: 10rem;
+    height: 3.1rem;
+    max-width: 11.5rem;
     object-fit: contain;
 }
 
@@ -697,8 +709,7 @@ body.oc-header-menu-open .oc-nav-wrap {
     }
 
     .brand-text {
-        max-width: none;
-        font-size: 1.32rem;
+        font-size: 1.22rem;
     }
 
     .oc-actions {
@@ -738,7 +749,8 @@ body.oc-header-menu-open .oc-nav-wrap {
     }
 
     .oc-brand-image {
-        height: 2.25rem;
+        height: 3.25rem;
+        max-width: 12.5rem;
     }
 
     .oc-nav-main {
@@ -870,8 +882,7 @@ body.oc-header-menu-open .oc-nav-wrap {
 
 @media (min-width: 1280px) {
     .brand-text {
-        max-width: none;
-        font-size: 1.7rem;
+        font-size: 1.35rem;
     }
 }
 
@@ -4159,8 +4170,7 @@ body.listing-filters-open {
     }
 
     .brand-text {
-        max-width: 6rem;
-        font-size: 1rem;
+        font-size: 0.98rem;
     }
 
     .oc-actions {
@@ -4247,7 +4257,6 @@ body.listing-filters-open {
 
 @media (max-width: 380px) {
     .brand-text {
-        max-width: 5.25rem;
         font-size: 0.94rem;
     }
 

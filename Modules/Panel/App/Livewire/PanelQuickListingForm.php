@@ -348,7 +348,7 @@ class PanelQuickListingForm extends Component
     public function getCurrentStepHintProperty(): string
     {
         return match ($this->currentStep) {
-            1 => 'Add photos and optional videos first.',
+            1 => 'Add optional photos or videos first.',
             2 => 'Pick the right category.',
             3 => 'Add the basics.',
             4 => 'Add extra details if needed.',
@@ -487,15 +487,14 @@ class PanelQuickListingForm extends Component
     {
         $this->validate([
             'photos' => [
-                'required',
+                'nullable',
                 'array',
-                'min:1',
                 'max:'.config('quick-listing.max_photo_count', 20),
             ],
             'photos.*' => [
-                'required',
+                'nullable',
                 'image',
-                'mimes:jpg,jpeg,png',
+                'mimes:jpg,jpeg,png,webp,gif,bmp',
                 'max:'.config('quick-listing.max_photo_size_kb', 5120),
             ],
         ]);

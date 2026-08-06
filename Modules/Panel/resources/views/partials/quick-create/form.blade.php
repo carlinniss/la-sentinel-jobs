@@ -35,7 +35,7 @@
                                 <x-heroicon-o-photo class="h-7 w-7" />
                             </span>
                             <div class="qc-upload-title">Add photos</div>
-                            <p class="qc-copy">1 to {{ $maxPhotoCount }} photos.</p>
+                            <p class="qc-copy">Optional. Up to {{ $maxPhotoCount }} photos.</p>
                             <span class="qc-primary-pill">Select photos</span>
                         </label>
 
@@ -43,7 +43,7 @@
                             id="quick-listing-photo-input"
                             type="file"
                             wire:model="photos"
-                            accept="image/jpeg,image/jpg,image/png"
+                            accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/bmp"
                             multiple
                             class="hidden"
                         >
@@ -86,7 +86,7 @@
                                 @endif
                             </div>
                         @else
-                            <div class="qc-empty">Add one cover photo to continue.</div>
+                            <div class="qc-empty">Photos are optional. You can continue without a cover photo.</div>
                         @endif
 
                         <div class="qc-panel">
@@ -145,7 +145,7 @@
                         type="button"
                         class="qc-button"
                         wire:click="goToCategoryStep"
-                        @disabled(count($photos) === 0 || $isDetecting)
+                        @disabled($isDetecting)
                     >
                         Next
                     </button>
