@@ -78,7 +78,7 @@ class ListingController extends Controller
 
         $listingsQuery = Listing::query()
             ->active()
-            ->with('category:id,name')
+            ->with(['category:id,name', 'user:id,name,email'])
             ->forBrowseFilters([
                 ...$browseFilters,
                 'category_ids' => $listingDirectory['filterIds'],
@@ -89,6 +89,7 @@ class ListingController extends Controller
 
         $listings = $listingsQuery
             ->paginate(16)
+            ->withPath('/'.request()->path())
             ->withQueryString();
 
         $categories = $listingDirectory['categories'];

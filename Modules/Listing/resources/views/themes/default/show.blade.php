@@ -138,7 +138,16 @@
                 <div class="mt-6 border-t border-[var(--oc-border)] pt-5">
                     <h2 class="text-base font-semibold text-[var(--oc-text)] mb-3">{{ __('listing::messages.contact_seller') }}</h2>
                     @if($listing->user)
-                    <p class="text-sm text-[var(--oc-text)] mb-3"><span class="text-[var(--oc-muted)]">Name:</span> {{ $listing->user->name }}</p>
+                    @php
+                        $detailEmployerName = trim((string) $listing->user->name);
+                        $detailIsBmoEmployer = str_contains(strtolower($detailEmployerName), 'bmo');
+                    @endphp
+                    <div class="mb-3 flex items-center gap-2">
+                        @if($detailIsBmoEmployer)
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-8 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
+                        @endif
+                        <p class="text-sm text-[var(--oc-text)]"><span class="text-[var(--oc-muted)]">Employer:</span> {{ $detailEmployerName }}</p>
+                    </div>
                     @endif
 
                     @auth

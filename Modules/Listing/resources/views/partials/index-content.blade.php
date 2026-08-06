@@ -310,6 +310,8 @@
                     @foreach($listings as $listing)
                         @php
                             $listingImage = $listing->primaryImageData('card');
+                            $employerName = trim((string) ($listing->user?->name ?? ''));
+                            $isBmoEmployer = $employerName !== '' && str_contains(strtolower($employerName), 'bmo');
                             $isFavorited = in_array($listing->id, $favoriteListingIds ?? [], true);
                             $priceValue = ! is_null($listing->price) ? (float) $listing->price : null;
                             $locationParts = array_filter([
@@ -359,6 +361,14 @@
                             </div>
 
                             <div class="px-3.5 py-3">
+                                @if($employerName !== '')
+                                    <div class="mb-3 flex items-center gap-2">
+                                        @if($isBmoEmployer)
+                                            <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
+                                        @endif
+                                        <span class="truncate text-xs font-semibold text-slate-500">{{ $employerName }}</span>
+                                    </div>
+                                @endif
                                 <a href="{{ route('listings.show', $listing) }}" class="block">
                                     <p class="text-xl sm:text-2xl lg:text-3xl leading-none font-bold text-slate-900">
                                         @if(!is_null($priceValue) && $priceValue > 0)

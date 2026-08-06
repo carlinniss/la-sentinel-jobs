@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        $this->forceConfiguredUrlRoot();
+        $this->forceCodespacesUrlRoot();
 
         Gate::before(function ($user): ?bool {
             if (method_exists($user, 'hasRole') && $user->hasRole('admin')) {
@@ -51,20 +51,50 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    private function forceConfiguredUrlRoot(): void
+    private function forceCodespacesUrlRoot(): void
     {
-        $appUrl = trim((string) config('app.url', ''));
-        $host = parse_url($appUrl, PHP_URL_HOST);
-        $scheme = parse_url($appUrl, PHP_URL_SCHEME);
-
-        if (! is_string($host) || $host === '' || str_contains($host, 'localhost') || str_contains($host, '127.0.0.1')) {
+        if ($this->app->runningInConsole()) {
             return;
         }
 
-        URL::forceRootUrl($appUrl);
+        $codespacesHost = $this->codespacesHost();
 
-        if ($scheme === 'https') {
+        if (is_string($codespacesHost)) {
+            URL::forceRootUrl('https://'.$codespacesHost);
             URL::forceScheme('https');
+
+            return;
         }
+
+        return;
+    }
+
+    private function codespacesHost(): ?string
+    {
+        $hosts = [
+            $this->firstForwardedHeaderValue((string) request()->headers->get('x-forwarded-host', '')),
+            request()->getHost(),
+        ];
+
+        foreach ($hosts as $host) {
+            $host = strtolower(trim($host));
+
+            if ($host === '') {
+                continue;
+            }
+
+            $hostWithoutPort = explode(':', $host)[0] ?? $host;
+
+            if (str_ends_with($hostWithoutPort, '.github.dev') || str_ends_with($hostWithoutPort, '.app.github.dev')) {
+                return $host;
+            }
+        }
+
+        return null;
+    }
+
+    private function firstForwardedHeaderValue(string $value): string
+    {
+        return trim(explode(',', $value)[0] ?? '');
     }
 }

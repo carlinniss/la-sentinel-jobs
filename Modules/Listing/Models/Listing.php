@@ -378,6 +378,7 @@ class Listing extends Model implements HasMedia
     {
         return static::query()
             ->active()
+            ->with('user:id,name,email')
             ->where('is_featured', true)
             ->latest()
             ->take($limit)
@@ -388,6 +389,7 @@ class Listing extends Model implements HasMedia
     {
         return static::query()
             ->active()
+            ->with('user:id,name,email')
             ->latest()
             ->take($limit)
             ->get();

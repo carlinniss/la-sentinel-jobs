@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-labelledby="title desc">
+  <title id="title">BMO</title>
+  <desc id="desc">BMO employer logo badge for LA Sentinel Jobs demo listings.</desc>
+  <rect width="360" height="120" rx="18" fill="#ffffff"/>
+  <circle cx="61" cy="60" r="34" fill="#e31837"/>
+  <path d="M61 36 37 78h48L61 36z" fill="#ffffff"/>
+  <path d="M61 54 52 70h18L61 54z" fill="#e31837"/>
+  <text x="118" y="78" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="0" fill="#005eb8">BMO</text>
+</svg>

@@ -124,8 +124,18 @@
                 @php
                     $spotlightCategory = $spotlightListing->category?->parent?->name ?? $spotlightListing->category?->name ?? 'Local Role';
                     $spotlightLocation = trim(collect([$spotlightListing->city, $spotlightListing->country])->filter()->join(', '));
+                    $spotlightEmployer = trim((string) ($spotlightListing->user?->name ?? ''));
+                    $spotlightIsBmo = $spotlightEmployer !== '' && str_contains(strtolower($spotlightEmployer), 'bmo');
                 @endphp
                 <a href="{{ route('listings.show', $spotlightListing) }}" class="block border-b border-slate-100 pb-4 last:border-b-0 last:pb-0">
+                    @if($spotlightEmployer !== '')
+                    <div class="mb-3 flex items-center gap-2">
+                        @if($spotlightIsBmo)
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
+                        @endif
+                        <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $spotlightEmployer }}</span>
+                    </div>
+                    @endif
                     <div class="flex items-center justify-between gap-3">
                         <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">{{ $spotlightCategory }}</span>
                         <span class="text-sm font-semibold text-[var(--oc-text)]">{{ $formatCompensation($spotlightListing) }}</span>
@@ -230,6 +240,8 @@
                 $listingImage = $listing->primaryImageData('card');
                 $priceLabel = $formatCompensation($listing);
                 $locationLabel = trim(collect([$listing->city, $listing->country])->filter()->join(', '));
+                $employerName = trim((string) ($listing->user?->name ?? ''));
+                $isBmoEmployer = $employerName !== '' && str_contains(strtolower($employerName), 'bmo');
                 $isFavorited = in_array($listing->id, $favoriteListingIds ?? [], true);
             @endphp
             <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] overflow-hidden">
@@ -262,6 +274,14 @@
                     </div>
                 </div>
                 <div class="p-4">
+                    @if($employerName !== '')
+                    <div class="mb-3 flex items-center gap-2">
+                        @if($isBmoEmployer)
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
+                        @endif
+                        <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $employerName }}</span>
+                    </div>
+                    @endif
                     <p class="text-xl font-semibold text-[var(--oc-text)]">{{ $priceLabel }}</p>
                     <h3 class="text-sm font-medium text-[var(--oc-text)] mt-1 truncate">{{ $listing->title }}</h3>
                     <div class="mt-3 flex items-center justify-between gap-3 text-xs text-[var(--oc-muted)]">
