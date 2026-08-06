@@ -7,6 +7,7 @@ namespace App\Providers;
 use BezhanSalleh\LanguageSwitch\LanguageSwitch;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use SocialiteProviders\Apple\Provider;
@@ -18,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        $this->forceConfiguredUrlRoot();
+
         Gate::before(function ($user): ?bool {
             if (method_exists($user, 'hasRole') && $user->hasRole('admin')) {
                 return true;
@@ -46,5 +49,22 @@ class AppServiceProvider extends ServiceProvider
                 )->all())
                 ->visible(insidePanels: count($availableLocales) > 1, outsidePanels: false);
         });
+    }
+
+    private function forceConfiguredUrlRoot(): void
+    {
+        $appUrl = trim((string) config('app.url', ''));
+        $host = parse_url($appUrl, PHP_URL_HOST);
+        $scheme = parse_url($appUrl, PHP_URL_SCHEME);
+
+        if (! is_string($host) || $host === '' || str_contains($host, 'localhost') || str_contains($host, '127.0.0.1')) {
+            return;
+        }
+
+        URL::forceRootUrl($appUrl);
+
+        if ($scheme === 'https') {
+            URL::forceScheme('https');
+        }
     }
 }
