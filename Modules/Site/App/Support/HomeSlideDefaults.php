@@ -29,7 +29,7 @@ final class HomeSlideDefaults
             ],
             [
                 'badge' => 'Demo Ready',
-                'title' => 'Show employers a jobs marketplace that already feels built for South LA.',
+                'title' => 'Show employers a jobs board that already feels built for South LA.',
                 'subtitle' => 'Seeded listings, saved searches, inbox conversations, and admin workflows are ready for a live walkthrough.',
                 'primary_button_text' => 'View Jobs',
                 'secondary_button_text' => 'Open Dashboard',

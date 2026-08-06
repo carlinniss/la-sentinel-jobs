@@ -210,7 +210,7 @@ class ManageGeneralSettings extends SettingsPage
 
         return [
             'site_name' => $siteName,
-            'site_description' => 'A local hiring marketplace connecting Los Angeles employers with Sentinel readers and community talent.',
+            'site_description' => 'A local hiring platform connecting Los Angeles employers with Sentinel readers and community talent.',
             'home_slides' => $this->defaultHomeSlides(),
             'sender_name' => $siteName,
             'sender_email' => (string) config('mail.from.address', 'info@'.$siteHost),

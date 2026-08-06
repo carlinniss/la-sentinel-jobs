@@ -1,7 +1,7 @@
 {
     "name": "Panel",
     "alias": "panel",
-    "description": "Authenticated seller panel",
+    "description": "Authenticated employer panel",
     "keywords": [],
     "priority": 0,
     "providers": [

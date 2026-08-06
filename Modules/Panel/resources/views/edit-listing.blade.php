@@ -76,13 +76,7 @@
                         @enderror
                     </label>
 
-                    <label class="block">
-                        <span class="mb-2 block text-sm font-medium text-slate-700">Country</span>
-                        <input type="text" name="country" value="{{ old('country', $listing->country) }}" class="w-full rounded-2xl border border-slate-300 px-4 py-3 text-sm text-slate-800 focus:border-slate-400 focus:outline-none">
-                        @error('country')
-                            <p class="mt-2 text-sm text-rose-600">{{ $message }}</p>
-                        @enderror
-                    </label>
+                    <input type="hidden" name="country" value="United States">
 
                     <label class="block">
                         <span class="mb-2 block text-sm font-medium text-slate-700">City</span>

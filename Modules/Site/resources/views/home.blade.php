@@ -57,7 +57,7 @@
         <input type="hidden" name="redirect_to" value="{{ $prepareDemoRedirect }}">
         <h1 class="text-3xl md:text-5xl font-extrabold text-slate-950">Prepare Demo</h1>
         <p class="mt-5 text-base md:text-lg leading-8 text-slate-600">
-            Launch a private seeded marketplace for this browser. Listings, favorites, inbox data, and admin access are prepared automatically.
+            Launch a private seeded jobs board for this browser. Jobs, favorites, inbox data, and admin access are prepared automatically.
         </p>
         <p class="mt-4 text-base text-slate-500">
             This demo is deleted automatically after {{ $demoTtlLabel }}.

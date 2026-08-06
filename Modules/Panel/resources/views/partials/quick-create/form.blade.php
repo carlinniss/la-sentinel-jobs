@@ -321,26 +321,14 @@
 
                                 <div class="qc-field">
                                     <label>Location</label>
-                                    <div class="qc-fields two-col">
-                                        <div>
-                                            <select class="qc-select" wire:model.live="selectedCountryId">
-                                                <option value="">Country</option>
-                                                @foreach ($countries as $country)
-                                                    <option value="{{ $country['id'] }}">{{ $country['name'] }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('selectedCountryId')<div class="qc-error">{{ $message }}</div>@enderror
-                                        </div>
-                                        <div>
-                                            <select class="qc-select" wire:model.live="selectedCityId" @disabled(! $selectedCountryId)>
-                                                <option value="">City</option>
-                                                @foreach ($this->availableCities as $city)
-                                                    <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
-                                                @endforeach
-                                            </select>
-                                            @error('selectedCityId')<div class="qc-error">{{ $message }}</div>@enderror
-                                        </div>
-                                    </div>
+                                    <select class="qc-select" wire:model.live="selectedCityId" @disabled(! $selectedCountryId)>
+                                        <option value="">City</option>
+                                        @foreach ($this->availableCities as $city)
+                                            <option value="{{ $city['id'] }}">{{ $city['name'] }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('selectedCityId')<div class="qc-error">{{ $message }}</div>@enderror
+                                    @error('selectedCountryId')<div class="qc-error">{{ $message }}</div>@enderror
                                 </div>
                             </div>
 
@@ -467,7 +455,7 @@
                                 <div class="qc-review-meta">
                                     <div class="qc-review-price">{{ $displayPrice }} {{ $currency }}</div>
                                     <div class="qc-review-location">
-                                        <div>{{ $this->selectedCityName ?: '-' }}, {{ $this->selectedCountryName ?: '-' }}</div>
+                                        <div>{{ $this->selectedCityName ?: '-' }}</div>
                                         <div>{{ now()->format('d.m.Y') }}</div>
                                     </div>
                                 </div>

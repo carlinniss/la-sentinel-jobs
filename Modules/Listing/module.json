@@ -1,7 +1,7 @@
 {
     "name": "Listing",
     "alias": "listing",
-    "description": "Classified ads listings module",
+    "description": "Jobs listings module",
     "keywords": [],
     "priority": 0,
     "providers": [

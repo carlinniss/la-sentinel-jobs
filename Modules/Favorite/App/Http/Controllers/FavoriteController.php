@@ -90,12 +90,12 @@ class FavoriteController extends Controller
         $user = $request->user();
 
         if ((int) $user->getKey() === (int) $seller->getKey()) {
-            return $this->redirectBack($request)->with('error', 'You cannot favorite your own account.');
+            return $this->redirectBack($request)->with('error', 'You cannot save your own employer profile.');
         }
 
         $isNowFavorite = $user->toggleFavoriteSeller($seller);
 
-        return $this->redirectBack($request)->with('success', $isNowFavorite ? 'Seller added to favorites.' : 'Seller removed from favorites.');
+        return $this->redirectBack($request)->with('success', $isNowFavorite ? 'Employer added to favorites.' : 'Employer removed from favorites.');
     }
 
     public function storeSearch(Request $request)

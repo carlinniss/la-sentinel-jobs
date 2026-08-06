@@ -10,7 +10,7 @@ return new class extends SettingsMigration
     public function up(): void
     {
         $this->migrator->add('general.site_name', 'LA Sentinel Jobs');
-        $this->migrator->add('general.site_description', 'A local hiring marketplace connecting Los Angeles employers with Sentinel readers and community talent.');
+        $this->migrator->add('general.site_description', 'A local hiring platform connecting Los Angeles employers with Sentinel readers and community talent.');
         $this->migrator->add('general.site_logo', null);
         $this->migrator->add('general.default_language', 'en');
         $this->migrator->add('general.default_country_code', '+1');

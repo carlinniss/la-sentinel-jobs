@@ -1,6 +1,6 @@
 @php
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
-    $siteDescription = $generalSettings['site_description'] ?? 'The marketplace for buying and selling everything.';
+    $siteDescription = $generalSettings['site_description'] ?? 'A local hiring platform connecting Los Angeles employers with Sentinel readers and community talent.';
     $siteLogoUrl = $generalSettings['site_logo_url'] ?? asset('images/la-sentinel/logo.webp');
     $linkedinUrl = $generalSettings['linkedin_url'] ?? null;
     $instagramUrl = $generalSettings['instagram_url'] ?? null;
