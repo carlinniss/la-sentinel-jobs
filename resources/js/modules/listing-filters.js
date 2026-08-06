@@ -121,7 +121,7 @@ onReady(() => {
 
     const loadCities = async (countryId, selectedCityName = '') => {
         if (!countryId) {
-            citySelect.innerHTML = '<option value="">Select country first</option>';
+            citySelect.innerHTML = '<option value="">Cities unavailable</option>';
             citySelect.disabled = true;
 
             return;
@@ -170,6 +170,10 @@ onReady(() => {
         void loadCities(countrySelect.value);
     });
 
+    if (countrySelect.value && citySelect.options.length <= 1) {
+        void loadCities(countrySelect.value);
+    }
+
     currentLocationButton?.addEventListener('click', async () => {
         try {
             const rawLocation = localStorage.getItem(locationStorageKey);
@@ -179,24 +183,9 @@ onReady(() => {
             }
 
             const parsedLocation = JSON.parse(rawLocation);
-            const countryName = parsedLocation?.countryName ?? '';
             const cityName = parsedLocation?.cityName ?? '';
-            const countryId = parsedLocation?.countryId ? String(parsedLocation.countryId) : null;
 
-            const matchedCountryOption = Array.from(countrySelect.options).find((option) => {
-                if (countryId && option.value === countryId) {
-                    return true;
-                }
-
-                return normalize(option.textContent) === normalize(countryName);
-            });
-
-            if (!matchedCountryOption) {
-                return;
-            }
-
-            countrySelect.value = matchedCountryOption.value;
-            await loadCities(matchedCountryOption.value, cityName);
+            await loadCities(countrySelect.value, cityName);
         } catch (error) {
         }
     });

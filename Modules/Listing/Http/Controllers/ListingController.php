@@ -16,6 +16,8 @@ use Modules\Theme\Support\ThemeManager;
 
 class ListingController extends Controller
 {
+    private const DEFAULT_COUNTRY_NAME = 'United States';
+
     public function __construct(private ThemeManager $themes) {}
 
     public function index()
@@ -27,6 +29,7 @@ class ListingController extends Controller
 
         $countryId = request()->integer('country');
         $countryId = $countryId > 0 ? $countryId : null;
+        $countryId ??= Country::resolveLookup(self::DEFAULT_COUNTRY_NAME)?->getKey();
 
         $cityId = request()->integer('city');
         $cityId = $cityId > 0 ? $cityId : null;

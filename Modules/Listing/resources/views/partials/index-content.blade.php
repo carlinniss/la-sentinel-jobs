@@ -7,6 +7,7 @@
         : 'All Jobs and Compensation';
     $canSaveSearch = $search !== '' || ! is_null($categoryId);
     $normalizeQuery = static fn ($value): bool => ! is_null($value) && $value !== '';
+    $usCountryId = $countries->first(fn ($country) => strcasecmp((string) $country->name, 'United States') === 0)?->id ?? $countryId;
     $baseCategoryQuery = array_filter([
         'search' => $search !== '' ? $search : null,
         'user' => $sellerUserId ?? null,
@@ -23,7 +24,6 @@
     ], $normalizeQuery);
     $activeFilterCount = collect([
         $categoryId,
-        $countryId,
         $cityId,
         $sellerUserId,
         $minPriceInput !== '' ? $minPriceInput : null,
@@ -117,22 +117,16 @@
                                 ? route('locations.cities', ['country' => '__COUNTRY__'], false)
                                 : '';
                         @endphp
-                        <select
+                        <input
+                            type="hidden"
                             name="country"
                             data-listing-country
                             data-cities-url-template="{{ $citiesRouteTemplate }}"
-                            class="w-full h-10 rounded-lg border border-slate-300 bg-slate-50 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200"
+                            value="{{ $usCountryId }}"
                         >
-                            <option value="">Select country</option>
-                            @foreach($countries as $country)
-                                <option value="{{ $country->id }}" @selected((int) $countryId === (int) $country->id)>
-                                    {{ $country->name }}
-                                </option>
-                            @endforeach
-                        </select>
 
-                        <select name="city" data-listing-city class="w-full h-10 rounded-lg border border-slate-300 bg-slate-50 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200" @disabled(!$countryId)>
-                            <option value="">{{ $countryId ? 'Select city' : 'Select country first' }}</option>
+                        <select name="city" data-listing-city class="w-full h-10 rounded-lg border border-slate-300 bg-slate-50 px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-200" @disabled(!$usCountryId)>
+                            <option value="">{{ $usCountryId ? 'Select city' : 'Cities unavailable' }}</option>
                             @foreach($cities as $city)
                                 <option value="{{ $city->id }}" @selected((int) $cityId === (int) $city->id)>
                                     {{ $city->name }}
