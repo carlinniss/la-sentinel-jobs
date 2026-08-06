@@ -105,6 +105,7 @@
                     <span class="brand-text leading-none">Jobs</span>
                     <span class="brand-partner-logo" aria-label="Bakewell Media">
                         <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media">
+                        <span>Bakewell Media</span>
                     </span>
                 </span>
             </a>
@@ -149,6 +150,7 @@
                             <span class="brand-text leading-none">Jobs</span>
                             <span class="brand-partner-logo" aria-label="Bakewell Media">
                                 <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media">
+                                <span>Bakewell Media</span>
                             </span>
                         </span>
                     </a>
@@ -433,6 +435,7 @@
                         <span class="inline-flex rounded-full bg-black p-1.5 shadow-sm">
                             <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media" class="h-16 w-16 rounded-full object-contain">
                         </span>
+                        <span class="rounded-full bg-black px-4 py-2 text-sm font-bold text-white shadow-sm">Bakewell Media</span>
                     </div>
                     <h3 class="text-slate-900 font-semibold text-lg mb-3">{{ $siteName }}</h3>
                     <p class="text-sm text-slate-500 leading-relaxed">{{ $siteDescription }}</p>

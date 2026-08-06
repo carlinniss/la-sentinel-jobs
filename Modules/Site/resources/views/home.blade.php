@@ -97,8 +97,9 @@
                     <span class="block text-sm font-extrabold text-[#7b1a1f]">Published with the Los Angeles Sentinel</span>
                     <span class="block text-xs font-semibold text-[var(--oc-muted)]">A Bakewell Media jobs platform for Sentinel readers.</span>
                 </span>
-                <span class="hidden rounded-full bg-black p-1 sm:inline-flex">
+                <span class="hidden items-center gap-2 rounded-full bg-black py-1 pl-1 pr-3 text-xs font-bold text-white sm:inline-flex">
                     <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media" class="h-10 w-10 rounded-full object-contain">
+                    Bakewell Media
                 </span>
             </a>
             <div class="mt-8 flex flex-wrap items-center gap-3">
