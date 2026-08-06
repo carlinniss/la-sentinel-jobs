@@ -25,7 +25,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX categories_slug_unique ON categories (slug) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('categories', function (Blueprint $table): void {
+                $table->unique('slug', 'categories_slug_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX categories_slug_unique ON categories (slug) WHERE deleted_at IS NULL');
+        }
     }
 
     public function down(): void

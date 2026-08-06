@@ -41,7 +41,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX favorite_searches_user_id_signature_unique ON favorite_searches (user_id, signature) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('favorite_searches', function (Blueprint $table): void {
+                $table->unique(['user_id', 'signature'], 'favorite_searches_user_id_signature_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX favorite_searches_user_id_signature_unique ON favorite_searches (user_id, signature) WHERE deleted_at IS NULL');
+        }
     }
 
     public function down(): void

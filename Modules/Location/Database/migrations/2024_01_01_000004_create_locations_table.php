@@ -22,7 +22,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX countries_code_unique ON countries (code) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('countries', function (Blueprint $table): void {
+                $table->unique('code', 'countries_code_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX countries_code_unique ON countries (code) WHERE deleted_at IS NULL');
+        }
 
         Schema::create('cities', function (Blueprint $table) {
             $table->id();

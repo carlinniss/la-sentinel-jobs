@@ -36,7 +36,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX listings_slug_unique ON listings (slug) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('listings', function (Blueprint $table): void {
+                $table->unique('slug', 'listings_slug_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX listings_slug_unique ON listings (slug) WHERE deleted_at IS NULL');
+        }
 
         Schema::create('listing_custom_fields', function (Blueprint $table): void {
             $table->id();
@@ -54,7 +60,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX listing_custom_fields_name_unique ON listing_custom_fields (name) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('listing_custom_fields', function (Blueprint $table): void {
+                $table->unique('name', 'listing_custom_fields_name_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX listing_custom_fields_name_unique ON listing_custom_fields (name) WHERE deleted_at IS NULL');
+        }
     }
 
     public function down(): void

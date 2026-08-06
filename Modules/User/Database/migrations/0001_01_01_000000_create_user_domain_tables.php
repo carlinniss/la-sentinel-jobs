@@ -24,7 +24,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX users_email_unique ON users (email) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('users', function (Blueprint $table): void {
+                $table->unique('email', 'users_email_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX users_email_unique ON users (email) WHERE deleted_at IS NULL');
+        }
 
         Schema::create('profiles', function (Blueprint $table): void {
             $table->id();
@@ -40,7 +46,13 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::statement('CREATE UNIQUE INDEX profiles_user_id_unique ON profiles (user_id) WHERE deleted_at IS NULL');
+        if (DB::getDriverName() === 'mysql') {
+            Schema::table('profiles', function (Blueprint $table): void {
+                $table->unique('user_id', 'profiles_user_id_unique');
+            });
+        } else {
+            DB::statement('CREATE UNIQUE INDEX profiles_user_id_unique ON profiles (user_id) WHERE deleted_at IS NULL');
+        }
 
         Schema::create('password_reset_tokens', function (Blueprint $table): void {
             $table->string('email')->primary();
