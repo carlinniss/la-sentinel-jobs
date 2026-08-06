@@ -351,13 +351,30 @@ class PanelQuickListingForm extends Component
     public function getCurrentStepHintProperty(): string
     {
         return match ($this->currentStep) {
-            1 => 'Add optional photos or videos first.',
+            1 => 'Photos and videos are optional for the demo.',
             2 => 'Pick the right category.',
             3 => 'Add the basics.',
             4 => 'Add extra details if needed.',
             5 => 'Check everything before publishing.',
             default => 'Create a new listing.',
         };
+    }
+
+    public function temporaryPhotoUrl(int $index): ?string
+    {
+        $photo = $this->photos[$index] ?? null;
+
+        if (! $photo instanceof TemporaryUploadedFile) {
+            return null;
+        }
+
+        try {
+            return $photo->temporaryUrl();
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return null;
+        }
     }
 
     public function getSelectedCategoryNameProperty(): ?string
