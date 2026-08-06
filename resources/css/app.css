@@ -27,8 +27,8 @@ body {
 body {
     font-family: var(--oc-font-sans);
     background:
-        linear-gradient(180deg, rgba(255, 253, 248, 0.96) 0%, rgba(244, 240, 232, 0.96) 42%, rgba(236, 229, 218, 0.98) 100%),
-        repeating-linear-gradient(90deg, rgba(20, 17, 15, 0.025) 0 1px, transparent 1px 36px);
+        radial-gradient(circle at 12% 12%, rgba(214, 166, 65, 0.12), transparent 28%),
+        linear-gradient(180deg, rgba(255, 253, 248, 0.98) 0%, rgba(244, 240, 232, 0.98) 48%, rgba(236, 229, 218, 0.98) 100%);
     color: var(--oc-text);
 }
 
@@ -38,10 +38,7 @@ body::before {
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background-image:
-        linear-gradient(rgba(139, 29, 34, 0.045) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(139, 29, 34, 0.035) 1px, transparent 1px);
-    background-size: 42px 42px;
+    background: linear-gradient(135deg, rgba(139, 29, 34, 0.025), transparent 42%);
 }
 
 h1,
@@ -561,21 +558,12 @@ body.oc-header-menu-open .oc-nav-wrap {
 .community-hero-grid {
     position: relative;
     padding: clamp(1.25rem, 3vw, 2rem);
-    border-top: 6px solid var(--oc-ink);
-    border-bottom: 2px solid rgba(139, 29, 34, 0.35);
+    border: 1px solid rgba(214, 166, 65, 0.32);
+    border-radius: 28px;
     background:
         linear-gradient(90deg, rgba(255, 253, 248, 0.98), rgba(255, 250, 240, 0.92)),
         linear-gradient(135deg, rgba(139, 29, 34, 0.1), rgba(214, 166, 65, 0.14));
-}
-
-.community-hero-grid::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: clamp(0.7rem, 2vw, 1.15rem);
-    width: 4px;
-    background: var(--oc-burgundy);
+    box-shadow: 0 20px 55px rgba(54, 32, 19, 0.08);
 }
 
 .community-kicker {
