@@ -620,7 +620,9 @@ class PanelQuickListingForm extends Component
         $user = auth()->user();
 
         if (! $user) {
-            abort(403);
+            throw ValidationException::withMessages([
+                'auth' => 'Please sign in again before creating the listing.',
+            ]);
         }
 
         $payload = [
@@ -640,16 +642,27 @@ class PanelQuickListingForm extends Component
         $listing = Listing::createFromFrontend($payload, $user->getKey());
         $mediaDisk = $this->frontendMediaDisk();
 
+        $this->attachUploadedMedia($listing, $mediaDisk);
+
+        return $listing;
+    }
+
+    private function attachUploadedMedia(Listing $listing, string $mediaDisk): void
+    {
         foreach ($this->photos as $photo) {
             if (! $photo instanceof TemporaryUploadedFile) {
                 continue;
             }
 
-            $listing->attachListingImage(
-                $photo->getRealPath(),
-                $photo->getClientOriginalName(),
-                $mediaDisk
-            );
+            try {
+                $listing->attachListingImage(
+                    (string) $photo->getRealPath(),
+                    $photo->getClientOriginalName(),
+                    $mediaDisk
+                );
+            } catch (Throwable $exception) {
+                report($exception);
+            }
         }
 
         foreach ($this->videos as $index => $video) {
@@ -657,14 +670,16 @@ class PanelQuickListingForm extends Component
                 continue;
             }
 
-            Video::createFromTemporaryUpload($listing, $video, [
-                'disk' => $mediaDisk,
-                'sort_order' => $index + 1,
-                'title' => pathinfo($video->getClientOriginalName(), PATHINFO_FILENAME),
-            ]);
+            try {
+                Video::createFromTemporaryUpload($listing, $video, [
+                    'disk' => $mediaDisk,
+                    'sort_order' => $index + 1,
+                    'title' => pathinfo($video->getClientOriginalName(), PATHINFO_FILENAME),
+                ]);
+            } catch (Throwable $exception) {
+                report($exception);
+            }
         }
-
-        return $listing;
     }
 
     private function sanitizedCustomFieldValues(): array
