@@ -8,7 +8,6 @@ RUN apk add --no-cache \
     curl \
     zip \
     unzip \
-    $PHPIZE_DEPS \
     icu-dev \
     libzip-dev \
     libpng-dev \
@@ -17,9 +16,7 @@ RUN apk add --no-cache \
     oniguruma-dev \
     libxml2-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl zip \
-    && pecl install redis \
-    && docker-php-ext-enable redis
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd intl zip
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
