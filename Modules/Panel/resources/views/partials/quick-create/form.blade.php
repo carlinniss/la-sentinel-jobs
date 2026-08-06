@@ -68,7 +68,9 @@
                                 <div class="qc-photo-grid">
                                     @for ($index = 0; $index < $visiblePhotoSlotCount; $index++)
                                         <div class="qc-photo-slot">
-                                            @php($photoUrl = $this->temporaryPhotoUrl($index))
+                                            @php
+                                                $photoUrl = $this->temporaryPhotoUrl($index);
+                                            @endphp
                                             @if ($photoUrl)
                                                 <img src="{{ $photoUrl }}" alt="Uploaded photo {{ $index + 1 }}">
                                                 <button type="button" class="qc-remove" wire:click="removePhoto({{ $index }})">×</button>
@@ -285,7 +287,9 @@
                         <div class="qc-photo-strip">
                             @foreach (array_slice($photos, 0, 4) as $index => $photo)
                                 <div class="qc-photo-slot">
-                                    @php($photoUrl = $this->temporaryPhotoUrl($index))
+                                    @php
+                                        $photoUrl = $this->temporaryPhotoUrl($index);
+                                    @endphp
                                     @if ($photoUrl)
                                         <img src="{{ $photoUrl }}" alt="Selected photo {{ $index + 1 }}">
                                     @else
@@ -441,7 +445,9 @@
                         <div class="qc-stack">
                             <div class="qc-review-gallery">
                                 <div class="qc-gallery-main">
-                                    @php($coverPhotoUrl = $this->temporaryPhotoUrl(0))
+                                    @php
+                                        $coverPhotoUrl = $this->temporaryPhotoUrl(0);
+                                    @endphp
                                     @if ($coverPhotoUrl)
                                         <img src="{{ $coverPhotoUrl }}" alt="Preview cover photo">
                                     @else
@@ -452,7 +458,9 @@
                                 <div class="qc-review-thumbs">
                                     @foreach (array_slice($photos, 0, 4) as $index => $photo)
                                         <div class="qc-review-thumb">
-                                            @php($photoUrl = $this->temporaryPhotoUrl($index))
+                                            @php
+                                                $photoUrl = $this->temporaryPhotoUrl($index);
+                                            @endphp
                                             @if ($photoUrl)
                                                 <img src="{{ $photoUrl }}" alt="Preview photo">
                                             @else
