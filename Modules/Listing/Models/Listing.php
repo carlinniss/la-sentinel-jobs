@@ -693,13 +693,15 @@ class Listing extends Model implements HasMedia
             'longitude',
             'custom_fields',
             'expires_at',
+            'status',
         ]);
 
         $payload['user_id'] = $userId;
         $payload['currency'] = ListingPanelHelper::normalizeCurrency($data['currency'] ?? null);
         $payload['slug'] = $slug;
 
-        $listing = static::query()->make($payload);
+        $listing = new static();
+        $listing->forceFill($payload);
         $listing->save();
 
         return $listing;
