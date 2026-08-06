@@ -29,28 +29,81 @@
 
             @if ($currentStep === 1)
                 <div class="qc-body">
-                    <div class="qc-stack" x-data="{ photoUploadError: '' }">
+                    <div
+                        class="qc-stack"
+                        x-data="{
+                            photoUploadError: '',
+                            selectedPhotoCount: 0,
+                            isUploadingPhotos: false,
+                            photoUploadProgress: 0,
+                            attachSelectedPhotos() {
+                                const files = Array.from(this.$refs.photoInput.files || []);
+
+                                if (files.length === 0) {
+                                    this.photoUploadError = 'Choose one or more photos first.';
+                                    return;
+                                }
+
+                                this.photoUploadError = '';
+                                this.isUploadingPhotos = true;
+                                this.photoUploadProgress = 0;
+
+                                this.$wire.uploadMultiple(
+                                    'photos',
+                                    files,
+                                    () => {
+                                        this.isUploadingPhotos = false;
+                                        this.selectedPhotoCount = 0;
+                                        this.photoUploadProgress = 100;
+                                        this.$refs.photoInput.value = '';
+                                    },
+                                    () => {
+                                        this.isUploadingPhotos = false;
+                                        this.photoUploadError = 'Photo upload failed. Try one JPG or PNG under 10 MB, or use Skip photos for now.';
+                                    },
+                                    (event) => {
+                                        this.photoUploadProgress = event.detail?.progress || 0;
+                                    }
+                                );
+                            },
+                        }"
+                    >
                         <div class="qc-upload-zone">
                             <span class="qc-upload-icon">
                                 <x-heroicon-o-photo class="h-7 w-7" />
                             </span>
                             <div class="qc-upload-title">Add photos</div>
-                            <p class="qc-copy">Optional. Continue without photos if an upload takes too long.</p>
-                            <label class="qc-primary-pill cursor-pointer" for="quick-listing-photo-input">Select photos</label>
+                            <p class="qc-copy">Optional. Choose photos, then attach them before continuing.</p>
+                            <label class="qc-primary-pill cursor-pointer" for="quick-listing-photo-input">Choose photos</label>
                         </div>
 
                         <input
                             id="quick-listing-photo-input"
+                            x-ref="photoInput"
                             type="file"
-                            wire:model="photos"
                             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/bmp"
                             multiple
                             class="qc-file-input"
-                            x-on:livewire-upload-start="photoUploadError = ''"
-                            x-on:livewire-upload-error="photoUploadError = 'Photo upload failed. Try one JPG or PNG under 10 MB, or use Skip photos for now.'"
+                            x-on:change="selectedPhotoCount = $event.target.files.length; photoUploadError = ''"
                         >
 
-                        <div wire:loading wire:target="photos" class="qc-empty">Uploading photos...</div>
+                        <div class="qc-upload-actions" x-show="selectedPhotoCount > 0 || isUploadingPhotos" x-cloak>
+                            <div class="qc-selected-files">
+                                <strong x-text="selectedPhotoCount"></strong>
+                                <span x-text="selectedPhotoCount === 1 ? 'photo selected' : 'photos selected'"></span>
+                            </div>
+                            <button
+                                type="button"
+                                class="qc-button qc-upload-action-button"
+                                x-on:click="attachSelectedPhotos"
+                                x-bind:disabled="isUploadingPhotos"
+                            >
+                                <span x-show="! isUploadingPhotos">Attach selected photos</span>
+                                <span x-show="isUploadingPhotos">Uploading <span x-text="photoUploadProgress"></span>%</span>
+                            </button>
+                        </div>
+
+                        <div x-show="isUploadingPhotos" x-cloak class="qc-empty">Uploading photos...</div>
                         <div x-cloak x-show="photoUploadError" x-text="photoUploadError" class="qc-error"></div>
 
                         @error('photos')

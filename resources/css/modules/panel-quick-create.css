@@ -130,6 +130,50 @@
     cursor: pointer;
 }
 
+.qc-upload-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    border: 1px solid var(--qc-border);
+    border-radius: 1.25rem;
+    background: #fff;
+    padding: 0.85rem;
+}
+
+.qc-selected-files {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--qc-text);
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.qc-selected-files strong {
+    display: inline-flex;
+    min-width: 1.75rem;
+    height: 1.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--qc-blue);
+    color: #fff;
+    font-size: 0.8rem;
+}
+
+.qc-upload-action-button {
+    min-height: 44px;
+    padding: 0 1.1rem;
+    font-size: 0.9rem;
+}
+
+.qc-upload-action-button:disabled {
+    cursor: wait;
+    opacity: 0.78;
+}
+
 .qc-upload-icon {
     width: 4.25rem;
     height: 4.25rem;
