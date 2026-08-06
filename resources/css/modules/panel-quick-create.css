@@ -109,6 +109,27 @@
     background: #ffffff;
 }
 
+.qc-file-input {
+    width: 100%;
+    border: 1px solid var(--qc-border);
+    border-radius: 1rem;
+    background: #fff;
+    padding: 0.85rem;
+    color: var(--qc-text);
+    font-size: 0.95rem;
+}
+
+.qc-file-input::file-selector-button {
+    margin-right: 0.9rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--qc-blue);
+    color: #fff;
+    padding: 0.7rem 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
 .qc-upload-icon {
     width: 4.25rem;
     height: 4.25rem;

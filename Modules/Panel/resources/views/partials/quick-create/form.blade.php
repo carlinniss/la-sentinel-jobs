@@ -30,14 +30,14 @@
             @if ($currentStep === 1)
                 <div class="qc-body">
                     <div class="qc-stack" x-data="{ photoUploadError: '' }">
-                        <label class="qc-upload-zone" for="quick-listing-photo-input">
+                        <div class="qc-upload-zone">
                             <span class="qc-upload-icon">
                                 <x-heroicon-o-photo class="h-7 w-7" />
                             </span>
                             <div class="qc-upload-title">Add photos</div>
                             <p class="qc-copy">Optional. Continue without photos if an upload takes too long.</p>
-                            <span class="qc-primary-pill">Select photos</span>
-                        </label>
+                            <label class="qc-primary-pill cursor-pointer" for="quick-listing-photo-input">Select photos</label>
+                        </div>
 
                         <input
                             id="quick-listing-photo-input"
@@ -45,7 +45,7 @@
                             wire:model="photos"
                             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/bmp"
                             multiple
-                            class="hidden"
+                            class="qc-file-input"
                             x-on:livewire-upload-start="photoUploadError = ''"
                             x-on:livewire-upload-error="photoUploadError = 'Photo upload failed. Try a smaller JPG or PNG, or continue without photos for now.'"
                         >
