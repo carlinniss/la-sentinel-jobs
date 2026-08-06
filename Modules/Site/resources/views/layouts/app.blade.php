@@ -105,10 +105,6 @@
                     <span class="brand-text leading-none">Jobs</span>
                 </span>
             </a>
-            <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="hidden items-center gap-2 rounded-full border border-[#d9c08a] bg-white px-3 py-2 text-xs font-extrabold uppercase text-[#7b1a1f] shadow-sm hover:border-[#b99548] hover:text-[#5c1015] md:inline-flex">
-                <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-7 w-auto">
-                <span>Visit LA Sentinel</span>
-            </a>
 
             <div class="flex items-center gap-3">
                 @auth
@@ -145,10 +141,6 @@
                         <span class="brand-copy">
                             <span class="brand-text leading-none">Jobs</span>
                         </span>
-                    </a>
-                    <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="hidden items-center gap-2 rounded-full border border-[#d9c08a] bg-white px-3 py-2 text-xs font-extrabold uppercase text-[#7b1a1f] shadow-sm hover:border-[#b99548] hover:text-[#5c1015] xl:inline-flex">
-                        <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-7 w-auto">
-                        <span>Visit LA Sentinel</span>
                     </a>
                 </div>
 
