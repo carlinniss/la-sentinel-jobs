@@ -143,6 +143,7 @@ class ListingController extends Controller
 
         $listing->loadMissing([
             'user:id,name,email',
+            'user.profile:id,user_id,bio,website,is_verified,city,country',
             'category:id,name,parent_id,slug',
             'category.parent:id,name,parent_id,slug',
             'category.parent.parent:id,name,parent_id,slug',

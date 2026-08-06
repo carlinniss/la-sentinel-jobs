@@ -131,9 +131,10 @@
                     @if($spotlightEmployer !== '')
                     <div class="mb-3 flex items-center gap-2">
                         @if($spotlightIsBmo)
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
-                        @endif
+                        @include('listing::partials.bmo-employer-badge', ['employerName' => $spotlightEmployer])
+                        @else
                         <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $spotlightEmployer }}</span>
+                        @endif
                     </div>
                     @endif
                     <div class="flex items-center justify-between gap-3">
@@ -277,9 +278,10 @@
                     @if($employerName !== '')
                     <div class="mb-3 flex items-center gap-2">
                         @if($isBmoEmployer)
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-7 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
-                        @endif
+                        @include('listing::partials.bmo-employer-badge', ['employerName' => $employerName])
+                        @else
                         <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $employerName }}</span>
+                        @endif
                     </div>
                     @endif
                     <p class="text-xl font-semibold text-[var(--oc-text)]">{{ $priceLabel }}</p>

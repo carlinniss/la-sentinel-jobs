@@ -15,6 +15,17 @@ use Modules\User\App\Support\DemoUserCatalog;
 
 class ListingSeeder extends Seeder
 {
+    private const BMO_EMAIL = 'j@j.com';
+
+    private const BMO_JOB_TITLES = [
+        'Relationship Banker - Community Branch',
+        'Associate Banker - Customer Experience',
+        'Small Business Banking Associate',
+        'Community Banking Specialist',
+        'Client Service Representative',
+        'Branch Operations Associate',
+    ];
+
     private const JOB_TITLES = [
         'clinical' => ['Community Clinic Intake Coordinator', 'Medical Assistant - Family Practice', 'Patient Benefits Navigator'],
         'caregiving' => ['Home Care Aide - South LA', 'Senior Companion Program Lead', 'Residential Support Specialist'],
@@ -147,13 +158,13 @@ class ListingSeeder extends Seeder
         ?string $imagePath
     ): array {
         $location = $this->resolveLocation($index);
-        $title = $this->buildTitle($category, $index);
+        $title = $this->buildTitle($category, $index, $user);
         $slug = 'demo-'.Str::slug($user->email).'-'.$category->slug;
 
         return [
             'slug' => $slug,
             'title' => $title,
-            'description' => $this->buildDescription($title, $location['city'], $index),
+            'description' => $this->buildDescription($title, $location['city'], $index, $user),
             'price' => $this->priceForIndex($index),
             'city' => $location['city'],
             'country' => $location['country'],
@@ -173,8 +184,12 @@ class ListingSeeder extends Seeder
         ];
     }
 
-    private function buildTitle(Category $category, int $index): string
+    private function buildTitle(Category $category, int $index, User $user): string
     {
+        if ($this->isBmoUser($user)) {
+            return self::BMO_JOB_TITLES[$index % count(self::BMO_JOB_TITLES)];
+        }
+
         $fragment = $this->jobTypeSlug($category);
         $titles = self::JOB_TITLES[$fragment] ?? [
             'Community Hiring Opportunity',
@@ -197,8 +212,16 @@ class ListingSeeder extends Seeder
         return Str::after($categorySlug, 'jobs-');
     }
 
-    private function buildDescription(string $title, string $city, int $index): string
+    private function buildDescription(string $title, string $city, int $index, User $user): string
     {
+        if ($this->isBmoUser($user)) {
+            return sprintf(
+                'BMO Community Banking Careers is hiring for %s in %s. BMO is a top ten North American bank serving 13 million customers, founded in 1817 and guided by its purpose to Boldly Grow the Good in business and life. This demo posting highlights customer-facing banking work, career development, competitive rewards and benefits, wellness support, inclusive teams, and community impact through financial education, economic mobility, and volunteer engagement.',
+                $title,
+                $city
+            );
+        }
+
         $employer = self::EMPLOYERS[$index % count(self::EMPLOYERS)];
         $schedule = ['full-time', 'part-time', 'hybrid', 'weekend-friendly', 'contract-to-hire'][$index % 5];
         $benefit = ['paid training', 'health benefits', 'transit stipend', 'career coaching', 'bilingual candidates encouraged'][$index % 5];
@@ -238,6 +261,11 @@ class ListingSeeder extends Seeder
         $step = (int) floor($index / count($basePrices)) * 2;
 
         return $base + $step;
+    }
+
+    private function isBmoUser(User $user): bool
+    {
+        return strcasecmp((string) $user->email, self::BMO_EMAIL) === 0;
     }
 
     private function upsertListing(array $data, Category $category, User $user): Listing

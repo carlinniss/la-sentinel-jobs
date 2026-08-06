@@ -142,12 +142,19 @@
                         $detailEmployerName = trim((string) $listing->user->name);
                         $detailIsBmoEmployer = str_contains(strtolower($detailEmployerName), 'bmo');
                     @endphp
-                    <div class="mb-3 flex items-center gap-2">
-                        @if($detailIsBmoEmployer)
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-8 w-auto rounded-md border border-slate-200 bg-white px-1.5 py-1">
-                        @endif
-                        <p class="text-sm text-[var(--oc-text)]"><span class="text-[var(--oc-muted)]">Employer:</span> {{ $detailEmployerName }}</p>
-                    </div>
+                    @if($detailIsBmoEmployer)
+                        <div class="mb-4">
+                            @include('listing::partials.bmo-employer-badge', [
+                                'employerName' => $detailEmployerName,
+                                'variant' => 'detail',
+                                'profile' => $listing->user?->profile,
+                            ])
+                        </div>
+                    @else
+                        <div class="mb-3 flex items-center gap-2">
+                            <p class="text-sm text-[var(--oc-text)]"><span class="text-[var(--oc-muted)]">Employer:</span> {{ $detailEmployerName }}</p>
+                        </div>
+                    @endif
                     @endif
 
                     @auth

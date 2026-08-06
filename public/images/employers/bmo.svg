@@ -1,9 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 120" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 120" role="img" aria-labelledby="title desc">
   <title id="title">BMO</title>
-  <desc id="desc">BMO employer logo badge for LA Sentinel Jobs demo listings.</desc>
-  <rect width="360" height="120" rx="18" fill="#ffffff"/>
-  <circle cx="61" cy="60" r="34" fill="#e31837"/>
-  <path d="M61 36 37 78h48L61 36z" fill="#ffffff"/>
-  <path d="M61 54 52 70h18L61 54z" fill="#e31837"/>
-  <text x="118" y="78" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="800" letter-spacing="0" fill="#005eb8">BMO</text>
+  <desc id="desc">BMO employer logo for LA Sentinel Jobs demo listings.</desc>
+  <g fill="none" fill-rule="evenodd">
+    <circle cx="62" cy="60" r="42" fill="#E31837"/>
+    <path fill="#FFF" d="M62 24 28 84h68L62 24Zm0 21 17 30H45l17-30Z"/>
+    <path fill="#E31837" d="M62 54 51.5 72h21L62 54Z"/>
+    <path fill="#005EB8" d="M128 82V38h15.6l16 25.8L175.4 38H191v44h-13.4V57.2L164 78.4h-8.8l-13.8-21.2V82H128Zm74.8 0V38h32.6c9.4 0 16.1 5.1 16.1 12.4 0 4.7-2.9 8.4-7.5 10.1 5.8 1.5 9.4 5.4 9.4 10.3 0 7.1-6.6 11.2-17.7 11.2h-32.9Zm14.2-26.7h15.7c3 0 4.8-1.4 4.8-3.8s-1.8-3.7-4.8-3.7H217v7.5Zm0 16.9h17.2c3.2 0 5-1.4 5-3.9s-1.8-3.9-5-3.9H217v7.8ZM285.6 83c-15.9 0-27.4-9.8-27.4-23s11.5-23 27.4-23 27.4 9.8 27.4 23-11.5 23-27.4 23Zm0-10.9c7.8 0 13.4-5 13.4-12.1s-5.6-12.1-13.4-12.1-13.4 5-13.4 12.1 5.6 12.1 13.4 12.1Z"/>
+  </g>
 </svg>
