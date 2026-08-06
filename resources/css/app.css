@@ -123,7 +123,9 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .oc-brand-image {
-    height: 1.8rem;
+    height: 2.35rem;
+    max-width: 10rem;
+    object-fit: contain;
 }
 
 .oc-topbar .oc-brand {

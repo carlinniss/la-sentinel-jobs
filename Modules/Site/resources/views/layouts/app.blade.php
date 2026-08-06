@@ -1,7 +1,7 @@
 @php
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
     $siteDescription = $generalSettings['site_description'] ?? 'The marketplace for buying and selling everything.';
-    $siteLogoUrl = $generalSettings['site_logo_url'] ?? null;
+    $siteLogoUrl = $generalSettings['site_logo_url'] ?? asset('images/la-sentinel/logo.png');
     $linkedinUrl = $generalSettings['linkedin_url'] ?? null;
     $instagramUrl = $generalSettings['instagram_url'] ?? null;
     $whatsappNumber = $generalSettings['whatsapp'] ?? null;

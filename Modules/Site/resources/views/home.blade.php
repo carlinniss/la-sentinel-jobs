@@ -4,6 +4,8 @@
     $menuCategories = $categories->take(8);
     $heroListing = $featuredListings->first() ?? $recentListings->first();
     $heroImage = $heroListing?->primaryImageData('gallery');
+    $heroGraphicUrl = asset('images/la-sentinel/jobs-hero.png');
+    $featureGraphicUrl = asset('images/la-sentinel/feature-icons.png');
     $listingCards = $recentListings->take(6);
     $demoEnabled = (bool) config('demo.enabled');
     $prepareDemoRoute = $demoEnabled ? route('demo.prepare') : null;
@@ -105,20 +107,12 @@
             </div>
         </div>
         <div class="hidden lg:block rounded-[28px] overflow-hidden border border-[var(--oc-border)] bg-[var(--oc-surface)] aspect-[4/3]">
-            @if($heroImage)
-            @include('listing::partials.responsive-image', [
-                'image' => $heroImage,
-                'alt' => $heroListing?->title,
-                'class' => 'w-full h-full object-cover',
-                'loading' => 'eager',
-                'fetchpriority' => 'high',
-            ])
-            @else
-            <div class="w-full h-full grid place-items-center text-[var(--oc-muted)] text-sm font-medium px-6 text-center">
-                Featured listings will appear here.
-            </div>
-            @endif
+            <img src="{{ $heroGraphicUrl }}" alt="LA Sentinel Jobs" class="w-full h-full object-cover object-center" loading="eager" fetchpriority="high">
         </div>
+    </section>
+
+    <section class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] overflow-hidden">
+        <img src="{{ $featureGraphicUrl }}" alt="Job listings, employer profiles, career resources, financial wellness, and AI job matching" class="w-full h-auto object-cover">
     </section>
 
     <section>
