@@ -19,6 +19,11 @@ services:
       CACHE_STORE: database
       SESSION_DRIVER: database
       QUEUE_CONNECTION: database
+      BROADCAST_CONNECTION: "null"
+      FILESYSTEM_DISK: public
+      MEDIA_DISK: public
+      LOCAL_MEDIA_DISK: public
+      LIVEWIRE_TEMPORARY_FILE_UPLOAD_DISK: local
     volumes:
       - .:/workspaces/la-sentinel-jobs
       - /workspaces/la-sentinel-jobs/vendor
