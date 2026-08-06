@@ -1,7 +1,7 @@
 @php
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
     $siteDescription = $generalSettings['site_description'] ?? 'The marketplace for buying and selling everything.';
-    $siteLogoUrl = $generalSettings['site_logo_url'] ?? asset('images/la-sentinel/logo.png');
+    $siteLogoUrl = $generalSettings['site_logo_url'] ?? null;
     $linkedinUrl = $generalSettings['linkedin_url'] ?? null;
     $instagramUrl = $generalSettings['instagram_url'] ?? null;
     $whatsappNumber = $generalSettings['whatsapp'] ?? null;
@@ -335,6 +335,7 @@
                         </div>
                     </div>
 
+                    @if(count($availableLocales) > 1)
                     <div class="oc-mobile-menu-section">
                         <p class="oc-mobile-menu-label">Languages</p>
                         <div class="oc-mobile-menu-languages">
@@ -345,6 +346,7 @@
                             @endforeach
                         </div>
                     </div>
+                    @endif
 
                     @auth
                     <form method="POST" action="{{ $logoutRoute }}" class="oc-mobile-menu-logout">
@@ -442,12 +444,14 @@
                         <li>No social links added yet.</li>
                         @endif
                     </ul>
+                    @if(count($availableLocales) > 1)
                     <h4 class="text-slate-900 font-medium mb-3">Languages</h4>
                     <div class="flex flex-wrap gap-2">
                         @foreach($availableLocales as $locale)
                         <a href="{{ route('lang.switch', $locale) }}" class="text-xs {{ app()->getLocale() === $locale ? 'text-slate-900' : 'hover:text-slate-900' }}">{{ strtoupper($locale) }}</a>
                         @endforeach
                     </div>
+                    @endif
                 </div>
             </div>
             <div class="border-t border-slate-300 mt-6 md:mt-8 pt-6 md:pt-8 text-center text-sm text-slate-500">

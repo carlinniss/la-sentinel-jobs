@@ -17,7 +17,7 @@ final class HomeSlideDefaults
                 'subtitle' => 'A focused jobs board for Sentinel readers, local businesses, nonprofits, schools, healthcare teams, and public agencies.',
                 'primary_button_text' => 'Browse Jobs',
                 'secondary_button_text' => 'Post a Job',
-                'image_path' => 'images/la-sentinel/jobs-hero.png',
+                'image_path' => null,
             ],
             [
                 'badge' => 'Local Hiring Categories',
@@ -25,7 +25,7 @@ final class HomeSlideDefaults
                 'subtitle' => 'Applicants can save searches, message hiring teams, and compare pay, schedule, location, and benefits in one clean flow.',
                 'primary_button_text' => 'See Categories',
                 'secondary_button_text' => 'Create Profile',
-                'image_path' => 'images/la-sentinel/feature-icons.png',
+                'image_path' => null,
             ],
             [
                 'badge' => 'Demo Ready',
@@ -33,7 +33,7 @@ final class HomeSlideDefaults
                 'subtitle' => 'Seeded listings, saved searches, inbox conversations, and admin workflows are ready for a live walkthrough.',
                 'primary_button_text' => 'View Jobs',
                 'secondary_button_text' => 'Open Dashboard',
-                'image_path' => 'images/la-sentinel/jobs-promo.png',
+                'image_path' => null,
             ],
         ];
     }

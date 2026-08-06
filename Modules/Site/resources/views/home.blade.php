@@ -2,10 +2,9 @@
 @section('content')
 @php
     $menuCategories = $categories->take(8);
-    $heroListing = $featuredListings->first() ?? $recentListings->first();
-    $heroImage = $heroListing?->primaryImageData('gallery');
-    $heroGraphicUrl = asset('images/la-sentinel/jobs-hero.png');
-    $featureGraphicUrl = asset('images/la-sentinel/feature-icons.png');
+    $spotlightListings = $featuredListings->isNotEmpty()
+        ? $featuredListings->take(4)
+        : $recentListings->take(4);
     $listingCards = $recentListings->take(6);
     $demoEnabled = (bool) config('demo.enabled');
     $prepareDemoRoute = $demoEnabled ? route('demo.prepare') : null;
@@ -56,7 +55,7 @@
     <form method="POST" action="{{ $prepareDemoRoute }}" data-demo-prepare-form data-turnstile-required="{{ $prepareDemoTurnstileRequired ? '1' : '0' }}" class="w-full max-w-xl rounded-[32px] border border-slate-200 bg-white p-8 md:p-10">
         @csrf
         <input type="hidden" name="redirect_to" value="{{ $prepareDemoRedirect }}">
-        <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-950">Prepare Demo</h1>
+        <h1 class="text-3xl md:text-5xl font-extrabold text-slate-950">Prepare Demo</h1>
         <p class="mt-5 text-base md:text-lg leading-8 text-slate-600">
             Launch a private seeded marketplace for this browser. Listings, favorites, inbox data, and admin access are prepared automatically.
         </p>
@@ -88,7 +87,7 @@
 <div class="max-w-[1120px] mx-auto px-4 py-8 md:py-14 space-y-10 md:space-y-16">
     <section class="grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-center">
         <div>
-            <p class="text-xs uppercase tracking-[0.22em] text-[var(--oc-muted)] font-semibold mb-3">{{ $heroBadge }}</p>
+            <p class="text-xs uppercase text-[var(--oc-muted)] font-semibold mb-3">{{ $heroBadge }}</p>
             <h1 class="text-3xl md:text-5xl leading-[1.1] font-semibold text-[var(--oc-text)] max-w-xl">{{ $heroTitle }}</h1>
             <p class="mt-4 text-[var(--oc-muted)] text-base md:text-lg max-w-xl leading-7">{{ $heroSubtitle }}</p>
             <div class="mt-8 flex flex-wrap items-center gap-3">
@@ -106,13 +105,92 @@
                 @endauth
             </div>
         </div>
-        <div class="hidden lg:block rounded-[28px] overflow-hidden border border-[var(--oc-border)] bg-[var(--oc-surface)] aspect-[4/3]">
-            <img src="{{ $heroGraphicUrl }}" alt="LA Sentinel Jobs" class="w-full h-full object-cover object-center" loading="eager" fetchpriority="high">
+        <div class="rounded-[28px] border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5 shadow-[0_18px_45px_rgba(29,29,31,0.08)]">
+            <div class="flex items-center justify-between gap-4 border-b border-[var(--oc-border)] pb-4">
+                <div>
+                    <p class="text-xs uppercase text-[#8b1d22] font-bold">Now Hiring</p>
+                    <h2 class="mt-1 text-2xl font-semibold text-[var(--oc-text)]">LA Sentinel Jobs Board</h2>
+                </div>
+                <div class="rounded-2xl bg-[#8b1d22] px-4 py-3 text-right text-white">
+                    <p class="text-2xl font-semibold leading-none">{{ number_format($listingCount ?? $spotlightListings->count()) }}</p>
+                    <p class="mt-1 text-[11px] uppercase text-white/75">Open roles</p>
+                </div>
+            </div>
+
+            <div class="mt-5 space-y-4">
+                @forelse($spotlightListings->take(3) as $spotlightListing)
+                @php
+                    $spotlightCategory = $spotlightListing->category?->parent?->name ?? $spotlightListing->category?->name ?? 'Local Role';
+                    $spotlightLocation = trim(collect([$spotlightListing->city, $spotlightListing->country])->filter()->join(', '));
+                @endphp
+                <a href="{{ route('listings.show', $spotlightListing) }}" class="block border-b border-slate-100 pb-4 last:border-b-0 last:pb-0">
+                    <div class="flex items-center justify-between gap-3">
+                        <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">{{ $spotlightCategory }}</span>
+                        <span class="text-sm font-semibold text-[var(--oc-text)]">{{ $formatCompensation($spotlightListing) }}</span>
+                    </div>
+                    <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">{{ $spotlightListing->title }}</h3>
+                    <p class="mt-1 text-sm text-[var(--oc-muted)]">{{ $spotlightLocation !== '' ? $spotlightLocation : 'Los Angeles' }}</p>
+                </a>
+                @empty
+                <div class="space-y-4">
+                    <div class="border-b border-slate-100 pb-4">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">Healthcare</span>
+                            <span class="text-sm font-semibold text-[var(--oc-text)]">$28/hr</span>
+                        </div>
+                        <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">Community Clinic Intake Coordinator</h3>
+                        <p class="mt-1 text-sm text-[var(--oc-muted)]">Crenshaw, United States</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="rounded-full bg-[#f5ead8] px-3 py-1 text-xs font-bold text-[#7b1a1f]">Education</span>
+                            <span class="text-sm font-semibold text-[var(--oc-text)]">$52,000/yr</span>
+                        </div>
+                        <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">After-School Literacy Instructor</h3>
+                        <p class="mt-1 text-sm text-[var(--oc-muted)]">Leimert Park, United States</p>
+                    </div>
+                </div>
+                @endforelse
+            </div>
+
+            <div class="mt-6 grid grid-cols-3 gap-3 text-center">
+                <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4">
+                    <p class="text-xl font-semibold text-[#8b1d22]">Local</p>
+                    <p class="mt-1 text-xs font-medium text-[var(--oc-muted)]">employers</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4">
+                    <p class="text-xl font-semibold text-[#8b1d22]">Career</p>
+                    <p class="mt-1 text-xs font-medium text-[var(--oc-muted)]">resources</p>
+                </div>
+                <div class="rounded-2xl border border-slate-200 bg-slate-50 px-3 py-4">
+                    <p class="text-xl font-semibold text-[#8b1d22]">Fast</p>
+                    <p class="mt-1 text-xs font-medium text-[var(--oc-muted)]">messaging</p>
+                </div>
+            </div>
         </div>
     </section>
 
-    <section class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] overflow-hidden">
-        <img src="{{ $featureGraphicUrl }}" alt="Job listings, employer profiles, career resources, financial wellness, and AI job matching" class="w-full h-auto object-cover">
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="text-xs uppercase text-[#8b1d22] font-bold">Jobs</p>
+            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Fresh local listings</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Roles across healthcare, education, trades, media, hospitality, public service, and technology.</p>
+        </article>
+        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="text-xs uppercase text-[#8b1d22] font-bold">Employers</p>
+            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Profiles that build trust</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Hiring teams can show mission, pay, benefits, location, and next steps before applicants apply.</p>
+        </article>
+        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="text-xs uppercase text-[#8b1d22] font-bold">Resources</p>
+            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Career support</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A natural home for resume help, hiring events, training pathways, and community workforce programs.</p>
+        </article>
+        <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
+            <p class="text-xs uppercase text-[#8b1d22] font-bold">Wellness</p>
+            <h2 class="mt-3 text-xl font-semibold text-[var(--oc-text)]">Better work, better future</h2>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A demo-ready path from finding work to building stability for families and communities.</p>
+        </article>
     </section>
 
     <section>
@@ -182,7 +260,7 @@
                     </div>
                 </div>
                 <div class="p-4">
-                    <p class="text-xl font-semibold tracking-tight text-[var(--oc-text)]">{{ $priceLabel }}</p>
+                    <p class="text-xl font-semibold text-[var(--oc-text)]">{{ $priceLabel }}</p>
                     <h3 class="text-sm font-medium text-[var(--oc-text)] mt-1 truncate">{{ $listing->title }}</h3>
                     <div class="mt-3 flex items-center justify-between gap-3 text-xs text-[var(--oc-muted)]">
                         <span class="truncate">{{ $locationLabel !== '' ? $locationLabel : 'Location not specified' }}</span>

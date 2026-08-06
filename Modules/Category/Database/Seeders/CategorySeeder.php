@@ -13,14 +13,14 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Healthcare', 'slug' => 'jobs-healthcare', 'icon' => 'img/category/education.png', 'children' => ['Clinical', 'Caregiving', 'Operations']],
-            ['name' => 'Education', 'slug' => 'jobs-education', 'icon' => 'img/category/education.png', 'children' => ['Teaching', 'Youth Programs', 'Administration']],
-            ['name' => 'Skilled Trades', 'slug' => 'jobs-skilled-trades', 'icon' => 'img/category/home_tools.png', 'children' => ['Construction', 'Electrical', 'Transportation']],
-            ['name' => 'Media & Creative', 'slug' => 'jobs-media-creative', 'icon' => 'img/category/electronics.png', 'children' => ['Editorial', 'Production', 'Marketing']],
-            ['name' => 'Public Sector', 'slug' => 'jobs-public-sector', 'icon' => 'img/category/home_garden.png', 'children' => ['City Services', 'Public Safety', 'Community Outreach']],
-            ['name' => 'Nonprofit', 'slug' => 'jobs-nonprofit', 'icon' => 'img/category/sports.png', 'children' => ['Case Management', 'Development', 'Program Coordination']],
-            ['name' => 'Hospitality', 'slug' => 'jobs-hospitality', 'icon' => 'img/category/home_garden.png', 'children' => ['Food Service', 'Events', 'Guest Services']],
-            ['name' => 'Technology', 'slug' => 'jobs-technology', 'icon' => 'img/category/electronics.png', 'children' => ['IT Support', 'Data', 'Product']],
+            ['name' => 'Healthcare', 'slug' => 'jobs-healthcare', 'icon' => null, 'children' => ['Clinical', 'Caregiving', 'Operations']],
+            ['name' => 'Education', 'slug' => 'jobs-education', 'icon' => null, 'children' => ['Teaching', 'Youth Programs', 'Administration']],
+            ['name' => 'Skilled Trades', 'slug' => 'jobs-skilled-trades', 'icon' => null, 'children' => ['Construction', 'Electrical', 'Transportation']],
+            ['name' => 'Media & Creative', 'slug' => 'jobs-media-creative', 'icon' => null, 'children' => ['Editorial', 'Production', 'Marketing']],
+            ['name' => 'Public Sector', 'slug' => 'jobs-public-sector', 'icon' => null, 'children' => ['City Services', 'Public Safety', 'Community Outreach']],
+            ['name' => 'Nonprofit', 'slug' => 'jobs-nonprofit', 'icon' => null, 'children' => ['Case Management', 'Development', 'Program Coordination']],
+            ['name' => 'Hospitality', 'slug' => 'jobs-hospitality', 'icon' => null, 'children' => ['Food Service', 'Events', 'Guest Services']],
+            ['name' => 'Technology', 'slug' => 'jobs-technology', 'icon' => null, 'children' => ['IT Support', 'Data', 'Product']],
         ];
 
         foreach ($categories as $index => $data) {

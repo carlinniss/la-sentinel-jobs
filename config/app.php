@@ -10,7 +10,7 @@ return [
     'timezone' => 'UTC',
     'locale' => env('APP_LOCALE', 'en'),
 
-    'available_locales' => ['en', 'tr', 'ar', 'zh', 'es', 'fr', 'de', 'pt', 'ru', 'ja'],
+    'available_locales' => ['en'],
 
     'currencies' => ['USD'],
 
