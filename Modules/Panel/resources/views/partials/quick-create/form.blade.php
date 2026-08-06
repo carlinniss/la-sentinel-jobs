@@ -47,7 +47,7 @@
                             multiple
                             class="qc-file-input"
                             x-on:livewire-upload-start="photoUploadError = ''"
-                            x-on:livewire-upload-error="photoUploadError = 'Photo upload failed. Try a smaller JPG or PNG, or continue without photos for now.'"
+                            x-on:livewire-upload-error="photoUploadError = 'Photo upload failed. Try one JPG or PNG under 10 MB, or use Skip photos for now.'"
                         >
 
                         <div wire:loading wire:target="photos" class="qc-empty">Uploading photos...</div>
@@ -148,7 +148,14 @@
                     </div>
                 </div>
 
-                <div class="qc-footer is-single">
+                <div class="qc-footer">
+                    <button
+                        type="button"
+                        class="qc-button-secondary"
+                        wire:click="skipMediaStep"
+                    >
+                        Skip photos
+                    </button>
                     <button
                         type="button"
                         class="qc-button"

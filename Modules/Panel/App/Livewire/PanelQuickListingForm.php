@@ -112,7 +112,7 @@ class PanelQuickListingForm extends Component
 
     public function updatedPhotos(): void
     {
-        $this->validatePhotos();
+        $this->resetErrorBag(['photos', 'photos.*']);
     }
 
     public function updatedVideos(): void
@@ -143,6 +143,20 @@ class PanelQuickListingForm extends Component
 
         unset($this->videos[$index]);
         $this->videos = array_values($this->videos);
+    }
+
+    public function skipMediaStep(): void
+    {
+        $this->photos = [];
+        $this->videos = [];
+        $this->detectedCategoryId = null;
+        $this->detectedConfidence = null;
+        $this->detectedReason = null;
+        $this->detectedError = null;
+        $this->detectedAlternatives = [];
+        $this->resetErrorBag(['photos', 'photos.*', 'videos', 'videos.*']);
+        $this->publishError = null;
+        $this->currentStep = 2;
     }
 
     public function goToStep(int $step): void
