@@ -2,6 +2,7 @@
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
     $siteDescription = $generalSettings['site_description'] ?? 'A local hiring platform connecting Los Angeles employers with Sentinel readers and community talent.';
     $siteLogoUrl = $generalSettings['site_logo_url'] ?? asset('images/la-sentinel/logo.webp');
+    $sentinelUrl = 'https://lasentinel.net';
     $linkedinUrl = $generalSettings['linkedin_url'] ?? null;
     $instagramUrl = $generalSettings['instagram_url'] ?? null;
     $whatsappNumber = $generalSettings['whatsapp'] ?? null;
@@ -102,8 +103,14 @@
                 <img src="{{ $siteLogoUrl }}" alt="Los Angeles Sentinel" class="oc-brand-image w-auto">
                 <span class="brand-copy">
                     <span class="brand-text leading-none">Jobs</span>
-                    <span class="brand-subtext">Bakewell Media</span>
+                    <span class="brand-partner-logo" aria-label="Bakewell Media">
+                        <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media">
+                    </span>
                 </span>
+            </a>
+            <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="hidden items-center gap-2 rounded-full border border-[#d9c08a] bg-white px-3 py-2 text-xs font-extrabold uppercase text-[#7b1a1f] shadow-sm hover:border-[#b99548] hover:text-[#5c1015] md:inline-flex">
+                <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-7 w-auto">
+                <span>Visit LA Sentinel</span>
             </a>
 
             <div class="flex items-center gap-3">
@@ -140,8 +147,14 @@
                         <img src="{{ $siteLogoUrl }}" alt="Los Angeles Sentinel" class="oc-brand-image w-auto">
                         <span class="brand-copy">
                             <span class="brand-text leading-none">Jobs</span>
-                            <span class="brand-subtext">Bakewell Media</span>
+                            <span class="brand-partner-logo" aria-label="Bakewell Media">
+                                <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media">
+                            </span>
                         </span>
+                    </a>
+                    <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="hidden items-center gap-2 rounded-full border border-[#d9c08a] bg-white px-3 py-2 text-xs font-extrabold uppercase text-[#7b1a1f] shadow-sm hover:border-[#b99548] hover:text-[#5c1015] xl:inline-flex">
+                        <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-7 w-auto">
+                        <span>Visit LA Sentinel</span>
                     </a>
                 </div>
 
@@ -280,6 +293,11 @@
                         <a href="{{ $panelCreateRoute }}" class="oc-mobile-menu-primary oc-mobile-menu-primary-strong">{{ __('site::messages.sell') }}</a>
                     </div>
 
+                    <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="mx-4 mb-4 flex items-center gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-3 text-sm font-extrabold text-[#7b1a1f]">
+                        <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-10 w-auto">
+                        <span>Visit LA Sentinel</span>
+                    </a>
+
                     <div class="oc-mobile-menu-section">
                         <p class="oc-mobile-menu-label">{{ __('site::messages.browse') }}</p>
                         <div class="oc-mobile-menu-list">
@@ -408,9 +426,17 @@
         <div class="max-w-[1320px] mx-auto px-4 py-8 md:py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
                 <div>
+                    <div class="mb-4 flex flex-wrap items-center gap-3">
+                        <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="inline-flex rounded-2xl border border-[#d9c08a] bg-white px-4 py-3 shadow-sm hover:border-[#b99548]">
+                            <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-14 w-auto">
+                        </a>
+                        <span class="inline-flex rounded-full bg-black p-1.5 shadow-sm">
+                            <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media" class="h-16 w-16 rounded-full object-contain">
+                        </span>
+                    </div>
                     <h3 class="text-slate-900 font-semibold text-lg mb-3">{{ $siteName }}</h3>
                     <p class="text-sm text-slate-500 leading-relaxed">{{ $siteDescription }}</p>
-                    <p class="mt-3 text-xs font-semibold text-slate-500">A Bakewell Media platform.</p>
+                    <p class="mt-3 text-xs font-semibold text-slate-500">A Bakewell Media platform published with the Los Angeles Sentinel.</p>
                 </div>
                 <div>
                     <h4 class="text-slate-900 font-medium mb-4">Quick Links</h4>
@@ -418,6 +444,7 @@
                         <li><a href="{{ route('home') }}" class="hover:text-slate-900">Home</a></li>
                         <li><a href="{{ route('categories.index') }}" class="hover:text-slate-900">Categories</a></li>
                         <li><a href="{{ route('listings.index') }}" class="hover:text-slate-900">All Jobs</a></li>
+                        <li><a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="font-semibold text-[#7b1a1f] hover:text-[#5c1015]">LA Sentinel</a></li>
                     </ul>
                 </div>
                 <div>
@@ -439,9 +466,7 @@
                         @if($whatsappUrl)
                         <li><a href="{{ $whatsappUrl }}" target="_blank" rel="noopener" class="hover:text-slate-900">WhatsApp</a></li>
                         @endif
-                        @if(!$linkedinUrl && !$instagramUrl && !$whatsappUrl)
-                        <li>No social links added yet.</li>
-                        @endif
+                        <li><a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="font-semibold text-[#7b1a1f] hover:text-[#5c1015]">Visit lasentinel.net</a></li>
                     </ul>
                     @if(count($availableLocales) > 1)
                     <h4 class="text-slate-900 font-medium mb-3">Languages</h4>

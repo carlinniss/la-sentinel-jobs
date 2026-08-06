@@ -29,8 +29,24 @@
     $galleryImages = collect($gallery ?? []);
     $mainImage = $galleryImages->first();
     $breadcrumbs = collect($breadcrumbCategories ?? []);
+    $sentinelUrl = 'https://lasentinel.net';
 @endphp
 <div class="max-w-[1120px] mx-auto px-4 py-8">
+    <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="flex items-center gap-3">
+            <span class="rounded-xl bg-white px-3 py-2 shadow-sm">
+                <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-11 w-auto">
+            </span>
+            <span>
+                <span class="block text-sm font-extrabold text-[#7b1a1f]">Published on LA Sentinel Jobs</span>
+                <span class="block text-xs font-semibold text-slate-600">A Los Angeles Sentinel and Bakewell Media hiring platform.</span>
+            </span>
+        </a>
+        <a href="{{ route('listings.index') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#7b1a1f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
+            Browse LA Sentinel Jobs
+        </a>
+    </div>
+
     @if($breadcrumbs->isNotEmpty())
     <nav class="text-xs text-[var(--oc-muted)] mb-4 flex flex-wrap items-center gap-1">
         <a href="{{ route('listings.index') }}" class="oc-text-link">{{ __('site::messages.listings') }}</a>

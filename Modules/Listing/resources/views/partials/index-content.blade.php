@@ -5,6 +5,7 @@
     $seoHeading = $activeCategoryName !== ''
         ? $activeCategoryName.' Jobs and Compensation'
         : 'All Jobs and Compensation';
+    $sentinelUrl = 'https://lasentinel.net';
     $canSaveSearch = $search !== '' || ! is_null($categoryId);
     $normalizeQuery = static fn ($value): bool => ! is_null($value) && $value !== '';
     $usCountryId = $countries->first(fn ($country) => strcasecmp((string) $country->name, 'United States') === 0)?->id ?? $countryId;
@@ -45,6 +46,21 @@
 
 <div class="listing-index-shell max-w-[1320px] mx-auto px-4 py-7 lg:py-8">
     <h1 class="sr-only">{{ $seoHeading }}</h1>
+
+    <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="flex items-center gap-3">
+            <span class="rounded-xl bg-white px-3 py-2 shadow-sm">
+                <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-11 w-auto">
+            </span>
+            <span>
+                <span class="block text-sm font-extrabold text-[#7b1a1f]">LA Sentinel Jobs</span>
+                <span class="block text-xs font-semibold text-slate-600">Local hiring opportunities published with the Los Angeles Sentinel.</span>
+            </span>
+        </a>
+        <a href="{{ route('home') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#7b1a1f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
+            Sentinel Jobs Home
+        </a>
+    </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-[260px,1fr] gap-4 lg:gap-5">
         <aside class="listing-sidebar" data-listing-filter-drawer aria-hidden="false">

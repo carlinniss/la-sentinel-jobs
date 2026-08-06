@@ -10,6 +10,7 @@
     $bio = trim((string) ($profile?->bio ?? ''));
     $website = trim((string) ($profile?->website ?? ''));
     $location = trim(collect([$profile?->city, $profile?->country])->filter()->join(', '));
+    $sentinelUrl = 'https://lasentinel.net';
     $proofPoints = $isBmoEmployer
         ? ['Top 10 North American bank', '13 million customers', 'Founded in 1817', 'Community banking roles']
         : ['Verified employer', 'Local hiring', 'Active opportunities'];
@@ -27,6 +28,22 @@
 @endphp
 
 <div class="mx-auto max-w-[1180px] px-4 py-8">
+    <div class="mb-5 flex flex-col gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+        <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="flex items-center gap-3">
+            <span class="rounded-xl bg-white px-3 py-2 shadow-sm">
+                <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-11 w-auto">
+            </span>
+            <span>
+                <span class="block text-sm font-extrabold text-[#7b1a1f]">LA Sentinel Jobs employer profile</span>
+                <span class="block text-xs font-semibold text-slate-600">Connecting Sentinel readers with local hiring partners.</span>
+            </span>
+        </a>
+        <span class="inline-flex w-fit items-center gap-2 rounded-full bg-black px-2.5 py-1.5 text-xs font-bold text-white">
+            <img src="{{ asset('images/bakewell-media/logo.png') }}" alt="Bakewell Media" class="h-9 w-9 rounded-full object-contain">
+            Bakewell Media
+        </span>
+    </div>
+
     <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <div class="grid lg:grid-cols-[1fr,1.15fr]">
             <div class="bg-[#eef6ff] p-6 md:p-8">

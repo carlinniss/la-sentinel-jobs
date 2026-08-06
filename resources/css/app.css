@@ -92,6 +92,23 @@ h6 {
     white-space: nowrap;
 }
 
+.brand-partner-logo {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    border-radius: 999px;
+    background: #050505;
+    padding: 2px;
+    box-shadow: 0 1px 3px rgba(29, 29, 31, 0.18);
+}
+
+.brand-partner-logo img {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    object-fit: contain;
+}
+
 .market-nav-surface {
     background: rgba(251, 251, 253, 0.88);
     border-bottom: 1px solid var(--oc-border);
@@ -4184,6 +4201,11 @@ body.listing-filters-open {
 
     .brand-subtext {
         font-size: 0.6rem;
+    }
+
+    .brand-partner-logo img {
+        width: 1.85rem;
+        height: 1.85rem;
     }
 
     .oc-actions {
