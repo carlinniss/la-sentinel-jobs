@@ -6,6 +6,7 @@
         ? $featuredListings->take(4)
         : $recentListings->take(4);
     $listingCards = $recentListings->take(6);
+    $featuredEmployerCards = collect($featuredEmployers ?? []);
     $demoEnabled = (bool) config('demo.enabled');
     $prepareDemoRoute = $demoEnabled ? route('demo.prepare') : null;
     $prepareDemoRedirect = url()->full();
@@ -246,6 +247,87 @@
             <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Families and futures</h2>
             <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A pathway from better work to financial stability, stronger families, and stronger neighborhoods.</p>
         </article>
+    </section>
+
+    <section class="featured-employers-section">
+        <div class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="community-kicker">Featured Employers</p>
+                <h2 class="mt-2 text-2xl font-black text-[var(--oc-text)] md:text-3xl">Hiring partners investing in community careers</h2>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--oc-muted)]">Selected employers get a dedicated profile, stronger listing placement, and space to explain career pathways, benefits, and local impact.</p>
+            </div>
+            <a href="{{ route('listings.index') }}" class="oc-text-link text-sm font-bold">Browse partner jobs</a>
+        </div>
+
+        <div class="grid gap-4 lg:grid-cols-[1.2fr,0.8fr]">
+            @forelse($featuredEmployerCards as $featuredEmployer)
+            @php
+                $featuredEmployerName = trim((string) $featuredEmployer->name);
+                $featuredEmployerBio = trim((string) ($featuredEmployer->profile?->bio ?? ''));
+                $featuredEmployerWebsite = trim((string) ($featuredEmployer->profile?->website ?? ''));
+                $featuredEmployerIsBmo = str_contains(strtolower($featuredEmployerName), 'bmo');
+            @endphp
+            <article class="featured-employer-card">
+                <div class="featured-employer-logo-panel">
+                    @if($featuredEmployerIsBmo)
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-24 w-auto max-w-full md:h-28">
+                    @else
+                        <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-950 text-3xl font-black text-white">
+                            {{ mb_strtoupper(mb_substr($featuredEmployerName, 0, 1)) }}
+                        </div>
+                    @endif
+                </div>
+                <div class="min-w-0">
+                    <p class="text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</p>
+                    <h3 class="mt-2 text-2xl font-black text-slate-950">{{ $featuredEmployerName }}</h3>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">
+                        {{ $featuredEmployerBio !== '' ? \Illuminate\Support\Str::limit($featuredEmployerBio, 260) : 'This featured employer is hiring through LA Sentinel Jobs with roles connected to local workforce pathways.' }}
+                    </p>
+                    <div class="mt-4 flex flex-wrap gap-2">
+                        <span class="rounded-full bg-[#eef6ff] px-3 py-1.5 text-xs font-black text-[#005eb8] ring-1 ring-[#b9d8f2]">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
+                        <span class="community-proof-pill">Career pathways</span>
+                        <span class="community-proof-pill">Community impact</span>
+                    </div>
+                    <div class="mt-5 flex flex-wrap gap-3">
+                        <a href="{{ route('employers.show', $featuredEmployer) }}" class="btn-primary inline-flex min-h-11 items-center px-5 text-sm font-black">View featured profile</a>
+                        <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="inline-flex min-h-11 items-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:border-[#005eb8]">View jobs</a>
+                        @if($featuredEmployerWebsite !== '')
+                            <a href="{{ $featuredEmployerWebsite }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full border border-[#b9d8f2] bg-[#eef6ff] px-5 text-sm font-black text-[#005eb8]">Careers site</a>
+                        @endif
+                    </div>
+                </div>
+            </article>
+            @empty
+            <article class="featured-employer-card">
+                <div class="featured-employer-logo-panel">
+                    <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-24 w-auto max-w-full md:h-28">
+                </div>
+                <div>
+                    <p class="text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</p>
+                    <h3 class="mt-2 text-2xl font-black text-slate-950">BMO Community Banking Careers</h3>
+                    <p class="mt-3 text-sm leading-6 text-slate-600">BMO connects Los Angeles candidates with customer-facing banking, branch leadership, small business, and operations career pathways.</p>
+                </div>
+            </article>
+            @endforelse
+
+            <aside class="featured-employer-aside">
+                <p class="community-kicker">What featured means</p>
+                <div class="mt-4 space-y-3">
+                    <div>
+                        <h3 class="text-base font-black text-slate-950">Dedicated employer profile</h3>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">A richer page for mission, benefits, open roles, and community investment.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-slate-950">Featured status on listings</h3>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">Partner jobs carry a clear featured-employer marker across the board.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-slate-950">Built for outreach</h3>
+                        <p class="mt-1 text-sm leading-6 text-slate-600">Useful for hiring events, workforce partners, and community campaigns.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
     </section>
 
     <section>

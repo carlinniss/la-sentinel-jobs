@@ -672,6 +672,62 @@ body.oc-header-menu-open .oc-nav-wrap {
     color: #fff8e8;
 }
 
+.featured-employers-section {
+    border-radius: 28px;
+    border: 1px solid rgba(214, 166, 65, 0.42);
+    background:
+        linear-gradient(135deg, rgba(255, 253, 248, 0.98), rgba(255, 248, 232, 0.94)),
+        linear-gradient(90deg, rgba(0, 94, 184, 0.08), transparent);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    box-shadow: 0 20px 55px rgba(54, 32, 19, 0.08);
+}
+
+.featured-employer-card,
+.featured-employer-aside {
+    border: 1px solid rgba(216, 199, 168, 0.86);
+    border-radius: 24px;
+    background: rgba(255, 253, 248, 0.96);
+    box-shadow: 0 16px 36px rgba(54, 32, 19, 0.08);
+}
+
+.featured-employer-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    gap: 1.25rem;
+    align-items: center;
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.featured-employer-logo-panel {
+    display: flex;
+    min-height: 15rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22px;
+    border: 1px solid rgba(185, 216, 242, 0.9);
+    background: linear-gradient(135deg, #061b35, #082f58);
+    padding: 1.5rem;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.featured-employer-logo-panel img {
+    filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.18));
+}
+
+.featured-employer-aside {
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+@media (max-width: 767px) {
+    .featured-employer-card {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-employer-logo-panel {
+        min-height: 11rem;
+    }
+}
+
 .header-utility {
     width: 2.6rem;
     height: 2.6rem;
