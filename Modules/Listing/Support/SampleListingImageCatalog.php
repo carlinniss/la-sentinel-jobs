@@ -16,12 +16,12 @@ final class SampleListingImageCatalog
     private const MAX_EDGE = 4200;
 
     private const JOB_IMAGES = [
-        'jobs.jpg',
-        'business white career hiring recruitment academic jobs.jpg',
-        'office business people laptop work team classroom grey teamwork table.jpg',
-        'office business technology meeting coding grey engineering engineer software engineer professional woman whiteboard tutor.jpg',
-        'office business work team white customer service studio office building.jpg',
-        'vintage red text retro machine sign blur bokeh flag hiring.jpg',
+        'job-healthcare-clinic.png',
+        'job-education-youth-program.png',
+        'job-skilled-trades-training.png',
+        'job-banking-customer-service.png',
+        'job-media-creative-studio.png',
+        'job-community-outreach.png',
     ];
 
     public static function uniquePaths(): Collection
