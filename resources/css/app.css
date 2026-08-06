@@ -134,8 +134,8 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .oc-brand-image {
-    height: 3.1rem;
-    max-width: 11.5rem;
+    height: 3.7rem;
+    max-width: 10.75rem;
     object-fit: contain;
 }
 
@@ -749,8 +749,8 @@ body.oc-header-menu-open .oc-nav-wrap {
     }
 
     .oc-brand-image {
-        height: 3.25rem;
-        max-width: 12.5rem;
+        height: 4.15rem;
+        max-width: 11.75rem;
     }
 
     .oc-nav-main {
@@ -4169,8 +4169,21 @@ body.listing-filters-open {
         gap: 8px;
     }
 
+    .oc-brand {
+        gap: 8px;
+    }
+
+    .oc-brand-image {
+        height: 3rem;
+        max-width: 7.6rem;
+    }
+
     .brand-text {
         font-size: 0.98rem;
+    }
+
+    .brand-subtext {
+        font-size: 0.6rem;
     }
 
     .oc-actions {
@@ -4256,8 +4269,17 @@ body.listing-filters-open {
 }
 
 @media (max-width: 380px) {
+    .oc-brand-image {
+        height: 2.65rem;
+        max-width: 6.7rem;
+    }
+
     .brand-text {
         font-size: 0.94rem;
+    }
+
+    .brand-subtext {
+        display: none;
     }
 
     .oc-account-name {
