@@ -2,7 +2,7 @@
     "name": "OpenClassify Dev",
     "dockerComposeFile": ["../docker-compose.dev.yml"],
     "service": "app",
-    "workspaceFolder": "/var/www/html",
+    "workspaceFolder": "/workspace",
     "forwardPorts": [8000, 5173, 8025],
     "portsAttributes": {
         "8000": {"label": "Application", "onAutoForward": "openPreview"},

@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile.dev
     command: sleep infinity
     ports:
-      - "8000:80"
+      - "8000:8000"
       - "5173:5173"
     environment:
       APP_ENV: local
@@ -21,9 +21,9 @@ services:
       SESSION_DRIVER: redis
       QUEUE_CONNECTION: redis
     volumes:
-      - .:/var/www/html
-      - /var/www/html/vendor
-      - /var/www/html/node_modules
+      - .:/workspace
+      - /workspace/vendor
+      - /workspace/node_modules
     depends_on:
       db:
         condition: service_healthy
