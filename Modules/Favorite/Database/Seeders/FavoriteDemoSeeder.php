@@ -142,6 +142,10 @@ class FavoriteDemoSeeder extends Seeder
             ['search' => 'case manager', 'slug' => 'jobs-nonprofit'],
             ['search' => 'events', 'slug' => 'jobs-hospitality'],
             ['search' => 'data', 'slug' => 'jobs-technology'],
+            ['search' => 'banking', 'slug' => 'jobs-public-sector'],
+            ['search' => 'bilingual', 'slug' => 'jobs-nonprofit'],
+            ['search' => 'customer service', 'slug' => 'jobs-hospitality'],
+            ['search' => 'it support', 'slug' => 'jobs-technology'],
         ];
 
         return collect(range(0, 2))

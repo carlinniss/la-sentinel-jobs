@@ -30,6 +30,6 @@ class ActiveListingStatus extends ListingStatus implements HasColor, HasDescript
 
     public function getDescription(): ?string
     {
-        return 'Listing is visible to buyers.';
+        return 'Job is visible to applicants.';
     }
 }

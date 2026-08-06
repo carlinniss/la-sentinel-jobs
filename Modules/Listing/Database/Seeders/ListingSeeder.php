@@ -51,6 +51,10 @@ class ListingSeeder extends Seeder
         'Inner City Arts Workforce',
         'Baldwin Hills Hospitality Group',
         'Vermont Slauson Economic Development',
+        'BMO Community Banking Careers',
+        'LA County Workforce Desk',
+        'South LA College & Career Bridge',
+        'Crenshaw Chamber Employer Network',
     ];
 
     private const LA_AREAS = [
@@ -62,6 +66,8 @@ class ListingSeeder extends Seeder
         'Inglewood',
         'West Adams',
         'Downtown Los Angeles',
+        'Exposition Park',
+        'Hyde Park',
     ];
 
     public function run(): void
@@ -196,14 +202,22 @@ class ListingSeeder extends Seeder
         $employer = self::EMPLOYERS[$index % count(self::EMPLOYERS)];
         $schedule = ['full-time', 'part-time', 'hybrid', 'weekend-friendly', 'contract-to-hire'][$index % 5];
         $benefit = ['paid training', 'health benefits', 'transit stipend', 'career coaching', 'bilingual candidates encouraged'][$index % 5];
+        $candidateFlow = [
+            'resume review within two business days',
+            'same-week interview slots',
+            'community hiring priority',
+            'entry-level pathway support',
+            'clear advancement milestones',
+        ][$index % 5];
 
         return sprintf(
-            '%s is hiring for %s in %s. This %s demo posting highlights %s, clear next steps, and a fast message flow so LA Sentinel can show employers how job seekers discover, save, and respond to local opportunities.',
+            '%s is hiring for %s in %s. This %s demo posting highlights %s, %s, clear next steps, and a fast message flow so LA Sentinel can show employers how job seekers discover, save, and respond to local opportunities.',
             $employer,
             $title,
             $city,
             $schedule,
-            $benefit
+            $benefit,
+            $candidateFlow
         );
     }
 

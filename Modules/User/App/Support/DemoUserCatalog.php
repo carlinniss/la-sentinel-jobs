@@ -48,6 +48,41 @@ final class DemoUserCatalog
                 'phone' => '+13235550104',
                 'is_admin' => false,
             ],
+            [
+                'email' => 'f@f.com',
+                'name' => 'Vermont Slauson Economic Development',
+                'password' => $password,
+                'phone' => '+13235550105',
+                'is_admin' => false,
+            ],
+            [
+                'email' => 'g@g.com',
+                'name' => 'Watts Community Action Network',
+                'password' => $password,
+                'phone' => '+13235550106',
+                'is_admin' => false,
+            ],
+            [
+                'email' => 'h@h.com',
+                'name' => 'Destination Crenshaw Hiring',
+                'password' => $password,
+                'phone' => '+13235550107',
+                'is_admin' => false,
+            ],
+            [
+                'email' => 'i@i.com',
+                'name' => 'LA County Workforce Desk',
+                'password' => $password,
+                'phone' => '+13235550108',
+                'is_admin' => false,
+            ],
+            [
+                'email' => 'j@j.com',
+                'name' => 'BMO Community Banking Careers',
+                'password' => $password,
+                'phone' => '+13235550109',
+                'is_admin' => false,
+            ],
         ];
     }
 

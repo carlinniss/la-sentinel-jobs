@@ -129,6 +129,9 @@ class ConversationDemoSeeder extends Seeder
             'Would this role be open to someone changing careers?',
             'Can you confirm whether bilingual candidates are preferred?',
             'Do you have more detail on training and benefits?',
+            'Is there a hiring event or interview day for this role?',
+            'Can I apply if I have community volunteer experience but not the exact title?',
+            'Does this employer offer evening or weekend interview slots?',
         ];
 
         $sellerReplies = [
@@ -137,6 +140,9 @@ class ConversationDemoSeeder extends Seeder
             'Yes, transferable experience is welcome.',
             'Bilingual applicants are encouraged but not required.',
             'Paid onboarding is included and benefits depend on hours.',
+            'Yes, we have interview windows available this week.',
+            'Yes, community experience can be a strong fit for this posting.',
+            'Yes, we can offer evening interview slots for working applicants.',
         ];
 
         $closingMessages = [
@@ -145,6 +151,9 @@ class ConversationDemoSeeder extends Seeder
             'Thanks. That sounds like a strong fit.',
             'Understood. I am interested in next steps.',
             'Nice. I will share this with my workforce coach.',
+            'Great. I will bring this to our job club tomorrow.',
+            'Thanks, I will add my volunteer experience to the application.',
+            'That helps. I can interview after my current shift.',
         ];
 
         $offset = ($index + ($secondary ? 2 : 0)) % count($openingMessages);

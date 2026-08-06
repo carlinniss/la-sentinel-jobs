@@ -346,7 +346,7 @@
 
                             <div class="qc-field">
                                 <label for="quick-description">Description</label>
-                                <textarea id="quick-description" class="qc-textarea" placeholder="Describe the item" wire:model.live.debounce.300ms="description" maxlength="1450"></textarea>
+                                <textarea id="quick-description" class="qc-textarea" placeholder="Describe the role, schedule, benefits, and next steps" wire:model.live.debounce.300ms="description" maxlength="1450"></textarea>
                                 <div class="qc-counter">{{ $this->descriptionCharacters }}/1450</div>
                                 @error('description')<div class="qc-error">{{ $message }}</div>@enderror
                             </div>

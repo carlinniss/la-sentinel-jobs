@@ -64,7 +64,7 @@
                     required
                     class="account-input"
                 >
-                <p class="account-helper">{{ __('We use this email for sign-in, alerts, and buyer communication.') }}</p>
+                <p class="account-helper">{{ __('We use this email for sign-in, alerts, and applicant or employer communication.') }}</p>
                 @foreach ($profileErrors->get('email') as $message)
                     <p class="account-error">{{ $message }}</p>
                 @endforeach
@@ -96,7 +96,7 @@
 
         <div class="flex flex-col gap-4 border-t border-slate-200/80 pt-6 sm:flex-row sm:items-center sm:justify-between">
             <p class="max-w-2xl text-sm leading-6 text-slate-500">
-                {{ __('Keep these details accurate so your listings and messages always point back to the right account.') }}
+                {{ __('Keep these details accurate so your job posts, applications, and messages always point back to the right account.') }}
             </p>
 
             <button type="submit" class="account-primary-button">
