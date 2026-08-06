@@ -358,7 +358,7 @@
                                 @if($employerName !== '')
                                     <div class="mb-3 flex items-center gap-2">
                                         @if($isBmoEmployer)
-                                            @include('listing::partials.bmo-employer-badge', ['employerName' => $employerName])
+                                            @include('listing::partials.bmo-employer-badge', ['employerName' => $employerName, 'employer' => $listing->user])
                                         @else
                                             <span class="truncate text-xs font-semibold text-slate-500">{{ $employerName }}</span>
                                         @endif

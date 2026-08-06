@@ -11,9 +11,12 @@ use Modules\User\App\Http\Controllers\Auth\PasswordController;
 use Modules\User\App\Http\Controllers\Auth\RegisterController;
 use Modules\User\App\Http\Controllers\Auth\ResetPasswordController;
 use Modules\User\App\Http\Controllers\Auth\SocialAuthController;
+use Modules\User\App\Http\Controllers\EmployerProfileController;
 use Modules\User\App\Http\Controllers\ProfileController;
 
 Route::middleware('web')->group(function () {
+    Route::get('/employers/{employer}', [EmployerProfileController::class, 'show'])->name('employers.show');
+
     Route::middleware('guest')->group(function () {
         Route::get('/register', [RegisterController::class, 'create'])->name('register');
         Route::post('/register', [RegisterController::class, 'store']);

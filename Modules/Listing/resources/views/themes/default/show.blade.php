@@ -148,6 +148,7 @@
                                 'employerName' => $detailEmployerName,
                                 'variant' => 'detail',
                                 'profile' => $listing->user?->profile,
+                                'employer' => $listing->user,
                             ])
                         </div>
                     @else
