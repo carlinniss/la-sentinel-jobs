@@ -168,6 +168,7 @@ class PanelQuickListingForm extends Component
     public function goToCategoryStep(): void
     {
         $this->publishError = null;
+        $this->discardInvalidMediaUploads();
         $this->validatePhotos();
         $this->validateVideos();
         $this->currentStep = 2;
@@ -264,6 +265,7 @@ class PanelQuickListingForm extends Component
         $this->resetErrorBag();
 
         try {
+            $this->discardInvalidMediaUploads();
             $this->validatePhotos();
             $this->validateVideos();
             $this->validateCategoryStep();
@@ -279,8 +281,10 @@ class PanelQuickListingForm extends Component
         } catch (Throwable $exception) {
             report($exception);
             $this->isPublishing = false;
-            $this->publishError = 'The listing could not be created. Please try again.';
-            session()->flash('error', 'The listing could not be created. Please try again.');
+            $this->publishError = config('app.debug')
+                ? 'Create failed: '.$exception->getMessage()
+                : 'The listing could not be created. Please try again.';
+            session()->flash('error', $this->publishError);
 
             return;
         }
@@ -694,6 +698,19 @@ class PanelQuickListingForm extends Component
                 report($exception);
             }
         }
+    }
+
+    private function discardInvalidMediaUploads(): void
+    {
+        $this->photos = array_values(array_filter(
+            $this->photos,
+            fn ($photo): bool => $photo instanceof TemporaryUploadedFile
+        ));
+
+        $this->videos = array_values(array_filter(
+            $this->videos,
+            fn ($video): bool => $video instanceof TemporaryUploadedFile
+        ));
     }
 
     private function sanitizedCustomFieldValues(): array
