@@ -36,6 +36,9 @@
                             selectedPhotoCount: 0,
                             isUploadingPhotos: false,
                             photoUploadProgress: 0,
+                            photoUploadWatchdog: null,
+                            maxPhotoCount: {{ $maxPhotoCount }},
+                            maxPhotoSizeKb: {{ (int) config('quick-listing.max_photo_size_kb', 10240) }},
                             attachSelectedPhotos() {
                                 const files = Array.from(this.$refs.photoInput.files || []);
 
@@ -44,27 +47,56 @@
                                     return;
                                 }
 
+                                if (files.length > this.maxPhotoCount) {
+                                    this.photoUploadError = `Choose ${this.maxPhotoCount} photos or fewer.`;
+                                    return;
+                                }
+
+                                const largestFile = files.find((file) => file.size > this.maxPhotoSizeKb * 1024);
+
+                                if (largestFile) {
+                                    this.photoUploadError = 'One photo is too large. Use JPG or PNG files under 10 MB, or use Skip photos for now.';
+                                    return;
+                                }
+
+                                clearTimeout(this.photoUploadWatchdog);
                                 this.photoUploadError = '';
                                 this.isUploadingPhotos = true;
                                 this.photoUploadProgress = 0;
-
-                                this.$wire.uploadMultiple(
-                                    'photos',
-                                    files,
-                                    () => {
-                                        this.isUploadingPhotos = false;
-                                        this.selectedPhotoCount = 0;
-                                        this.photoUploadProgress = 100;
-                                        this.$refs.photoInput.value = '';
-                                    },
-                                    () => {
-                                        this.isUploadingPhotos = false;
-                                        this.photoUploadError = 'Photo upload failed. Try one JPG or PNG under 10 MB, or use Skip photos for now.';
-                                    },
-                                    (event) => {
-                                        this.photoUploadProgress = event.detail?.progress || 0;
+                                this.photoUploadWatchdog = setTimeout(() => {
+                                    if (! this.isUploadingPhotos) {
+                                        return;
                                     }
-                                );
+
+                                    this.isUploadingPhotos = false;
+                                    this.photoUploadError = 'Photo upload is taking too long. Try one smaller JPG or PNG, or use Skip photos for now.';
+                                }, 45000);
+
+                                try {
+                                    this.$wire.uploadMultiple(
+                                        'photos',
+                                        files,
+                                        () => {
+                                            clearTimeout(this.photoUploadWatchdog);
+                                            this.isUploadingPhotos = false;
+                                            this.selectedPhotoCount = 0;
+                                            this.photoUploadProgress = 100;
+                                            this.$refs.photoInput.value = '';
+                                        },
+                                        () => {
+                                            clearTimeout(this.photoUploadWatchdog);
+                                            this.isUploadingPhotos = false;
+                                            this.photoUploadError = 'Photo upload failed. Try one JPG or PNG under 10 MB, or use Skip photos for now.';
+                                        },
+                                        (event) => {
+                                            this.photoUploadProgress = event.detail?.progress || 0;
+                                        }
+                                    );
+                                } catch (error) {
+                                    clearTimeout(this.photoUploadWatchdog);
+                                    this.isUploadingPhotos = false;
+                                    this.photoUploadError = 'Photo upload could not start. Try one JPG or PNG under 10 MB, or use Skip photos for now.';
+                                }
                             },
                         }"
                     >
