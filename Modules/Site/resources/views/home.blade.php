@@ -146,7 +146,7 @@
         </div>
         <div class="community-jobs-panel rounded-[28px] border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5 shadow-[0_18px_45px_rgba(29,29,31,0.08)]">
             <div class="community-hero-photo mb-5">
-                <img src="{{ asset('images/la-sentinel/community-workforce-la.png') }}" alt="Los Angeles skyline with community workforce professionals">
+                <img src="{{ asset('images/la-sentinel/community-jobs-hero-alt.png') }}" alt="Los Angeles community workforce professionals">
                 <span>Los Angeles workforce pathways</span>
             </div>
 
