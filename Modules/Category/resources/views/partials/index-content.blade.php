@@ -22,7 +22,19 @@
                     ->implode(' · ');
                 $extraChildCount = max($category->children->count() - 3, 0);
                 $iconUrl = $category->iconUrl();
-                $iconLabel = strtoupper(\Illuminate\Support\Str::substr($category->name, 0, 1));
+                $categorySlug = (string) $category->slug;
+                $categoryName = strtolower((string) $category->name);
+                $iconComponent = match (true) {
+                    str_contains($categorySlug, 'healthcare') || str_contains($categoryName, 'health') => 'heroicon-o-heart',
+                    str_contains($categorySlug, 'education') || str_contains($categoryName, 'education') => 'heroicon-o-academic-cap',
+                    str_contains($categorySlug, 'skilled-trades') || str_contains($categoryName, 'trade') => 'heroicon-o-wrench-screwdriver',
+                    str_contains($categorySlug, 'media-creative') || str_contains($categoryName, 'media') || str_contains($categoryName, 'creative') => 'heroicon-o-megaphone',
+                    str_contains($categorySlug, 'public-sector') || str_contains($categoryName, 'public') => 'heroicon-o-building-office-2',
+                    str_contains($categorySlug, 'nonprofit') || str_contains($categoryName, 'nonprofit') => 'heroicon-o-users',
+                    str_contains($categorySlug, 'hospitality') || str_contains($categoryName, 'hospitality') => 'heroicon-o-building-storefront',
+                    str_contains($categorySlug, 'technology') || str_contains($categoryName, 'technology') => 'heroicon-o-computer-desktop',
+                    default => 'heroicon-o-briefcase',
+                };
             @endphp
             <a
                 href="{{ route('listings.index', ['category' => $category->id]) }}"
@@ -33,7 +45,7 @@
                         @if($iconUrl)
                         <img src="{{ $iconUrl }}" alt="{{ $category->name }}" class="h-11 w-11 object-contain">
                         @else
-                        <span class="text-3xl font-semibold">{{ $iconLabel }}</span>
+                        <x-dynamic-component :component="$iconComponent" class="h-9 w-9 stroke-[1.7]" aria-hidden="true" />
                         @endif
                     </span>
                     <span class="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-600">

@@ -341,13 +341,25 @@
             @foreach($menuCategories as $category)
             @php
                 $categoryIconUrl = $category->iconUrl();
-                $fallbackLabel = strtoupper(\Illuminate\Support\Str::substr($category->name, 0, 1));
+                $categorySlug = (string) $category->slug;
+                $categoryName = strtolower((string) $category->name);
+                $iconComponent = match (true) {
+                    str_contains($categorySlug, 'healthcare') || str_contains($categoryName, 'health') => 'heroicon-o-heart',
+                    str_contains($categorySlug, 'education') || str_contains($categoryName, 'education') => 'heroicon-o-academic-cap',
+                    str_contains($categorySlug, 'skilled-trades') || str_contains($categoryName, 'trade') => 'heroicon-o-wrench-screwdriver',
+                    str_contains($categorySlug, 'media-creative') || str_contains($categoryName, 'media') || str_contains($categoryName, 'creative') => 'heroicon-o-megaphone',
+                    str_contains($categorySlug, 'public-sector') || str_contains($categoryName, 'public') => 'heroicon-o-building-office-2',
+                    str_contains($categorySlug, 'nonprofit') || str_contains($categoryName, 'nonprofit') => 'heroicon-o-users',
+                    str_contains($categorySlug, 'hospitality') || str_contains($categoryName, 'hospitality') => 'heroicon-o-building-storefront',
+                    str_contains($categorySlug, 'technology') || str_contains($categoryName, 'technology') => 'heroicon-o-computer-desktop',
+                    default => 'heroicon-o-briefcase',
+                };
             @endphp
             <a href="{{ route('listings.index', ['category' => $category->id]) }}" class="oc-pill">
                 @if($categoryIconUrl)
                     <img src="{{ $categoryIconUrl }}" alt="" class="h-4 w-4 object-contain">
                 @else
-                    <span class="text-xs font-semibold">{{ $fallbackLabel }}</span>
+                    <x-dynamic-component :component="$iconComponent" class="h-4 w-4 stroke-[1.8]" aria-hidden="true" />
                 @endif
                 <span>{{ $category->name }}</span>
             </a>
