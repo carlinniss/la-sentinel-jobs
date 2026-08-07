@@ -210,7 +210,17 @@ class Listing extends Model implements HasMedia
             'oldest' => $query->reorder()->orderBy('created_at'),
             'price_asc' => $query->reorder()->orderByRaw('price is null')->orderBy('price'),
             'price_desc' => $query->reorder()->orderByRaw('price is null')->orderByDesc('price'),
-            default => $query->reorder()->orderByDesc('is_featured')->orderByDesc('created_at'),
+            default => $query
+                ->reorder()
+                ->orderByDesc(
+                    User::query()
+                        ->selectRaw('1')
+                        ->whereColumn('users.id', 'listings.user_id')
+                        ->featuredEmployers()
+                        ->limit(1)
+                )
+                ->orderByDesc('is_featured')
+                ->orderByDesc('created_at'),
         };
     }
 
@@ -390,7 +400,7 @@ class Listing extends Model implements HasMedia
         return static::query()
             ->active()
             ->with('user:id,name,email')
-            ->latest()
+            ->applyBrowseSort('smart')
             ->take($limit)
             ->get();
     }

@@ -42,6 +42,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->path('admin')
             ->login()
+            ->brandName('LA Sentinel Jobs')
+            ->brandLogo(asset('images/la-sentinel/logo.webp'))
             ->colors(['primary' => Color::Blue])
             ->userMenuItems([
                 'view-site' => MenuItem::make()

@@ -24,11 +24,7 @@ class HomeController extends Controller
             ->withCount([
                 'listings as active_listings_count' => fn ($query) => $query->where('status', 'active'),
             ])
-            ->where(function ($query): void {
-                $query
-                    ->where('email', 'j@j.com')
-                    ->orWhere('name', 'like', '%BMO%');
-            })
+            ->featuredEmployers()
             ->orderByDesc('active_listings_count')
             ->limit(3)
             ->get();

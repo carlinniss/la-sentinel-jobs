@@ -8,6 +8,7 @@ use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -108,6 +109,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     public function favoriteSellers()
     {
         return $this->belongsToMany(self::class, 'favorite_sellers', 'user_id', 'seller_id')->withTimestamps();
+    }
+
+    public function scopeFeaturedEmployers(Builder $query): Builder
+    {
+        return $query->where(function (Builder $query): void {
+            $query
+                ->where('email', 'j@j.com')
+                ->orWhere('name', 'like', '%BMO%')
+                ->orWhereHas('profile', fn (Builder $profileQuery): Builder => $profileQuery->where('is_verified', true));
+        });
     }
 
     public function favoriteSearches()

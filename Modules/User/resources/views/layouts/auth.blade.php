@@ -1,6 +1,7 @@
 @php
     $siteName = $generalSettings['site_name'] ?? config('app.name', 'OpenClassify');
-    $siteLogoUrl = $generalSettings['site_logo_url'] ?? null;
+    $configuredLogoUrl = $generalSettings['site_logo_url'] ?? null;
+    $siteLogoUrl = filled($configuredLogoUrl) ? $configuredLogoUrl : asset('images/la-sentinel/logo.webp');
     $pageTitle = trim($__env->yieldContent('title'));
 @endphp
 <!DOCTYPE html>
@@ -17,11 +18,7 @@
         <div class="user-auth-frame">
             <section class="user-auth-panel">
                 <a href="{{ route('home') }}" class="user-auth-brand" aria-label="{{ $siteName }}">
-                    @if($siteLogoUrl)
                     <img src="{{ $siteLogoUrl }}" alt="{{ $siteName }}" class="user-auth-brand-image">
-                    @else
-                    <span class="brand-logo" aria-hidden="true"></span>
-                    @endif
                     <span class="user-auth-brand-text">{{ $siteName }}</span>
                 </a>
 
