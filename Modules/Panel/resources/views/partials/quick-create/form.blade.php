@@ -34,68 +34,25 @@
                         x-data="{
                             photoUploadError: '',
                             selectedPhotoCount: 0,
-                            isUploadingPhotos: false,
-                            photoUploadProgress: 0,
-                            photoUploadWatchdog: null,
                             maxPhotoCount: {{ $maxPhotoCount }},
                             maxPhotoSizeKb: {{ (int) config('quick-listing.max_photo_size_kb', 10240) }},
-                            attachSelectedPhotos() {
-                                const files = Array.from(this.$refs.photoInput.files || []);
-
-                                if (files.length === 0) {
-                                    this.photoUploadError = 'Choose one or more photos first.';
-                                    return;
-                                }
+                            validatePhotoSelection(event) {
+                                const files = Array.from(event.target.files || []);
+                                this.selectedPhotoCount = files.length;
+                                this.photoUploadError = '';
 
                                 if (files.length > this.maxPhotoCount) {
                                     this.photoUploadError = `Choose ${this.maxPhotoCount} photos or fewer.`;
-                                    return;
+                                    event.target.value = '';
+                                    this.selectedPhotoCount = 0;
                                 }
 
                                 const largestFile = files.find((file) => file.size > this.maxPhotoSizeKb * 1024);
 
                                 if (largestFile) {
                                     this.photoUploadError = 'One photo is too large. Use JPG or PNG files under 10 MB, or use Skip photos for now.';
-                                    return;
-                                }
-
-                                clearTimeout(this.photoUploadWatchdog);
-                                this.photoUploadError = '';
-                                this.isUploadingPhotos = true;
-                                this.photoUploadProgress = 0;
-                                this.photoUploadWatchdog = setTimeout(() => {
-                                    if (! this.isUploadingPhotos) {
-                                        return;
-                                    }
-
-                                    this.isUploadingPhotos = false;
-                                    this.photoUploadError = 'Photo upload is taking too long. Try one smaller JPG or PNG, or use Skip photos for now.';
-                                }, 45000);
-
-                                try {
-                                    this.$wire.uploadMultiple(
-                                        'photos',
-                                        files,
-                                        () => {
-                                            clearTimeout(this.photoUploadWatchdog);
-                                            this.isUploadingPhotos = false;
-                                            this.selectedPhotoCount = 0;
-                                            this.photoUploadProgress = 100;
-                                            this.$refs.photoInput.value = '';
-                                        },
-                                        () => {
-                                            clearTimeout(this.photoUploadWatchdog);
-                                            this.isUploadingPhotos = false;
-                                            this.photoUploadError = 'Photo upload failed. Try one JPG or PNG under 10 MB, or use Skip photos for now.';
-                                        },
-                                        (event) => {
-                                            this.photoUploadProgress = event.detail?.progress || 0;
-                                        }
-                                    );
-                                } catch (error) {
-                                    clearTimeout(this.photoUploadWatchdog);
-                                    this.isUploadingPhotos = false;
-                                    this.photoUploadError = 'Photo upload could not start. Try one JPG or PNG under 10 MB, or use Skip photos for now.';
+                                    event.target.value = '';
+                                    this.selectedPhotoCount = 0;
                                 }
                             },
                         }"
@@ -111,31 +68,23 @@
 
                         <input
                             id="quick-listing-photo-input"
-                            x-ref="photoInput"
                             type="file"
+                            wire:model="photos"
                             accept="image/jpeg,image/jpg,image/png,image/webp,image/gif,image/bmp"
                             multiple
                             class="qc-file-input"
-                            x-on:change="selectedPhotoCount = $event.target.files.length; photoUploadError = ''"
+                            x-on:change="validatePhotoSelection($event)"
                         >
 
-                        <div class="qc-upload-actions" x-show="selectedPhotoCount > 0 || isUploadingPhotos" x-cloak>
+                        <div class="qc-upload-actions" x-show="selectedPhotoCount > 0" x-cloak>
                             <div class="qc-selected-files">
                                 <strong x-text="selectedPhotoCount"></strong>
                                 <span x-text="selectedPhotoCount === 1 ? 'photo selected' : 'photos selected'"></span>
                             </div>
-                            <button
-                                type="button"
-                                class="qc-button qc-upload-action-button"
-                                x-on:click="attachSelectedPhotos"
-                                x-bind:disabled="isUploadingPhotos"
-                            >
-                                <span x-show="! isUploadingPhotos">Attach selected photos</span>
-                                <span x-show="isUploadingPhotos">Uploading <span x-text="photoUploadProgress"></span>%</span>
-                            </button>
+                            <span class="qc-button qc-upload-action-button">Photos attach automatically</span>
                         </div>
 
-                        <div x-show="isUploadingPhotos" x-cloak class="qc-empty">Uploading photos...</div>
+                        <div wire:loading wire:target="photos" class="qc-empty">Uploading photos...</div>
                         <div x-cloak x-show="photoUploadError" x-text="photoUploadError" class="qc-error"></div>
 
                         @error('photos')
