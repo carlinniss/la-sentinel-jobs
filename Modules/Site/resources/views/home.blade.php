@@ -108,7 +108,7 @@
 </div>
 @else
 <div class="community-home-shell max-w-[1120px] mx-auto px-4 py-8 md:py-14 space-y-10 md:space-y-16">
-    <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-center">
+    <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-start">
         <div>
             <p class="community-kicker mb-3">{{ $heroBadge }}</p>
             <h1 class="max-w-xl text-3xl font-black leading-[1.05] text-[var(--oc-text)] md:text-5xl">{{ $heroTitle }}</h1>
