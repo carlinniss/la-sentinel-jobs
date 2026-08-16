@@ -29,15 +29,32 @@ class ProfileController extends Controller
                 'max:255',
                 Rule::unique('users')->ignore($request->user()->id),
             ],
+            'phone' => ['nullable', 'string', 'max:40'],
+            'city' => ['nullable', 'string', 'max:120'],
+            'country' => ['nullable', 'string', 'max:120'],
+            'bio' => ['nullable', 'string', 'max:2000'],
+            'website' => ['nullable', 'url', 'max:255'],
         ]);
 
-        $request->user()->fill($validated);
+        $request->user()->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
         $request->user()->save();
+        $request->user()->profile()->firstOrCreate([
+            'user_id' => $request->user()->getKey(),
+        ])->fill([
+            'phone' => $validated['phone'] ?? null,
+            'city' => $validated['city'] ?? null,
+            'country' => $validated['country'] ?? null,
+            'bio' => $validated['bio'] ?? null,
+            'website' => $validated['website'] ?? null,
+        ])->save();
 
         return redirect()->route('panel.profile.edit')->with('status', 'profile-updated');
     }

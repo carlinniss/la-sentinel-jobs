@@ -168,13 +168,13 @@
                     $spotlightCategory = $spotlightListing->category?->parent?->name ?? $spotlightListing->category?->name ?? 'Local Role';
                     $spotlightLocation = trim(collect([$spotlightListing->city, $spotlightListing->country])->filter()->join(', '));
                     $spotlightEmployer = trim((string) ($spotlightListing->user?->name ?? ''));
-                    $spotlightIsBmo = $spotlightEmployer !== '' && str_contains(strtolower($spotlightEmployer), 'bmo');
+                    $spotlightBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($spotlightEmployer);
                 @endphp
                 <a href="{{ route('listings.show', $spotlightListing) }}" class="block border-b border-slate-100 pb-4 last:border-b-0 last:pb-0">
                     @if($spotlightEmployer !== '')
                     <div class="mb-3 flex items-center gap-2">
-                        @if($spotlightIsBmo)
-                        @include('listing::partials.bmo-employer-badge', ['employerName' => $spotlightEmployer, 'employer' => $spotlightListing->user])
+                        @if($spotlightBrand)
+                        @include('listing::partials.featured-employer-badge', ['employerName' => $spotlightEmployer, 'employer' => $spotlightListing->user])
                         @else
                         <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $spotlightEmployer }}</span>
                         @endif
@@ -259,18 +259,18 @@
             <a href="{{ route('listings.index') }}" class="oc-text-link text-sm font-bold">Browse partner jobs</a>
         </div>
 
-        <div class="grid gap-4 lg:grid-cols-[1.2fr,0.8fr]">
+        <div class="grid gap-4 lg:grid-cols-2">
             @forelse($featuredEmployerCards as $featuredEmployer)
             @php
                 $featuredEmployerName = trim((string) $featuredEmployer->name);
                 $featuredEmployerBio = trim((string) ($featuredEmployer->profile?->bio ?? ''));
                 $featuredEmployerWebsite = trim((string) ($featuredEmployer->profile?->website ?? ''));
-                $featuredEmployerIsBmo = str_contains(strtolower($featuredEmployerName), 'bmo');
+                $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($featuredEmployerName);
             @endphp
             <article class="featured-employer-card">
-                <div class="featured-employer-logo-panel">
-                    @if($featuredEmployerIsBmo)
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-24 w-auto max-w-full md:h-28">
+                <div class="featured-employer-logo-panel" @if($featuredEmployerBrand) style="background: {{ $featuredEmployerBrand['panel_background'] }}; border-color: {{ $featuredEmployerBrand['soft_border'] }};" @endif>
+                    @if($featuredEmployerBrand)
+                        <img src="{{ asset($featuredEmployerBrand['logo']) }}" alt="{{ $featuredEmployerBrand['logo_alt'] }}" class="h-24 w-auto max-w-full object-contain md:h-28">
                     @else
                         <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-950 text-3xl font-black text-white">
                             {{ mb_strtoupper(mb_substr($featuredEmployerName, 0, 1)) }}
@@ -278,13 +278,13 @@
                     @endif
                 </div>
                 <div class="min-w-0">
-                    <p class="text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</p>
+                    <p class="text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Featured employer partner</p>
                     <h3 class="mt-2 text-2xl font-black text-slate-950">{{ $featuredEmployerName }}</h3>
                     <p class="mt-3 text-sm leading-6 text-slate-600">
                         {{ $featuredEmployerBio !== '' ? \Illuminate\Support\Str::limit($featuredEmployerBio, 260) : 'This featured employer is hiring through LA Sentinel Jobs with roles connected to local workforce pathways.' }}
                     </p>
                     <div class="mt-4 flex flex-wrap gap-2">
-                        <span class="rounded-full bg-[#eef6ff] px-3 py-1.5 text-xs font-black text-[#005eb8] ring-1 ring-[#b9d8f2]">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
+                        <span class="rounded-full px-3 py-1.5 text-xs font-black" style="background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }}; box-shadow: 0 0 0 1px {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }};">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
                         <span class="community-proof-pill">Career pathways</span>
                         <span class="community-proof-pill">Community impact</span>
                     </div>
@@ -292,7 +292,7 @@
                         <a href="{{ route('employers.show', $featuredEmployer) }}" class="btn-primary inline-flex min-h-11 items-center px-5 text-sm font-black">View featured profile</a>
                         <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="inline-flex min-h-11 items-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:border-[#005eb8]">View jobs</a>
                         @if($featuredEmployerWebsite !== '')
-                            <a href="{{ $featuredEmployerWebsite }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full border border-[#b9d8f2] bg-[#eef6ff] px-5 text-sm font-black text-[#005eb8]">Careers site</a>
+                            <a href="{{ $featuredEmployerWebsite }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full px-5 text-sm font-black" style="border: 1px solid {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }}; background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Careers site</a>
                         @endif
                     </div>
                 </div>
@@ -310,9 +310,9 @@
             </article>
             @endforelse
 
-            <aside class="featured-employer-aside">
+            <aside class="featured-employer-aside lg:col-span-2">
                 <p class="community-kicker">What featured means</p>
-                <div class="mt-4 space-y-3">
+                <div class="mt-4 grid gap-4 md:grid-cols-3">
                     <div>
                         <h3 class="text-base font-black text-slate-950">Dedicated employer profile</h3>
                         <p class="mt-1 text-sm leading-6 text-slate-600">A richer page for mission, benefits, open roles, and community investment.</p>
@@ -378,7 +378,7 @@
                 $priceLabel = $formatCompensation($listing);
                 $locationLabel = trim(collect([$listing->city, $listing->country])->filter()->join(', '));
                 $employerName = trim((string) ($listing->user?->name ?? ''));
-                $isBmoEmployer = $employerName !== '' && str_contains(strtolower($employerName), 'bmo');
+                $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($employerName);
                 $isFavorited = in_array($listing->id, $favoriteListingIds ?? [], true);
             @endphp
             <article class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] overflow-hidden">
@@ -413,8 +413,8 @@
                 <div class="p-4">
                     @if($employerName !== '')
                     <div class="mb-3 flex items-center gap-2">
-                        @if($isBmoEmployer)
-                        @include('listing::partials.bmo-employer-badge', ['employerName' => $employerName, 'employer' => $listing->user])
+                        @if($featuredEmployerBrand)
+                        @include('listing::partials.featured-employer-badge', ['employerName' => $employerName, 'employer' => $listing->user])
                         @else
                         <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $employerName }}</span>
                         @endif

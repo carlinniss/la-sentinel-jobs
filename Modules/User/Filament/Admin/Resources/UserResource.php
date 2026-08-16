@@ -8,7 +8,10 @@ use A909M\FilamentStateFusion\Tables\Columns\StateFusionSelectColumn;
 use A909M\FilamentStateFusion\Tables\Filters\StateFusionSelectFilter;
 use BackedEnum;
 use Filament\Resources\Resource;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Modules\Admin\Support\Filament\ResourceTableActions;
@@ -35,6 +38,15 @@ class UserResource extends Resource
             UserFormFields::password(fn ($livewire) => $livewire instanceof Pages\CreateUser),
             UserFormFields::status(),
             UserFormFields::roles(),
+            Group::make()
+                ->relationship('profile')
+                ->schema([
+                    Toggle::make('is_verified')
+                        ->label('Verified employer'),
+                    Toggle::make('resume_access_enabled')
+                        ->label('Resume bank access')
+                        ->helperText('Grant only to approved employer accounts. This can represent a paid employer entitlement.'),
+                ]),
         ]);
     }
 
@@ -45,6 +57,7 @@ class UserResource extends Resource
             TextColumn::make('name')->searchable()->sortable(),
             TextColumn::make('email')->searchable()->sortable(),
             TextColumn::make('roles.name')->badge()->label('Roles'),
+            IconColumn::make('profile.resume_access_enabled')->boolean()->label('Resume access'),
             StateFusionSelectColumn::make('status'),
             TextColumn::make('created_at')->dateTime()->sortable(),
         ])->defaultSort('id', 'desc')->filters([

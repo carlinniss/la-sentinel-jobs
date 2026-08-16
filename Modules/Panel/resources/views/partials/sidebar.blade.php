@@ -28,6 +28,13 @@
             'key' => 'profile',
         ],
     ];
+    if (auth()->user()?->profile?->canBrowseResumes()) {
+        $primaryItems[] = [
+            'label' => 'Resume Bank',
+            'route' => route('resumes.index'),
+            'key' => 'resume-bank',
+        ];
+    }
     $favoriteItems = [
         [
             'label' => 'Saved Jobs',

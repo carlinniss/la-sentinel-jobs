@@ -321,7 +321,7 @@
                         @php
                             $listingImage = $listing->primaryImageData('card');
                             $employerName = trim((string) ($listing->user?->name ?? ''));
-                            $isBmoEmployer = $employerName !== '' && str_contains(strtolower($employerName), 'bmo');
+                            $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($employerName);
                             $isFavorited = in_array($listing->id, $favoriteListingIds ?? [], true);
                             $priceValue = ! is_null($listing->price) ? (float) $listing->price : null;
                             $locationParts = array_filter([
@@ -373,8 +373,8 @@
                             <div class="px-3.5 py-3">
                                 @if($employerName !== '')
                                     <div class="mb-3 flex items-center gap-2">
-                                        @if($isBmoEmployer)
-                                            @include('listing::partials.bmo-employer-badge', ['employerName' => $employerName, 'employer' => $listing->user])
+                                        @if($featuredEmployerBrand)
+                                            @include('listing::partials.featured-employer-badge', ['employerName' => $employerName, 'employer' => $listing->user])
                                         @else
                                             <span class="truncate text-xs font-semibold text-slate-500">{{ $employerName }}</span>
                                         @endif

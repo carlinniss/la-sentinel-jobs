@@ -71,6 +71,49 @@
             </div>
         </div>
 
+        <div class="grid gap-5 lg:grid-cols-2">
+            <div class="account-field">
+                <label for="phone" class="account-label">Phone</label>
+                <input id="phone" name="phone" type="tel" value="{{ old('phone', $user->profile?->phone) }}" autocomplete="tel" class="account-input">
+                @foreach ($profileErrors->get('phone') as $message)
+                    <p class="account-error">{{ $message }}</p>
+                @endforeach
+            </div>
+
+            <div class="account-field">
+                <label for="city" class="account-label">City</label>
+                <input id="city" name="city" type="text" value="{{ old('city', $user->profile?->city) }}" autocomplete="address-level2" class="account-input">
+                @foreach ($profileErrors->get('city') as $message)
+                    <p class="account-error">{{ $message }}</p>
+                @endforeach
+            </div>
+
+            <div class="account-field">
+                <label for="country" class="account-label">Country</label>
+                <input id="country" name="country" type="text" value="{{ old('country', $user->profile?->country) }}" autocomplete="country-name" class="account-input">
+                @foreach ($profileErrors->get('country') as $message)
+                    <p class="account-error">{{ $message }}</p>
+                @endforeach
+            </div>
+
+            <div class="account-field">
+                <label for="website" class="account-label">Portfolio or website</label>
+                <input id="website" name="website" type="url" value="{{ old('website', $user->profile?->website) }}" autocomplete="url" class="account-input">
+                @foreach ($profileErrors->get('website') as $message)
+                    <p class="account-error">{{ $message }}</p>
+                @endforeach
+            </div>
+        </div>
+
+        <div class="account-field">
+            <label for="bio" class="account-label">Professional summary</label>
+            <textarea id="bio" name="bio" rows="5" class="account-input min-h-32">{{ old('bio', $user->profile?->bio) }}</textarea>
+            <p class="account-helper">If you authorize employer discovery, this summary helps approved employers understand your experience before opening your resume.</p>
+            @foreach ($profileErrors->get('bio') as $message)
+                <p class="account-error">{{ $message }}</p>
+            @endforeach
+        </div>
+
         @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
             <div class="rounded-[24px] border border-amber-200 bg-amber-50/80 p-5">
                 <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

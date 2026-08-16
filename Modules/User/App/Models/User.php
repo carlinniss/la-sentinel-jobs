@@ -101,6 +101,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->hasOne(Profile::class);
     }
 
+    public function resumeViewsAsEmployer()
+    {
+        return $this->hasMany(ResumeView::class, 'employer_user_id');
+    }
+
     public function favoriteListings()
     {
         return $this->belongsToMany(Listing::class, 'favorite_listings')->withTimestamps();
@@ -312,7 +317,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
 
     public function loadPanelProfile(): self
     {
-        return $this->loadCount([
+        return $this->load([
+            'profile.resumeViews' => fn ($query) => $query->with('employer:id,name')->latest()->limit(12),
+        ])->loadCount([
             'listings',
             'favoriteListings',
             'favoriteSearches',

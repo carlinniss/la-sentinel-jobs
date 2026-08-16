@@ -13,8 +13,11 @@ use Modules\User\App\Http\Controllers\Auth\ResetPasswordController;
 use Modules\User\App\Http\Controllers\Auth\SocialAuthController;
 use Modules\User\App\Http\Controllers\EmployerProfileController;
 use Modules\User\App\Http\Controllers\ProfileController;
+use Modules\User\App\Http\Controllers\ResumeController;
+use Modules\User\App\Http\Controllers\ResumePaymentWebhookController;
 
 Route::middleware('web')->group(function () {
+    Route::post('/stripe/resume-webhook', ResumePaymentWebhookController::class)->name('resume.payment.webhook');
     Route::get('/employers/{employer}', [EmployerProfileController::class, 'show'])->name('employers.show');
 
     Route::middleware('guest')->group(function () {
@@ -53,5 +56,11 @@ Route::middleware('web')->group(function () {
         Route::redirect('/profile', '/panel/my-profile')->name('profile.edit');
         Route::patch('/panel/my-profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/panel/my-profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+        Route::put('/panel/my-resume', [ResumeController::class, 'update'])->name('resume.update');
+        Route::delete('/panel/my-resume', [ResumeController::class, 'destroy'])->name('resume.destroy');
+        Route::get('/panel/resume-bank', [ResumeController::class, 'index'])->name('resumes.index');
+        Route::get('/panel/resume-bank/{profile}', [ResumeController::class, 'show'])->name('resumes.show');
+        Route::get('/panel/resume-bank/{profile}/download', [ResumeController::class, 'download'])->name('resumes.download');
+        Route::get('/panel/resume-payment/success', [ResumeController::class, 'paymentSuccess'])->name('resume.payment.success');
     });
 });

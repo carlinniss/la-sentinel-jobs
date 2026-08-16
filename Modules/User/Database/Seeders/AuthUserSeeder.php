@@ -61,6 +61,19 @@ class AuthUserSeeder extends Seeder
                 'website' => 'https://jobs.bmo.com/us/en',
                 'bio' => 'BMO Community Banking Careers connects Los Angeles candidates with customer-facing banking, branch leadership, small business, and operations roles. BMO is a top ten North American bank serving 13 million customers, founded in 1817 and guided by its purpose to Boldly Grow the Good in business and life. The employer profile highlights personalized career development, competitive rewards and benefits, wellness support, inclusive teams, and community impact through financial education, economic mobility, and volunteer engagement.',
                 'is_verified' => true,
+                'resume_access_enabled' => true,
+            ];
+        }
+
+        if ($email === 'k@k.com') {
+            return [
+                'phone' => (string) ($record['phone'] ?? ''),
+                'city' => 'Los Angeles',
+                'country' => 'United States',
+                'website' => 'https://www.sjch.org/employment',
+                'bio' => "St. John's Community Health has provided accessible, community-centered care since 1964. Its network serves underserved communities across Los Angeles, Riverside, and San Bernardino counties through medical, dental, behavioral health, and social-support services. This featured profile highlights mission-driven careers that improve community health, reduce disparities, and advance health equity.",
+                'is_verified' => true,
+                'resume_access_enabled' => true,
             ];
         }
 
@@ -71,6 +84,7 @@ class AuthUserSeeder extends Seeder
             'website' => null,
             'bio' => null,
             'is_verified' => false,
+            'resume_access_enabled' => false,
         ];
     }
 }

@@ -31,7 +31,7 @@
     $breadcrumbs = collect($breadcrumbCategories ?? []);
     $sentinelUrl = 'https://lasentinel.net';
     $detailEmployerName = trim((string) ($listing->user?->name ?? ''));
-    $detailIsBmoEmployer = $detailEmployerName !== '' && str_contains(strtolower($detailEmployerName), 'bmo');
+    $detailEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($detailEmployerName);
 @endphp
 <div class="max-w-[1120px] mx-auto px-4 py-8">
     <div class="community-sentinel-strip mb-5 flex flex-col gap-3 rounded-2xl border px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
@@ -49,9 +49,9 @@
         </a>
     </div>
 
-    @if($detailIsBmoEmployer)
+    @if($detailEmployerBrand)
         <div class="mb-5">
-            @include('listing::partials.bmo-employer-badge', [
+            @include('listing::partials.featured-employer-badge', [
                 'employerName' => $detailEmployerName,
                 'variant' => 'feature-strip',
                 'profile' => $listing->user?->profile,
@@ -167,9 +167,9 @@
                 <div class="mt-6 border-t border-[var(--oc-border)] pt-5">
                     <h2 class="text-base font-semibold text-[var(--oc-text)] mb-3">{{ __('listing::messages.contact_seller') }}</h2>
                     @if($listing->user)
-                    @if($detailIsBmoEmployer)
+                    @if($detailEmployerBrand)
                         <div class="mb-4">
-                            @include('listing::partials.bmo-employer-badge', [
+                            @include('listing::partials.featured-employer-badge', [
                                 'employerName' => $detailEmployerName,
                                 'variant' => 'detail',
                                 'profile' => $listing->user?->profile,

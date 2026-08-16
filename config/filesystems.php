@@ -7,8 +7,7 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app/private'),
-            'url' => env('APP_PRIVATE_STORAGE_URL', '/private-storage'),
-            'serve' => true,
+            'serve' => false,
             'throw' => false,
             'report' => false,
         ],

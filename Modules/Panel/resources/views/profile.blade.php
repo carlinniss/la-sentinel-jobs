@@ -99,6 +99,10 @@
                 </div>
             </div>
 
+            <div class="panel-surface profile-card">
+                @include('user::profile.partials.resume-card')
+            </div>
+
             <div class="panel-surface profile-card profile-card-danger">
                 @include('user::profile.partials.delete-user-form')
             </div>

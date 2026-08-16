@@ -6,14 +6,15 @@
 @php
     $profile = $employer->profile;
     $employerName = trim((string) $employer->name);
-    $isBmoEmployer = str_contains(strtolower($employerName), 'bmo');
+    $brand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($employerName);
     $bio = trim((string) ($profile?->bio ?? ''));
     $website = trim((string) ($profile?->website ?? ''));
     $location = trim(collect([$profile?->city, $profile?->country])->filter()->join(', '));
     $sentinelUrl = 'https://lasentinel.net';
-    $proofPoints = $isBmoEmployer
-        ? ['Featured employer partner', 'Community banking careers', 'Customer-facing roles', 'Advancement pathways']
-        : ['Featured employer partner', 'Local hiring', 'Community outreach'];
+    $proofPoints = $brand['proof_points'] ?? ['Featured employer partner', 'Local hiring', 'Community outreach'];
+    $primary = $brand['primary'] ?? '#005eb8';
+    $soft = $brand['soft'] ?? '#eef6ff';
+    $softBorder = $brand['soft_border'] ?? '#b9d8f2';
     $formatCompensation = static function ($listing): string {
         if (is_null($listing->price) || (float) $listing->price <= 0) {
             return __('listing::messages.price_on_request');
@@ -48,8 +49,8 @@
         <div class="grid lg:grid-cols-[1fr,1.15fr]">
             <div class="bg-[#061b35] p-6 md:p-8">
                 <div class="flex min-h-72 items-center justify-center rounded-3xl border border-white/15 bg-white p-10 shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
-                    @if($isBmoEmployer)
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-40 w-auto max-w-full">
+                    @if($brand)
+                        <img src="{{ asset($brand['logo']) }}" alt="{{ $brand['logo_alt'] }}" class="h-40 w-auto max-w-full object-contain">
                     @else
                         <div class="flex h-24 w-24 items-center justify-center rounded-3xl bg-slate-950 text-4xl font-bold text-white">
                             {{ mb_strtoupper(mb_substr($employerName, 0, 1)) }}
@@ -59,7 +60,7 @@
             </div>
 
             <div class="p-6 md:p-8">
-                <p class="text-xs font-black uppercase tracking-[0.24em] text-[#005eb8]">Featured employer partner</p>
+                <p class="text-xs font-black uppercase tracking-[0.24em]" style="color: {{ $primary }};">Featured employer partner</p>
                 <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-950">{{ $employerName }}</h1>
                 @if($location !== '')
                     <p class="mt-2 text-sm font-semibold text-slate-500">{{ $location }}</p>
@@ -67,10 +68,10 @@
                 <p class="mt-5 text-base leading-7 text-slate-600">
                     {{ $bio !== '' ? $bio : 'This employer is hiring through LA Sentinel Jobs.' }}
                 </p>
-                @if($isBmoEmployer)
-                    <div class="mt-5 rounded-2xl border border-[#b9d8f2] bg-[#f8fbff] px-4 py-4">
+                @if($brand)
+                    <div class="mt-5 rounded-2xl px-4 py-4" style="border: 1px solid {{ $softBorder }}; background: {{ $soft }};">
                         <p class="text-sm font-bold leading-6 text-slate-700">
-                            BMO is featured here for roles that can connect Los Angeles candidates with banking, branch leadership, customer service, small business, and operations careers.
+                            {{ $brand['profile_callout'] }}
                         </p>
                     </div>
                 @endif
@@ -80,12 +81,12 @@
                     @endforeach
                 </div>
                 <div class="mt-6 flex flex-wrap gap-2">
-                    <span class="rounded-full bg-[#eef6ff] px-3 py-1.5 text-xs font-bold text-[#005eb8] ring-1 ring-[#d8e8f8]">{{ number_format($listings->total()) }} featured jobs</span>
+                    <span class="rounded-full px-3 py-1.5 text-xs font-bold" style="background: {{ $soft }}; color: {{ $primary }}; box-shadow: 0 0 0 1px {{ $softBorder }};">{{ number_format($listings->total()) }} featured jobs</span>
                     @if($profile?->is_verified)
                         <span class="rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-bold text-emerald-700 ring-1 ring-emerald-200">Verified employer</span>
                     @endif
                     @if($website !== '')
-                        <a href="{{ $website }}" target="_blank" rel="noopener" class="rounded-full bg-[#005eb8] px-3 py-1.5 text-xs font-bold text-white">Careers site</a>
+                        <a href="{{ $website }}" target="_blank" rel="noopener" class="rounded-full px-3 py-1.5 text-xs font-bold text-white" style="background: {{ $primary }};">Careers site</a>
                     @endif
                 </div>
             </div>
@@ -95,7 +96,7 @@
     <section class="mt-8">
         <div class="mb-4 flex items-center justify-between gap-3">
             <h2 class="text-2xl font-bold text-slate-950">Featured openings</h2>
-            <a href="{{ route('listings.index', ['user' => $employer->getKey()]) }}" class="text-sm font-bold text-[#005eb8]">View BMO listings</a>
+            <a href="{{ route('listings.index', ['user' => $employer->getKey()]) }}" class="text-sm font-bold" style="color: {{ $primary }};">View all listings</a>
         </div>
 
         <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

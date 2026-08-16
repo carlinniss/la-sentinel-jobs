@@ -83,6 +83,13 @@ final class DemoUserCatalog
                 'phone' => '+13235550109',
                 'is_admin' => false,
             ],
+            [
+                'email' => 'k@k.com',
+                'name' => "St. John's Community Health Careers",
+                'password' => $password,
+                'phone' => '+13235411411',
+                'is_admin' => false,
+            ],
         ];
     }
 
