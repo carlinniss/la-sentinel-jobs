@@ -29,14 +29,20 @@
     data-ad-format="{{ $format }}"
 >
     <p class="mb-2 text-center text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">Advertisement</p>
-    <div class="{{ $formatClasses }} overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div class="relative {{ $formatClasses }} overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         @if($isLiveZone)
+            <div class="absolute inset-0 flex min-h-[inherit] h-full w-full flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-white to-amber-50 px-5 py-8 text-center" aria-hidden="true">
+                <span class="text-xs font-black uppercase tracking-[0.16em] text-[#8b1d22]">LA Sentinel Jobs</span>
+                <span class="mt-2 text-sm font-bold text-slate-700">Advertising space</span>
+                <span class="mt-1 text-xs text-slate-400">{{ $formatLabel }}</span>
+            </div>
             <broadstreet-zone
+                class="relative z-10 block h-full min-h-[inherit] w-full"
                 zone-id="{{ $zoneId }}"
                 uri-keywords="true"
                 soft-keywords="true"
                 @if($preview) preview="true" @endif
-                style="display:block; min-height:100%; width:100%;"
+                style="min-height:inherit;"
             ></broadstreet-zone>
         @else
             <div class="flex min-h-[inherit] h-full w-full flex-col items-center justify-center bg-gradient-to-br from-slate-50 via-white to-amber-50 px-5 py-8 text-center">

@@ -8,6 +8,8 @@ services:
     environment:
       APP_ENV: production
       APP_DEBUG: "false"
+      APP_URL: "${APP_URL:-https://jobs-staging.lasentinel.net}"
+      ASSET_URL: "${ASSET_URL:-https://jobs-staging.lasentinel.net}"
       DB_CONNECTION: mysql
       DB_HOST: db
       DB_PORT: 3306
@@ -21,7 +23,7 @@ services:
       RUN_DB_SEED: "false"
       BROADSTREET_ENABLED: "${BROADSTREET_ENABLED:-true}"
       BROADSTREET_NETWORK_ID: "${BROADSTREET_NETWORK_ID:-10588}"
-      BROADSTREET_PREVIEW: "${BROADSTREET_PREVIEW:-true}"
+      BROADSTREET_PREVIEW: "${BROADSTREET_PREVIEW:-false}"
       BROADSTREET_FLUX_ENABLED: "${BROADSTREET_FLUX_ENABLED:-true}"
       BROADSTREET_SHOW_PLACEHOLDERS: "${BROADSTREET_SHOW_PLACEHOLDERS:-true}"
       BROADSTREET_ZONE_BILLBOARD: "${BROADSTREET_ZONE_BILLBOARD:-187227}"
