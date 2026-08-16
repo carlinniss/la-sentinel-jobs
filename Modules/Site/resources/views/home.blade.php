@@ -272,11 +272,19 @@
                 $featuredEmployerBio = trim((string) ($featuredEmployer->profile?->bio ?? ''));
                 $featuredEmployerWebsite = trim((string) ($featuredEmployer->profile?->website ?? ''));
                 $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($featuredEmployerName);
+                $isLeadFeaturedEmployer = ($featuredEmployerBrand['key'] ?? null) === 'st-johns';
             @endphp
-            <article class="featured-employer-card">
+            <article @class([
+                'featured-employer-card',
+                'lg:col-span-2' => $isLeadFeaturedEmployer,
+            ]) @if($isLeadFeaturedEmployer) style="border-color: {{ $featuredEmployerBrand['soft_border'] }}; box-shadow: 0 22px 50px rgba(188, 66, 47, 0.14);" @endif>
                 <div class="featured-employer-logo-panel" @if($featuredEmployerBrand) style="background: {{ $featuredEmployerBrand['panel_background'] }}; border-color: {{ $featuredEmployerBrand['soft_border'] }};" @endif>
                     @if($featuredEmployerBrand)
-                        <img src="{{ asset($featuredEmployerBrand['logo']) }}" alt="{{ $featuredEmployerBrand['logo_alt'] }}" class="h-24 w-auto max-w-full object-contain md:h-28">
+                        <img src="{{ asset($featuredEmployerBrand['logo']) }}" alt="{{ $featuredEmployerBrand['logo_alt'] }}" @class([
+                            'w-auto max-w-full object-contain',
+                            'h-28 md:h-36' => $isLeadFeaturedEmployer,
+                            'h-24 md:h-28' => ! $isLeadFeaturedEmployer,
+                        ])>
                     @else
                         <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-950 text-3xl font-black text-white">
                             {{ mb_strtoupper(mb_substr($featuredEmployerName, 0, 1)) }}

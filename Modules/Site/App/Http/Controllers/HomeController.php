@@ -25,6 +25,7 @@ class HomeController extends Controller
                 'listings as active_listings_count' => fn ($query) => $query->where('status', 'active'),
             ])
             ->featuredEmployers()
+            ->orderByRaw("case when email = 'k@k.com' or name like '%St. John%' or name like '%St John%' then 0 else 1 end")
             ->orderByDesc('active_listings_count')
             ->limit(3)
             ->get();
