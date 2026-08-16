@@ -440,28 +440,6 @@
         <div class="bg-rose-100 border border-rose-300 text-rose-700 px-4 py-3 rounded-xl text-sm">{{ session('error') }}</div>
     </div>
     @endif
-    @if($showPublicAdvertising)
-    <div class="mx-auto max-w-[1320px] space-y-5 px-4 pt-5 md:pt-7">
-        @include('site::partials.broadstreet-ad', [
-            'zone' => 'billboard',
-            'format' => 'billboard',
-            'placement' => 'public-page-billboard',
-        ])
-
-        <div class="grid gap-4 md:grid-cols-2">
-            @include('site::partials.broadstreet-ad', [
-                'zone' => 'source_header_left',
-                'format' => 'inline',
-                'placement' => 'source-header-left',
-            ])
-            @include('site::partials.broadstreet-ad', [
-                'zone' => 'source_header_right',
-                'format' => 'inline',
-                'placement' => 'source-header-right',
-            ])
-        </div>
-    </div>
-    @endif
     <main @class([
         'site-main',
         'min-h-screen' => $demoLandingMode,
