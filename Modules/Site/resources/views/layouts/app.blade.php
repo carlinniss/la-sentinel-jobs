@@ -76,6 +76,26 @@
     $headerNotificationCount = max(0, (int) ($headerAccount['notifications'] ?? 0));
     $headerFavoritesCount = max(0, (int) ($headerAccount['favorites'] ?? 0));
     $headerBadgeLabel = static fn (int $count): string => $count > 99 ? '99+' : (string) $count;
+    $broadstreetZones = collect(config('advertising.broadstreet.zones', []))
+        ->filter(fn ($zoneId) => filled($zoneId));
+    $broadstreetEnabled = (bool) config('advertising.broadstreet.enabled') && $broadstreetZones->isNotEmpty();
+    $broadstreetPreview = (bool) config('advertising.broadstreet.preview', false);
+    $broadstreetFluxEnabled = (bool) config('advertising.broadstreet.flux_enabled', true);
+    $broadstreetOptions = [
+        'uriKeywords' => true,
+        'softKeywords' => true,
+        'preview' => $broadstreetPreview,
+    ];
+    $broadstreetNetworkId = config('advertising.broadstreet.network_id');
+    $showPublicAdvertising = ! $simplePage
+        && ! $demoLandingMode
+        && request()->routeIs('home', 'listings.*', 'categories.*', 'employers.show');
+
+    if (filled($broadstreetNetworkId)) {
+        $broadstreetOptions['networkId'] = is_numeric($broadstreetNetworkId)
+            ? (int) $broadstreetNetworkId
+            : $broadstreetNetworkId;
+    }
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}">
@@ -86,6 +106,18 @@
     <title>{{ $siteName }} @hasSection('title') - @yield('title') @endif</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
+    @if($broadstreetEnabled && $showPublicAdvertising)
+    <script src="https://cdn.broadstreetads.com/init-2.min.js" async></script>
+    <script>
+        window.broadstreet = window.broadstreet || { run: [] };
+        window.broadstreet.run.push(function () {
+            window.broadstreet.watch(@json($broadstreetOptions));
+        });
+    </script>
+    @if($broadstreetFluxEnabled && ! $broadstreetPreview && filled($broadstreetNetworkId))
+    <script src="https://flux.broadstreet.ai/emit/{{ $broadstreetNetworkId }}.js" async></script>
+    @endif
+    @endif
 </head>
 <body
     data-auth-user-id="{{ auth()->id() ?? '' }}"
@@ -95,6 +127,14 @@
     'bg-slate-50' => $demoLandingMode,
     'bg-[#f5f5f7]' => $simplePage && ! $demoLandingMode,
 ])>
+    @if($broadstreetEnabled && $showPublicAdvertising)
+    @if(filled(config('advertising.broadstreet.zones.source_body_primary')))
+    <broadstreet-zone zone-id="{{ config('advertising.broadstreet.zones.source_body_primary') }}" @if($broadstreetPreview) preview="true" @endif></broadstreet-zone>
+    @endif
+    @if(filled(config('advertising.broadstreet.zones.source_body_secondary')))
+    <broadstreet-zone zone-id="{{ config('advertising.broadstreet.zones.source_body_secondary') }}" @if($broadstreetPreview) preview="true" @endif></broadstreet-zone>
+    @endif
+    @endif
     @if(! $demoLandingMode)
     @if($simplePage)
     <nav class="sticky top-0 z-50 border-b border-black/5 bg-white/80">
@@ -401,6 +441,20 @@
     @if(session('error'))
     <div class="max-w-[1320px] mx-auto px-4 pt-3">
         <div class="bg-rose-100 border border-rose-300 text-rose-700 px-4 py-3 rounded-xl text-sm">{{ session('error') }}</div>
+    </div>
+    @endif
+    @if($showPublicAdvertising)
+    <div class="mx-auto grid max-w-[1320px] gap-4 px-4 pt-5 md:grid-cols-2 md:pt-7">
+        @include('site::partials.broadstreet-ad', [
+            'zone' => 'source_header_left',
+            'format' => 'inline',
+            'placement' => 'source-header-left',
+        ])
+        @include('site::partials.broadstreet-ad', [
+            'zone' => 'source_header_right',
+            'format' => 'inline',
+            'placement' => 'source-header-right',
+        ])
     </div>
     @endif
     <main @class([

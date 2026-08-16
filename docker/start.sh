@@ -8,8 +8,6 @@ fi
 
 php artisan migrate --force
 
-# Seeding demo data is not safe to repeat on every container restart. Enable it
-# explicitly for a fresh demo database with RUN_DB_SEED=true.
 if [ "${RUN_DB_SEED:-false}" = "true" ]; then
     php artisan db:seed --force
 fi

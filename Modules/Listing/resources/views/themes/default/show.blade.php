@@ -205,6 +205,14 @@
                     @endauth
                 </div>
             </div>
+
+            <div class="mt-6">
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'cube',
+                    'format' => 'cube',
+                    'placement' => 'job-detail-sidebar',
+                ])
+            </div>
         </div>
     </div>
 

@@ -195,6 +195,14 @@
                     </button>
                 </div>
             </form>
+
+            <div class="hidden lg:block">
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'cube',
+                    'format' => 'cube',
+                    'placement' => 'jobs-search-sidebar',
+                ])
+            </div>
             </div>
         </aside>
 
@@ -310,6 +318,12 @@
                     </form>
                 </div>
             </div>
+
+            @include('site::partials.broadstreet-ad', [
+                'zone' => 'inline',
+                'format' => 'inline',
+                'placement' => 'jobs-search-in-feed',
+            ])
 
             @if($listings->isEmpty())
                 <div class="listing-filter-card py-14 text-center text-slate-500">
