@@ -10,7 +10,7 @@ return [
         'flux_enabled' => (bool) env('BROADSTREET_FLUX_ENABLED', true),
         'show_placeholders' => (bool) env('BROADSTREET_SHOW_PLACEHOLDERS', true),
         'zones' => [
-            'source_body_primary' => env('BROADSTREET_ZONE_SOURCE_BODY_PRIMARY', 187227),
+            'billboard' => env('BROADSTREET_ZONE_BILLBOARD', 187227),
             'source_body_secondary' => env('BROADSTREET_ZONE_SOURCE_BODY_SECONDARY', 187229),
             'source_header_left' => env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225),
             'source_header_right' => env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226),

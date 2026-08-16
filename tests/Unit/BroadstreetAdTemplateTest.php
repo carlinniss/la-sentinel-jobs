@@ -34,7 +34,7 @@ class BroadstreetAdTemplateTest extends TestCase
         $config = file_get_contents(dirname(__DIR__, 2).'/config/advertising.php');
 
         self::assertStringContainsString("env('BROADSTREET_NETWORK_ID', 10588)", $config);
-        self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_BODY_PRIMARY', 187227)", $config);
+        self::assertStringContainsString("env('BROADSTREET_ZONE_BILLBOARD', 187227)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_BODY_SECONDARY', 187229)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226)", $config);
