@@ -38,6 +38,18 @@ class BroadstreetAdTemplateTest extends TestCase
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_BODY_SECONDARY', 187229)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226)", $config);
+        self::assertStringContainsString("env('BROADSTREET_ZONE_CUBE', 187228)", $config);
+    }
+
+    public function test_broadstreet_slots_do_not_render_fake_ad_creative(): void
+    {
+        $template = file_get_contents(
+            dirname(__DIR__, 2).'/Modules/Site/resources/views/partials/broadstreet-ad.blade.php'
+        );
+
+        self::assertStringNotContainsString('LA Sentinel Jobs', $template);
+        self::assertStringNotContainsString('Advertising space', $template);
+        self::assertStringNotContainsString('Amazing Cube', $template);
     }
 
     public function test_job_detail_uses_the_lasentinel_google_tile_four_slot(): void
