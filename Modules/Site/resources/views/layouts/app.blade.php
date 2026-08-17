@@ -90,6 +90,9 @@
     $showPublicAdvertising = ! $simplePage
         && ! $demoLandingMode
         && request()->routeIs('home', 'listings.*', 'categories.*', 'employers.show');
+    $showGooglePublisherTile = ! $simplePage
+        && ! $demoLandingMode
+        && request()->routeIs('listings.show');
 
     if (filled($broadstreetNetworkId)) {
         $broadstreetOptions['networkId'] = is_numeric($broadstreetNetworkId)
@@ -117,6 +120,19 @@
     @if($broadstreetFluxEnabled && ! $broadstreetPreview && filled($broadstreetNetworkId))
     <script src="https://flux.broadstreet.ai/emit/{{ $broadstreetNetworkId }}.js" async></script>
     @endif
+    @endif
+    @if($showGooglePublisherTile)
+    <script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+    <script>
+        window.googletag = window.googletag || { cmd: [] };
+        window.googletag.cmd.push(function () {
+            window.googletag
+                .defineSlot('/17020487/Tile_4', [300, 250], 'div-gpt-ad-1778596674801-0')
+                .addService(window.googletag.pubads());
+            window.googletag.pubads().enableSingleRequest();
+            window.googletag.enableServices();
+        });
+    </script>
     @endif
 </head>
 <body
