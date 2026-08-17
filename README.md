@@ -136,6 +136,8 @@ php artisan view:cache
 
 ## Production Checklist
 
+LA Sentinel Jobs must pass the [production launch gate](docs/production-launch-gate.md) before production deployment. The gate includes a tested MySQL and uploaded-media backup/restore drill, Docker portability checks, secret management, storage permissions, Cloudflare recovery, and rollback verification.
+
 ```bash
 php artisan migrate --force
 php artisan db:seed --force
