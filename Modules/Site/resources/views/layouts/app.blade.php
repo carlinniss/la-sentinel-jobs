@@ -128,8 +128,8 @@
     'bg-[#f5f5f7]' => $simplePage && ! $demoLandingMode,
 ])>
     @if($broadstreetEnabled && $showPublicAdvertising)
-    @if(filled(config('advertising.broadstreet.zones.source_body_secondary')))
-    <broadstreet-zone zone-id="{{ config('advertising.broadstreet.zones.source_body_secondary') }}" @if($broadstreetPreview) preview="true" @endif></broadstreet-zone>
+    @if(filled(config('advertising.broadstreet.zones.billboard')))
+    <broadstreet-zone zone-id="{{ config('advertising.broadstreet.zones.billboard') }}" @if($broadstreetPreview) preview="true" @endif></broadstreet-zone>
     @endif
     @endif
     @if(! $demoLandingMode)
