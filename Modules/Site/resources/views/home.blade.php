@@ -110,6 +110,36 @@
 </div>
 @else
 <div class="community-home-shell max-w-[1120px] mx-auto px-4 py-8 md:py-14 space-y-10 md:space-y-16">
+    <section class="community-action-strip">
+        <div class="min-w-0">
+            <p class="community-kicker">Start Here</p>
+            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Post a resume, apply for jobs, or bring hiring partners onto LA Sentinel.</h2>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600 md:text-base">A faster path for jobseekers and a clearer attribution story for employers: applicants can come through LA Sentinel, and partners can see where the candidate relationship started.</p>
+            <div class="mt-5 grid gap-3 text-left md:grid-cols-3">
+                <div class="community-mini-step">
+                    <span>1</span>
+                    <strong>Post resume</strong>
+                    <p>Create a profile employers can review before and after events.</p>
+                </div>
+                <div class="community-mini-step">
+                    <span>2</span>
+                    <strong>Apply for jobs</strong>
+                    <p>Find roles by employer, location, category, and compensation.</p>
+                </div>
+                <div class="community-mini-step">
+                    <span>3</span>
+                    <strong>Track attribution</strong>
+                    <p>Show employers which applicants came through LA Sentinel.</p>
+                </div>
+            </div>
+        </div>
+        <div class="community-action-buttons">
+            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
+            <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
+            <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
+        </div>
+    </section>
+
     <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-start">
         <div>
             <p class="community-kicker mb-3">{{ $heroBadge }}</p>
@@ -225,36 +255,6 @@
                     <p class="mt-1 text-xs font-bold text-[var(--oc-muted)]">outreach</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="community-action-strip">
-        <div class="min-w-0">
-            <p class="community-kicker">Start Here</p>
-            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Post a resume, apply for jobs, or bring hiring partners onto LA Sentinel.</h2>
-            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600 md:text-base">A faster path for jobseekers and a clearer attribution story for employers: applicants can come through LA Sentinel, and partners can see where the candidate relationship started.</p>
-            <div class="mt-5 grid gap-3 text-left md:grid-cols-3">
-                <div class="community-mini-step">
-                    <span>1</span>
-                    <strong>Post resume</strong>
-                    <p>Create a profile employers can review before and after events.</p>
-                </div>
-                <div class="community-mini-step">
-                    <span>2</span>
-                    <strong>Apply for jobs</strong>
-                    <p>Find roles by employer, location, category, and compensation.</p>
-                </div>
-                <div class="community-mini-step">
-                    <span>3</span>
-                    <strong>Track attribution</strong>
-                    <p>Show employers which applicants came through LA Sentinel.</p>
-                </div>
-            </div>
-        </div>
-        <div class="community-action-buttons">
-            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
-            <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
-            <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
         </div>
     </section>
 

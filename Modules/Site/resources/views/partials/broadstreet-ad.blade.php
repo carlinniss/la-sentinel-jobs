@@ -9,7 +9,7 @@
 
     $formatClasses = match ($format) {
         'billboard' => 'mx-auto min-h-[100px] w-full max-w-[970px] md:min-h-[180px] lg:min-h-[250px]',
-        'cube' => 'mx-auto min-h-[250px] w-full max-w-[320px]',
+        'cube' => 'mx-auto min-h-[250px] w-full max-w-[360px]',
         default => 'mx-auto min-h-[100px] w-full max-w-[970px] md:min-h-[140px]',
     };
 @endphp

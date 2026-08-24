@@ -82,7 +82,7 @@
         </div>
     </section>
 
-    <div class="grid grid-cols-1 lg:grid-cols-[260px,1fr] gap-4 lg:gap-5">
+    <div class="grid grid-cols-1 lg:grid-cols-[300px,1fr] xl:grid-cols-[360px,1fr] gap-4 lg:gap-5">
         <aside class="listing-sidebar" data-listing-filter-drawer aria-hidden="false">
             <button type="button" class="listing-sidebar-backdrop lg:hidden" data-listing-filter-close aria-label="Close filters"></button>
             <div class="listing-sidebar-shell space-y-4">
