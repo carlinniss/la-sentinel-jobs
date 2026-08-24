@@ -1243,6 +1243,14 @@ body.oc-header-menu-open .oc-nav-wrap {
     margin-top: 1.25rem;
 }
 
+.community-outreach-grid .google-ad-placeholder {
+    align-self: stretch;
+}
+
+.community-outreach-grid .google-ad-placeholder-frame {
+    min-height: 250px;
+}
+
 .listing-sidebar .google-ad-placeholder {
     margin-top: 1rem;
 }

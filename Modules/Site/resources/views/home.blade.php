@@ -395,16 +395,16 @@
             <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Employers show up clearly</h2>
             <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Hiring teams can share mission, pay, benefits, location, and next steps before applicants apply.</p>
         </article>
-        <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-            <p class="community-kicker">Outreach</p>
-            <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Hiring events and training</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A natural home for resume help, career fairs, certification programs, and workforce partners.</p>
-        </article>
-        <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-            <p class="community-kicker">Impact</p>
-            <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Families and futures</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">A pathway from better work to financial stability, stronger families, and stronger neighborhoods.</p>
-        </article>
+        @include('site::partials.google-ad-placeholder', [
+            'format' => 'display',
+            'placement' => 'home-outreach-grid-display-1',
+            'label' => 'Workforce partner ad',
+        ])
+        @include('site::partials.google-ad-placeholder', [
+            'format' => 'display',
+            'placement' => 'home-outreach-grid-display-2',
+            'label' => 'Community careers ad',
+        ])
     </section>
 
     @include('site::partials.broadstreet-ad', [
