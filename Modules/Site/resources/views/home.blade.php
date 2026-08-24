@@ -175,6 +175,13 @@
                 </a>
                 @endauth
             </div>
+            <div class="mt-10 max-w-[420px]">
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'cube',
+                    'format' => 'cube',
+                    'placement' => 'home-hero-left',
+                ])
+            </div>
         </div>
         <div class="community-jobs-panel rounded-[28px] border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5 shadow-[0_18px_45px_rgba(29,29,31,0.08)]">
             <div class="community-hero-photo mb-5">
