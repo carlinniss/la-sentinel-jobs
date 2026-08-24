@@ -125,6 +125,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
                 ->orWhere('name', 'like', '%BMO%')
                 ->orWhere('name', 'like', '%St. John%')
                 ->orWhere('name', 'like', '%St John%')
+                ->orWhere('name', 'like', '%Saint John%')
                 ->orWhereHas('profile', fn (Builder $profileQuery): Builder => $profileQuery->where('is_verified', true));
         });
     }

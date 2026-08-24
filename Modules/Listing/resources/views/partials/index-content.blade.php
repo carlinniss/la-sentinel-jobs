@@ -6,6 +6,8 @@
         ? $activeCategoryName.' Jobs and Compensation'
         : 'All Jobs and Compensation';
     $sentinelUrl = 'https://lasentinel.net';
+    $resumeRoute = auth()->check() ? route('panel.profile.edit') : route('register');
+    $postJobRoute = auth()->check() ? route('panel.listings.create') : route('login');
     $canSaveSearch = $search !== '' || ! is_null($categoryId);
     $normalizeQuery = static fn ($value): bool => ! is_null($value) && $value !== '';
     $usCountryId = $countries->first(fn ($country) => strcasecmp((string) $country->name, 'United States') === 0)?->id ?? $countryId;
@@ -61,6 +63,24 @@
             Community Jobs Home
         </a>
     </div>
+
+    <section class="listing-action-strip mb-5">
+        <div class="min-w-0 text-left">
+            <p class="community-kicker">Jobs and Resumes</p>
+            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Apply faster and keep your resume visible to community hiring partners.</h2>
+            <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">LA Sentinel Jobs is built to help jobseekers apply through the platform while employers can see which applicants came from LA Sentinel outreach.</p>
+        </div>
+        <div class="listing-action-buttons">
+            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
+            <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
+            <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
+        </div>
+        <div class="community-ad-slot listing-ad-slot">
+            <span>600 x 250</span>
+            <strong>Jobs sponsor ad</strong>
+            <p>Mobile scales down for QR and event promotion.</p>
+        </div>
+    </section>
 
     <div class="grid grid-cols-1 lg:grid-cols-[260px,1fr] gap-4 lg:gap-5">
         <aside class="listing-sidebar" data-listing-filter-drawer aria-hidden="false">
