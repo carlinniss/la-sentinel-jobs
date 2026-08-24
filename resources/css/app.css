@@ -732,7 +732,7 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .listing-action-strip {
-    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.22fr) minmax(16rem, 0.28fr);
+    grid-template-columns: minmax(0, 1fr) minmax(12rem, 0.22fr) minmax(18.75rem, 0.28fr);
 }
 
 .community-action-buttons,
@@ -828,6 +828,110 @@ body.oc-header-menu-open .oc-nav-wrap {
 
 .listing-ad-slot {
     min-height: 9.2rem;
+}
+
+.google-ad-placeholder {
+    display: grid;
+    justify-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    color: #5f554b;
+    text-align: center;
+}
+
+.google-ad-placeholder p {
+    margin: 0;
+    color: #94a3b8;
+    font-size: 0.62rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.google-ad-placeholder-frame {
+    display: grid;
+    place-items: center;
+    gap: 0.25rem;
+    overflow: hidden;
+    border: 1px dashed rgba(139, 29, 34, 0.38);
+    border-radius: 0.9rem;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 247, 232, 0.94)),
+        repeating-linear-gradient(-45deg, rgba(214, 166, 65, 0.14) 0 8px, transparent 8px 16px);
+    box-shadow: inset 0 0 0 1px rgba(255, 253, 248, 0.82);
+}
+
+.google-ad-placeholder-display .google-ad-placeholder-frame {
+    width: min(100%, 300px);
+    min-height: 250px;
+}
+
+.google-ad-placeholder-leaderboard .google-ad-placeholder-frame {
+    width: min(100%, 728px);
+    min-height: 90px;
+}
+
+.google-ad-placeholder-skyscraper .google-ad-placeholder-frame {
+    width: min(100%, 160px);
+    min-height: 600px;
+}
+
+.google-ad-placeholder-half-page .google-ad-placeholder-frame {
+    width: min(100%, 300px);
+    min-height: 600px;
+}
+
+.google-ad-placeholder-size {
+    color: #8b1d22;
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.google-ad-placeholder-size-mobile {
+    display: none;
+}
+
+.google-ad-placeholder strong {
+    color: #17120f;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+
+.featured-employer-aside .google-ad-placeholder {
+    margin-top: 1.25rem;
+}
+
+.listing-sidebar .google-ad-placeholder {
+    margin-top: 1rem;
+}
+
+@media (max-width: 767px) {
+    .google-ad-placeholder-leaderboard .google-ad-placeholder-frame {
+        width: min(100%, 320px);
+        min-height: 50px;
+        border-radius: 0.7rem;
+    }
+
+    .google-ad-placeholder-leaderboard .google-ad-placeholder-size-desktop {
+        display: none;
+    }
+
+    .google-ad-placeholder-leaderboard .google-ad-placeholder-size-mobile {
+        display: inline;
+    }
+
+    .google-ad-placeholder-leaderboard strong {
+        display: none;
+    }
+
+    .google-ad-placeholder-skyscraper,
+    .google-ad-placeholder-half-page {
+        display: none;
+    }
 }
 
 .featured-employers-section {

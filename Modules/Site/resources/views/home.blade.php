@@ -140,6 +140,12 @@
         </div>
     </section>
 
+    @include('site::partials.google-ad-placeholder', [
+        'format' => 'leaderboard',
+        'placement' => 'home-top-leaderboard',
+        'label' => 'Top jobs sponsor ad',
+    ])
+
     <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-start">
         <div>
             <p class="community-kicker mb-3">{{ $heroBadge }}</p>
@@ -360,11 +366,11 @@
                     <a href="{{ route('listings.index') }}" class="community-secondary-button justify-center">Browse all employers</a>
                     @endif
                 </div>
-                <div class="community-ad-slot mt-5">
-                    <span>600 x 250</span>
-                    <strong>Featured sponsor / event ad</strong>
-                    <p>Scales for mobile QR and Taste of Soul promotion.</p>
-                </div>
+                @include('site::partials.google-ad-placeholder', [
+                    'format' => 'display',
+                    'placement' => 'home-featured-employer-display',
+                    'label' => 'Featured sponsor ad',
+                ])
             </aside>
         </div>
     </section>
@@ -396,6 +402,12 @@
         'zone' => 'inline',
         'format' => 'inline',
         'placement' => 'home-after-community-outreach',
+    ])
+
+    @include('site::partials.google-ad-placeholder', [
+        'format' => 'leaderboard',
+        'placement' => 'home-midpage-leaderboard',
+        'label' => 'Community jobs sponsor ad',
     ])
 
     <section>
