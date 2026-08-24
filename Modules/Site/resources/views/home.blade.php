@@ -110,7 +110,7 @@
 </div>
 @else
 <div class="community-home-shell max-w-[1120px] mx-auto px-4 py-8 md:py-14 space-y-10 md:space-y-16">
-    <section class="community-action-strip">
+    <section class="community-action-strip community-action-strip-loud">
         <div class="min-w-0">
             <p class="community-kicker">Start Here</p>
             <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Post a resume, apply for jobs, or bring hiring partners onto LA Sentinel.</h2>
@@ -134,7 +134,7 @@
             </div>
         </div>
         <div class="community-action-buttons">
-            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
+            <a href="{{ $resumeRoute }}" class="btn-primary community-action-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
             <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
             <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
         </div>
