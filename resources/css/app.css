@@ -1048,7 +1048,6 @@ body.oc-header-menu-open .oc-nav-wrap {
 .community-mini-step {
     --step-accent: var(--oc-burgundy);
     --step-soft: rgba(139, 29, 34, 0.12);
-    --step-chip: rgba(139, 29, 34, 0.66);
     --step-ring: rgba(139, 29, 34, 0.18);
     position: relative;
     display: block;
@@ -1062,21 +1061,18 @@ body.oc-header-menu-open .oc-nav-wrap {
 .community-mini-step:nth-child(2) {
     --step-accent: #005eb8;
     --step-soft: rgba(0, 94, 184, 0.12);
-    --step-chip: rgba(0, 94, 184, 0.64);
     --step-ring: rgba(0, 94, 184, 0.18);
 }
 
 .community-mini-step:nth-child(3) {
     --step-accent: #14110f;
     --step-soft: rgba(20, 17, 15, 0.1);
-    --step-chip: rgba(20, 17, 15, 0.62);
     --step-ring: rgba(20, 17, 15, 0.16);
 }
 
 .community-mini-step:nth-child(4) {
     --step-accent: #d6a641;
     --step-soft: rgba(214, 166, 65, 0.14);
-    --step-chip: rgba(214, 166, 65, 0.7);
     --step-ring: rgba(214, 166, 65, 0.22);
 }
 
@@ -1091,18 +1087,6 @@ body.oc-header-menu-open .oc-nav-wrap {
     padding: 1rem;
     box-shadow: 0 12px 26px rgba(54, 32, 19, 0.08);
     transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
-}
-
-.community-action-strip-loud .community-mini-step::before {
-    content: "";
-    position: absolute;
-    top: 0.9rem;
-    right: 0.9rem;
-    width: 2.1rem;
-    height: 0.35rem;
-    border-radius: 999px;
-    background: var(--step-chip);
-    opacity: 0.78;
 }
 
 .community-action-strip-loud .community-mini-step::after {
