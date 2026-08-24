@@ -848,7 +848,7 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .community-action-strip-loud .community-action-primary:hover {
-    background: var(--oc-burgundy);
+    background-color: #14110f;
 }
 
 .community-secondary-button {
