@@ -9,6 +9,27 @@
             <p class="community-kicker">Partner With LA Sentinel Jobs</p>
             <h1>Bring hiring events, workforce programs, and career pathways to the community.</h1>
             <p>
+                Use this form to start a conversation about reaching LA Sentinel Jobs readers, jobseekers, employers, and community workforce partners.
+            </p>
+            <div class="partner-inquiry-benefits" aria-label="Partner benefits">
+                <div>
+                    <strong>Jobs page visibility</strong>
+                    <span>Featured employer placement, sponsored ad areas, dedicated partner profiles, and direct links to active roles or hiring pages.</span>
+                </div>
+                <div>
+                    <strong>Newsletter promotion</strong>
+                    <span>Opportunities to promote jobs, hiring events, training programs, and workforce campaigns through LA Sentinel audience channels.</span>
+                </div>
+                <div>
+                    <strong>Editorial and community storytelling</strong>
+                    <span>Potential coverage around hiring initiatives, career pathways, employer spotlights, and community impact stories.</span>
+                </div>
+                <div>
+                    <strong>Applicant attribution</strong>
+                    <span>A clearer way to see which candidates and employer relationships started through LA Sentinel Jobs.</span>
+                </div>
+            </div>
+            <p class="partner-inquiry-note">
                 Tell us who you are, how to reach you, and what kind of partnership you want to explore. The LA Sentinel team will receive your inquiry directly.
             </p>
         </div>
@@ -48,7 +69,7 @@
 
             <label class="partner-inquiry-field">
                 <span>Comments</span>
-                <textarea name="comments" rows="5" maxlength="3000" placeholder="Tell us about the event, training program, employer partnership, or workforce opportunity.">{{ old('comments') }}</textarea>
+                <textarea name="comments" rows="5" maxlength="3000" placeholder="Tell us whether you are interested in job listings, featured employer placement, newsletter promotion, editorial opportunities, ads, hiring events, training programs, or another workforce partnership.">{{ old('comments') }}</textarea>
                 @error('comments')
                     <strong>{{ $message }}</strong>
                 @enderror

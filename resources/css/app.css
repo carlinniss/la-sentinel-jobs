@@ -999,6 +999,42 @@ body.oc-header-menu-open .oc-nav-wrap {
     line-height: 1.65;
 }
 
+.partner-inquiry-benefits {
+    display: grid;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.partner-inquiry-benefits div {
+    border: 1px solid rgba(139, 29, 34, 0.16);
+    border-left: 4px solid var(--oc-burgundy);
+    border-radius: 16px;
+    background: rgba(255, 253, 248, 0.78);
+    padding: 0.85rem 1rem;
+    box-shadow: 0 10px 22px rgba(54, 32, 19, 0.06);
+}
+
+.partner-inquiry-benefits strong {
+    display: block;
+    color: #17120f;
+    font-size: 0.95rem;
+    font-weight: 950;
+}
+
+.partner-inquiry-benefits span {
+    display: block;
+    margin-top: 0.28rem;
+    color: #5a5048;
+    font-size: 0.88rem;
+    font-weight: 650;
+    line-height: 1.45;
+}
+
+.partner-inquiry-copy .partner-inquiry-note {
+    color: #6a5d52;
+    font-size: 0.94rem;
+}
+
 .partner-inquiry-form {
     display: grid;
     gap: 1rem;
