@@ -137,17 +137,47 @@ class Category extends Model
 
     public static function headerNavigationItems(int $limit = 8): array
     {
-        return static::query()
+        $categories = static::query()
             ->active()
+            ->get(['id', 'name', 'icon', 'parent_id', 'sort_order']);
+
+        $activeListingCounts = Listing::query()
+            ->active()
+            ->whereNotNull('category_id')
+            ->selectRaw('category_id, count(*) as aggregate')
+            ->groupBy('category_id')
+            ->pluck('aggregate', 'category_id')
+            ->map(fn ($count): int => (int) $count);
+
+        $childrenByParent = $categories->groupBy('parent_id');
+        $descendantIds = function (int $categoryId) use (&$descendantIds, $childrenByParent): Collection {
+            $ids = collect([$categoryId]);
+            $children = $childrenByParent->get($categoryId, collect());
+
+            foreach ($children as $child) {
+                $ids = $ids->merge($descendantIds((int) $child->id));
+            }
+
+            return $ids;
+        };
+
+        return $categories
             ->whereNull('parent_id')
-            ->ordered()
-            ->limit($limit)
-            ->get(['id', 'name', 'icon'])
             ->map(fn (self $category): array => [
                 'id' => (int) $category->id,
                 'name' => (string) $category->name,
                 'icon_url' => $category->iconUrl(),
+                'sort_order' => (int) $category->sort_order,
+                'active_listings_count' => $descendantIds((int) $category->id)
+                    ->sum(fn (int $categoryId): int => (int) ($activeListingCounts[$categoryId] ?? 0)),
             ])
+            ->sortBy([
+                ['active_listings_count', 'desc'],
+                ['sort_order', 'asc'],
+                ['name', 'asc'],
+            ])
+            ->take($limit)
+            ->values()
             ->all();
     }
 

@@ -164,7 +164,7 @@ final class RequestAppData
     private function resolveHeaderNavCategories(): array
     {
         try {
-            return Category::headerNavigationItems();
+            return Category::headerNavigationItems(4);
         } catch (Throwable) {
             return [];
         }

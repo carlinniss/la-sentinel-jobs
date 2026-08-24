@@ -60,6 +60,7 @@
         'ja' => 'Japanese',
     ];
     $headerCategories = collect($headerNavCategories ?? [])->values();
+    $visibleHeaderCategories = $headerCategories->take(4);
     $headerFeaturedEmployers = collect($headerFeaturedEmployers ?? [])->values();
     $menuBrowseLinks = collect([
         ['label' => __('site::messages.home'), 'url' => route('home')],
@@ -446,7 +447,7 @@
                         </svg>
                         <span>All Categories</span>
                     </a>
-                    @forelse($headerCategories as $headerCategory)
+                    @forelse($visibleHeaderCategories as $headerCategory)
                     <a href="{{ route('listings.index', ['category' => $headerCategory['id']]) }}" class="oc-category-link">
                         @if(! empty($headerCategory['icon_url']))
                         <span class="oc-category-link-icon">
