@@ -64,6 +64,28 @@
     $resumeRoute = auth()->check() ? route('panel.profile.edit') : route('register');
     $postJobRoute = auth()->check() ? route('panel.listings.create') : route('login');
     $partnerRoute = route('partners.inquiry');
+    $partnerLogoCards = $featuredEmployerCards
+        ->map(function ($featuredEmployer): ?array {
+            $featuredEmployerName = trim((string) $featuredEmployer->name);
+            $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($featuredEmployerName);
+
+            if (! $featuredEmployerBrand || empty($featuredEmployerBrand['logo'])) {
+                return null;
+            }
+
+            return [
+                'key' => $featuredEmployerBrand['key'] ?? $featuredEmployerName,
+                'name' => $featuredEmployerName,
+                'logo' => asset($featuredEmployerBrand['logo']),
+                'logo_alt' => $featuredEmployerBrand['logo_alt'] ?? $featuredEmployerName,
+                'url' => route('employers.show', $featuredEmployer),
+                'summary' => $featuredEmployerBrand['short_summary'] ?? 'Featured hiring partner',
+            ];
+        })
+        ->filter()
+        ->unique('key')
+        ->take(6)
+        ->values();
     $formatCompensation = static function ($listing): string {
         if (! $listing->price || (float) $listing->price <= 0) {
             return __('listing::messages.price_on_request');
@@ -151,6 +173,27 @@
             </a>
         </div>
     </section>
+
+    @if($partnerLogoCards->isNotEmpty())
+    <section class="community-partner-strip" aria-labelledby="community-partner-heading">
+        <div class="community-partner-copy">
+            <p class="community-kicker">Partnered With</p>
+            <h2 id="community-partner-heading">Featured hiring partners</h2>
+            <p>Employers and workforce partners appearing across LA Sentinel Jobs.</p>
+        </div>
+        <div class="community-partner-logos" aria-label="Featured partner logos">
+            @foreach($partnerLogoCards as $partnerLogoCard)
+            <a href="{{ $partnerLogoCard['url'] }}" class="community-partner-logo-card">
+                <img src="{{ $partnerLogoCard['logo'] }}" alt="{{ $partnerLogoCard['logo_alt'] }}">
+                <span>
+                    <strong>{{ $partnerLogoCard['name'] }}</strong>
+                    <small>{{ $partnerLogoCard['summary'] }}</small>
+                </span>
+            </a>
+            @endforeach
+        </div>
+    </section>
+    @endif
 
     @include('site::partials.google-ad-placeholder', [
         'format' => 'leaderboard',
