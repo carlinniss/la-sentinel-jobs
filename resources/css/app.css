@@ -1188,6 +1188,14 @@ body.oc-header-menu-open .oc-nav-wrap {
     margin-top: 1.25rem;
 }
 
+.featured-employer-aside .google-ad-placeholder:first-child {
+    margin-top: 0;
+}
+
+.featured-employer-aside .google-ad-placeholder + .community-kicker {
+    margin-top: 1.25rem;
+}
+
 .listing-sidebar .google-ad-placeholder {
     margin-top: 1rem;
 }

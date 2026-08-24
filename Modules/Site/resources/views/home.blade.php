@@ -347,6 +347,11 @@
             </div>
 
             <aside class="featured-employer-aside">
+                @include('site::partials.google-ad-placeholder', [
+                    'format' => 'display',
+                    'placement' => 'home-featured-employer-sidebar-top',
+                    'label' => 'Hiring partner sponsor ad',
+                ])
                 <p class="community-kicker">Direct Employer Access</p>
                 <h3 class="mt-2 text-lg font-black text-slate-950">Find jobs by hiring partner</h3>
                 <div class="mt-4">
