@@ -71,7 +71,7 @@
             <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">LA Sentinel Jobs is built to help jobseekers apply through the platform while employers can see which applicants came from LA Sentinel outreach.</p>
         </div>
         <div class="listing-action-buttons">
-            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
+            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Your Resume</a>
             <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
             <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
         </div>
