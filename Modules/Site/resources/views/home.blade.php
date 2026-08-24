@@ -118,17 +118,14 @@
             <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600 md:text-base">LA Sentinel Jobs is built for people looking for work, employers ready to hire, and partners bringing career pathways to the community.</p>
             <div class="mt-5 grid gap-3 text-left md:grid-cols-3">
                 <a href="{{ $jobSearchRoute }}" class="community-mini-step" aria-label="Search local jobs">
-                    <span>1</span>
                     <strong>Search jobs</strong>
                     <p>Browse local roles, apply faster, and keep your resume ready for hiring events.</p>
                 </a>
                 <a href="{{ $postJobRoute }}" class="community-mini-step" aria-label="Post jobs for LA Sentinel candidates">
-                    <span>2</span>
                     <strong>Post jobs</strong>
                     <p>Share open roles and reach candidates connected to the LA Sentinel community.</p>
                 </a>
                 <a href="{{ $partnerRoute }}" class="community-mini-step" aria-label="Partner with LA Sentinel Jobs">
-                    <span>3</span>
                     <strong>Partner with us</strong>
                     <p>Bring hiring events, training programs, and workforce pathways to the LA Sentinel team.</p>
                 </a>

@@ -943,22 +943,8 @@ body.oc-header-menu-open .oc-nav-wrap {
     outline-offset: 3px;
 }
 
-.community-mini-step span {
-    display: inline-flex;
-    height: 1.65rem;
-    width: 1.65rem;
-    align-items: center;
-    justify-content: center;
-    border-radius: 999px;
-    background: #14110f;
-    color: #fff8e8;
-    font-size: 0.75rem;
-    font-weight: 900;
-}
-
 .community-mini-step strong {
     display: block;
-    margin-top: 0.55rem;
     color: #17120f;
     font-size: 0.95rem;
 }
