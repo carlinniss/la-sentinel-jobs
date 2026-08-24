@@ -1030,6 +1030,17 @@ body.oc-header-menu-open .oc-nav-wrap {
     line-height: 1.45;
 }
 
+.partner-inquiry-benefits .partner-inquiry-benefit-featured {
+    border-color: rgba(0, 94, 184, 0.24);
+    border-left-color: #005eb8;
+    background:
+        linear-gradient(135deg, rgba(238, 246, 255, 0.9), rgba(255, 253, 248, 0.92));
+}
+
+.partner-inquiry-benefits .partner-inquiry-benefit-featured strong {
+    color: #063e74;
+}
+
 .partner-inquiry-copy .partner-inquiry-note {
     color: #6a5d52;
     font-size: 0.94rem;

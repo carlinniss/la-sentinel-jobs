@@ -28,6 +28,10 @@
                     <strong>Applicant attribution</strong>
                     <span>A clearer way to see which candidates and employer relationships started through LA Sentinel Jobs.</span>
                 </div>
+                <div class="partner-inquiry-benefit-featured">
+                    <strong>Early partner access to upcoming AI upgrades</strong>
+                    <span>As new AI tools roll out, partners can be among the first considered for features that help improve job matching, candidate discovery, resume support, employer spotlights, and campaign reporting.</span>
+                </div>
             </div>
             <p class="partner-inquiry-note">
                 Tell us who you are, how to reach you, and what kind of partnership you want to explore. The LA Sentinel team will receive your inquiry directly.
@@ -69,7 +73,7 @@
 
             <label class="partner-inquiry-field">
                 <span>Comments</span>
-                <textarea name="comments" rows="5" maxlength="3000" placeholder="Tell us whether you are interested in job listings, featured employer placement, newsletter promotion, editorial opportunities, ads, hiring events, training programs, or another workforce partnership.">{{ old('comments') }}</textarea>
+                <textarea name="comments" rows="5" maxlength="3000" placeholder="Tell us whether you are interested in job listings, featured employer placement, newsletter promotion, editorial opportunities, ads, hiring events, training programs, upcoming AI partner tools, or another workforce partnership.">{{ old('comments') }}</textarea>
                 @error('comments')
                     <strong>{{ $message }}</strong>
                 @enderror
