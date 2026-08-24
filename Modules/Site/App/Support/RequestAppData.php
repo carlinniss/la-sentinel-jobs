@@ -24,6 +24,7 @@ final class RequestAppData
         View::share('generalSettings', $generalSettings);
         View::share('headerLocationCountries', $this->resolveHeaderLocationCountries());
         View::share('headerNavCategories', $this->resolveHeaderNavCategories());
+        View::share('headerFeaturedEmployers', $this->resolveHeaderFeaturedEmployers());
         View::share('headerAccountMeta', $this->resolveHeaderAccountMeta());
     }
 
@@ -164,6 +165,30 @@ final class RequestAppData
     {
         try {
             return Category::headerNavigationItems();
+        } catch (Throwable) {
+            return [];
+        }
+    }
+
+    private function resolveHeaderFeaturedEmployers(): array
+    {
+        try {
+            return User::query()
+                ->select(['id', 'name'])
+                ->withCount([
+                    'listings as active_listings_count' => fn ($query) => $query->where('status', 'active'),
+                ])
+                ->featuredEmployers()
+                ->orderByRaw("case when email = 'k@k.com' or name like '%St. John%' or name like '%St John%' then 0 else 1 end")
+                ->orderByDesc('active_listings_count')
+                ->limit(8)
+                ->get()
+                ->map(fn (User $employer): array => [
+                    'id' => (int) $employer->getKey(),
+                    'name' => $employer->getDisplayName(),
+                    'active_listings_count' => (int) $employer->active_listings_count,
+                ])
+                ->all();
         } catch (Throwable) {
             return [];
         }

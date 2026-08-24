@@ -477,6 +477,46 @@ body.oc-header-menu-open .oc-nav-wrap {
     display: none;
 }
 
+.oc-employer-nav {
+    display: grid;
+    flex: 0 0 min(21rem, 78vw);
+    gap: 0.45rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid rgba(214, 166, 65, 0.72);
+    border-radius: 1.35rem;
+    background: rgba(255, 253, 248, 0.92);
+    box-shadow: 0 12px 28px rgba(54, 32, 19, 0.08);
+}
+
+.oc-employer-nav p {
+    margin: 0;
+    color: var(--oc-burgundy);
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.oc-employer-nav-select {
+    min-height: 2.8rem;
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #fffdf8;
+    padding: 0 2.5rem 0 1rem;
+    color: #172033;
+    font-size: 0.94rem;
+    font-weight: 800;
+    line-height: 1.2;
+    outline: none;
+}
+
+.oc-employer-nav-select:focus {
+    border-color: rgba(139, 29, 34, 0.44);
+    box-shadow: 0 0 0 3px rgba(139, 29, 34, 0.1);
+}
+
 .oc-category-pill {
     display: inline-flex;
     align-items: center;

@@ -60,6 +60,7 @@
         'ja' => 'Japanese',
     ];
     $headerCategories = collect($headerNavCategories ?? [])->values();
+    $headerFeaturedEmployers = collect($headerFeaturedEmployers ?? [])->values();
     $menuBrowseLinks = collect([
         ['label' => __('site::messages.home'), 'url' => route('home')],
         ['label' => __('site::messages.all_listings'), 'url' => route('listings.index')],
@@ -351,6 +352,19 @@
                         </div>
                     </div>
 
+                    @if($headerFeaturedEmployers->isNotEmpty())
+                    <div class="oc-mobile-menu-section">
+                        <p class="oc-mobile-menu-label">Direct Employer Access</p>
+                        <label for="mobile-featured-employer-jump" class="sr-only">Choose an employer</label>
+                        <select id="mobile-featured-employer-jump" class="oc-employer-nav-select w-full" onchange="if (this.value) window.location.href = this.value;">
+                            <option value="">Choose an employer</option>
+                            @foreach($headerFeaturedEmployers as $headerFeaturedEmployer)
+                                <option value="{{ route('listings.index', ['user' => $headerFeaturedEmployer['id']]) }}">{{ $headerFeaturedEmployer['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
+
                     <div class="oc-mobile-menu-section">
                         <p class="oc-mobile-menu-label">{{ __('site::messages.account') }}</p>
                         <div class="oc-mobile-menu-list">
@@ -414,6 +428,18 @@
 
             <div class="oc-category-row">
                 <div class="oc-category-track">
+                    @if($headerFeaturedEmployers->isNotEmpty())
+                    <div class="oc-employer-nav">
+                        <p>Direct Employer Access</p>
+                        <label for="nav-featured-employer-jump" class="sr-only">Choose an employer</label>
+                        <select id="nav-featured-employer-jump" class="oc-employer-nav-select" onchange="if (this.value) window.location.href = this.value;">
+                            <option value="">Choose an employer</option>
+                            @foreach($headerFeaturedEmployers as $headerFeaturedEmployer)
+                                <option value="{{ route('listings.index', ['user' => $headerFeaturedEmployer['id']]) }}">{{ $headerFeaturedEmployer['name'] }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @endif
                     <a href="{{ route('categories.index') }}" class="oc-category-pill">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 6h16M4 12h16M4 18h16"/>
