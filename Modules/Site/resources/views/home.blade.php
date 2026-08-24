@@ -62,6 +62,7 @@
     $sentinelUrl = 'https://lasentinel.net';
     $resumeRoute = auth()->check() ? route('panel.profile.edit') : route('register');
     $postJobRoute = auth()->check() ? route('panel.listings.create') : route('login');
+    $partnerRoute = auth()->check() ? route('panel.listings.create') : route('register');
     $formatCompensation = static function ($listing): string {
         if (! $listing->price || (float) $listing->price <= 0) {
             return __('listing::messages.price_on_request');
@@ -113,30 +114,36 @@
     <section class="community-action-strip community-action-strip-loud">
         <div class="min-w-0">
             <p class="community-kicker">Start Here</p>
-            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Post a resume, apply for jobs, or bring hiring partners onto LA Sentinel.</h2>
-            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600 md:text-base">A faster path for jobseekers and a clearer attribution story for employers: applicants can come through LA Sentinel, and partners can see where the candidate relationship started.</p>
+            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Choose the path that fits you.</h2>
+            <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600 md:text-base">LA Sentinel Jobs is built for people looking for work, employers ready to hire, and partners bringing career pathways to the community.</p>
             <div class="mt-5 grid gap-3 text-left md:grid-cols-3">
                 <div class="community-mini-step">
                     <span>1</span>
-                    <strong>Post resume</strong>
-                    <p>Create a profile employers can review before and after events.</p>
+                    <strong>Looking for jobs</strong>
+                    <p>Browse local roles, apply faster, and keep your resume ready for hiring events.</p>
                 </div>
                 <div class="community-mini-step">
                     <span>2</span>
-                    <strong>Apply for jobs</strong>
-                    <p>Find roles by employer, location, category, and compensation.</p>
+                    <strong>Employer</strong>
+                    <p>Post open roles and reach candidates connected to the LA Sentinel community.</p>
                 </div>
                 <div class="community-mini-step">
                     <span>3</span>
-                    <strong>Track attribution</strong>
-                    <p>Show employers which applicants came through LA Sentinel.</p>
+                    <strong>Partner</strong>
+                    <p>Bring hiring events, training programs, and workforce pathways into the platform.</p>
                 </div>
             </div>
         </div>
         <div class="community-action-buttons">
-            <a href="{{ $resumeRoute }}" class="btn-primary community-action-primary justify-center px-6 py-3 text-sm font-black">Post Resume</a>
-            <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
-            <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
+            <a href="{{ $resumeRoute }}" class="btn-primary community-action-primary community-action-card justify-center px-6 py-3 text-sm font-black" style="--action-image: url('{{ asset('images/la-sentinel/cta-post-resume.png') }}');">
+                <span>Looking for Jobs</span>
+            </a>
+            <a href="{{ $postJobRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/cta-post-job.png') }}');">
+                <span>Employer</span>
+            </a>
+            <a href="{{ $partnerRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/cta-apply-jobs.png') }}');">
+                <span>Partner</span>
+            </a>
         </div>
     </section>
 
