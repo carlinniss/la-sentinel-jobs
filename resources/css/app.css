@@ -27,6 +27,8 @@ body {
 body {
     font-family: var(--oc-font-sans);
     background:
+        repeating-linear-gradient(90deg, rgba(20, 17, 15, 0.018) 0 1px, transparent 1px 72px),
+        repeating-linear-gradient(180deg, rgba(20, 17, 15, 0.014) 0 1px, transparent 1px 72px),
         radial-gradient(circle at 12% 12%, rgba(214, 166, 65, 0.12), transparent 28%),
         linear-gradient(180deg, rgba(255, 253, 248, 0.98) 0%, rgba(244, 240, 232, 0.98) 48%, rgba(236, 229, 218, 0.98) 100%);
     color: var(--oc-text);
@@ -38,7 +40,9 @@ body::before {
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background: linear-gradient(135deg, rgba(139, 29, 34, 0.025), transparent 42%);
+    background:
+        linear-gradient(135deg, rgba(139, 29, 34, 0.025), transparent 42%),
+        linear-gradient(90deg, transparent, rgba(0, 94, 184, 0.018) 48%, transparent);
 }
 
 h1,
@@ -110,6 +114,9 @@ h6 {
     background: rgba(255, 253, 248, 0.94);
     border-bottom: 2px solid rgba(139, 29, 34, 0.22);
     overflow-x: clip;
+    box-shadow: 0 10px 28px rgba(54, 32, 19, 0.06);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
 }
 
 body.oc-header-menu-open .market-nav-surface,
@@ -253,6 +260,7 @@ body.oc-header-menu-open .oc-nav-wrap {
     font-size: 0.92rem;
     font-weight: 600;
     box-shadow: 0 1px 2px rgba(29, 29, 31, 0.06);
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease, background-color 160ms ease;
 }
 
 .oc-pill-strong {
@@ -592,6 +600,12 @@ body.oc-header-menu-open .oc-nav-wrap {
     color: var(--oc-text);
 }
 
+.oc-pill:hover {
+    border-color: rgba(139, 29, 34, 0.26);
+    box-shadow: 0 10px 22px rgba(54, 32, 19, 0.08);
+    transform: translateY(-1px);
+}
+
 .search-shell {
     border: 1px solid var(--oc-border);
     background: #ffffff;
@@ -675,6 +689,13 @@ body.oc-header-menu-open .oc-nav-wrap {
     box-shadow: 0 18px 42px rgba(54, 32, 19, 0.08);
 }
 
+.community-jobs-panel,
+.community-outreach-card,
+.featured-employer-card,
+.featured-employer-aside {
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
 .community-jobs-panel {
     border-top: 5px solid var(--oc-burgundy);
 }
@@ -725,7 +746,25 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .community-outreach-card {
+    position: relative;
+    overflow: hidden;
     border-top: 4px solid var(--oc-ink);
+}
+
+.community-outreach-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 1px 0 rgba(255, 253, 248, 0.8);
+    pointer-events: none;
+}
+
+.community-outreach-card:hover,
+.featured-employer-card:hover {
+    border-color: rgba(139, 29, 34, 0.26);
+    box-shadow: 0 22px 48px rgba(54, 32, 19, 0.12);
+    transform: translateY(-2px);
 }
 
 .community-cta-band {
@@ -774,13 +813,16 @@ body.oc-header-menu-open .oc-nav-wrap {
 .community-action-strip-loud::before {
     content: "";
     position: absolute;
-    top: -5rem;
-    right: -4rem;
-    width: 15rem;
-    height: 15rem;
+    top: -1px;
+    right: -1px;
+    width: min(22rem, 42%);
+    height: 12rem;
     border: 1px solid rgba(139, 29, 34, 0.12);
-    border-radius: 999px;
-    background: rgba(214, 166, 65, 0.18);
+    border-radius: 0 28px 0 34px;
+    background:
+        linear-gradient(90deg, rgba(255, 253, 248, 0.92), rgba(255, 253, 248, 0.3)),
+        url('/images/la-sentinel/community-workforce-la.png') center / cover;
+    opacity: 0.22;
     pointer-events: none;
 }
 
@@ -909,6 +951,56 @@ body.oc-header-menu-open .oc-nav-wrap {
     border-color: rgba(214, 166, 65, 0.74);
     transform: translateY(-2px);
     box-shadow: 0 20px 42px rgba(20, 17, 15, 0.26);
+}
+
+.community-pathway-art {
+    display: flex;
+    max-width: 42rem;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: 1rem;
+}
+
+.community-pathway-frame {
+    position: relative;
+    min-height: 4.6rem;
+    flex: 1 1 0;
+    overflow: hidden;
+    border: 1px solid rgba(214, 166, 65, 0.36);
+    border-radius: 18px;
+    background-color: #14110f;
+    background-position: center;
+    background-size: cover;
+    box-shadow: 0 14px 28px rgba(54, 32, 19, 0.1);
+}
+
+.community-pathway-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(90deg, rgba(20, 17, 15, 0.64), rgba(20, 17, 15, 0.1)),
+        linear-gradient(180deg, transparent, rgba(139, 29, 34, 0.2));
+}
+
+.community-pathway-frame-jobs {
+    background-image: url('/images/la-sentinel/cta-apply-jobs.png');
+}
+
+.community-pathway-frame-resume {
+    background-image: url('/images/la-sentinel/cta-post-resume.png');
+}
+
+.community-pathway-frame-partner {
+    background-image: url('/images/la-sentinel/community-workforce-la.png');
+}
+
+.community-pathway-line {
+    width: clamp(1.4rem, 4vw, 2.8rem);
+    height: 2px;
+    flex: 0 0 auto;
+    border-radius: 999px;
+    background: linear-gradient(90deg, rgba(139, 29, 34, 0.2), rgba(0, 94, 184, 0.4));
 }
 
 .community-mini-step {
@@ -1180,6 +1272,7 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .google-ad-placeholder-frame {
+    position: relative;
     display: grid;
     place-items: center;
     gap: 0.25rem;
@@ -1190,6 +1283,15 @@ body.oc-header-menu-open .oc-nav-wrap {
         linear-gradient(135deg, rgba(255, 255, 255, 0.88), rgba(255, 247, 232, 0.94)),
         repeating-linear-gradient(-45deg, rgba(214, 166, 65, 0.14) 0 8px, transparent 8px 16px);
     box-shadow: inset 0 0 0 1px rgba(255, 253, 248, 0.82);
+}
+
+.google-ad-placeholder-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(180deg, rgba(255, 253, 248, 0.28), transparent 44%);
+    pointer-events: none;
 }
 
 .google-ad-placeholder-display .google-ad-placeholder-frame {
@@ -1331,6 +1433,10 @@ body.oc-header-menu-open .oc-nav-wrap {
     .listing-action-strip,
     .partner-inquiry-shell {
         grid-template-columns: 1fr;
+    }
+
+    .community-pathway-art {
+        display: none;
     }
 
     .featured-employer-card {
@@ -3691,6 +3797,19 @@ textarea {
     max-width: 26ch;
     margin-inline: auto;
     line-height: 1.45;
+}
+
+.listing-card,
+.listing-filter-card,
+.panel-surface,
+.panel-list-card {
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.listing-card:hover {
+    border-color: rgba(139, 29, 34, 0.26);
+    box-shadow: 0 18px 36px rgba(54, 32, 19, 0.1);
+    transform: translateY(-2px);
 }
 
 .panel-surface {

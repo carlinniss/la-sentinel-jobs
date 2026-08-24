@@ -117,7 +117,7 @@
             <p class="community-kicker">Start Here</p>
             <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Choose the path that fits you.</h2>
             <p class="mt-3 max-w-3xl text-sm leading-6 text-slate-600 md:text-base">LA Sentinel Jobs is built for people looking for work, employers ready to hire, and partners bringing career pathways to the community.</p>
-            <div class="mt-5 grid gap-3 text-left md:grid-cols-4">
+            <div class="mt-5 grid gap-3 text-left sm:grid-cols-2 lg:grid-cols-4">
                 <a href="{{ $jobSearchRoute }}" class="community-mini-step" aria-label="Search local jobs">
                     <strong>Search jobs</strong>
                     <p>Browse local roles, hiring events, and career opportunities across Los Angeles.</p>
@@ -134,6 +134,13 @@
                     <strong>Partner with us</strong>
                     <p>Bring hiring events, training programs, and workforce pathways to the LA Sentinel team.</p>
                 </a>
+            </div>
+            <div class="community-pathway-art" aria-hidden="true">
+                <span class="community-pathway-frame community-pathway-frame-jobs"></span>
+                <span class="community-pathway-line"></span>
+                <span class="community-pathway-frame community-pathway-frame-resume"></span>
+                <span class="community-pathway-line"></span>
+                <span class="community-pathway-frame community-pathway-frame-partner"></span>
             </div>
         </div>
         <div class="community-action-buttons">
