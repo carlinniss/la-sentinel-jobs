@@ -135,13 +135,6 @@
                     <p>Bring hiring events, training programs, and workforce pathways to the LA Sentinel team.</p>
                 </a>
             </div>
-            <div class="community-pathway-art" aria-hidden="true">
-                <span class="community-pathway-frame community-pathway-frame-jobs"></span>
-                <span class="community-pathway-line"></span>
-                <span class="community-pathway-frame community-pathway-frame-resume"></span>
-                <span class="community-pathway-line"></span>
-                <span class="community-pathway-frame community-pathway-frame-partner"></span>
-            </div>
         </div>
         <div class="community-action-buttons">
             <a href="{{ $jobSearchRoute }}" class="btn-primary community-action-primary community-action-card justify-center px-6 py-3 text-sm font-black" style="--action-image: url('{{ asset('images/la-sentinel/cta-apply-jobs.png') }}');">
