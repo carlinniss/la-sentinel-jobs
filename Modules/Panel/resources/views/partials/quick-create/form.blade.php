@@ -81,7 +81,7 @@
                                 <strong x-text="selectedPhotoCount"></strong>
                                 <span x-text="selectedPhotoCount === 1 ? 'photo selected' : 'photos selected'"></span>
                             </div>
-                            <span class="qc-button qc-upload-action-button">Photos attach automatically</span>
+                            <span class="qc-upload-status">Uploads automatically</span>
                         </div>
 
                         <div wire:loading wire:target="photos" class="qc-empty">Uploading photos...</div>
@@ -201,8 +201,11 @@
                         type="button"
                         class="qc-button"
                         wire:click="goToCategoryStep"
+                        wire:loading.attr="disabled"
+                        wire:target="photos"
                     >
-                        Next
+                        <span wire:loading.remove wire:target="photos">Next</span>
+                        <span wire:loading wire:target="photos">Uploading...</span>
                     </button>
                 </div>
             @endif

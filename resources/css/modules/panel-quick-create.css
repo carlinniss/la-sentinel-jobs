@@ -163,15 +163,16 @@
     font-size: 0.8rem;
 }
 
-.qc-upload-action-button {
-    min-height: 44px;
-    padding: 0 1.1rem;
-    font-size: 0.9rem;
-}
-
-.qc-upload-action-button:disabled {
-    cursor: wait;
-    opacity: 0.78;
+.qc-upload-status {
+    display: inline-flex;
+    min-height: 2.25rem;
+    align-items: center;
+    border-radius: 999px;
+    background: #eaf3ff;
+    padding: 0 0.9rem;
+    color: #075a9f;
+    font-size: 0.84rem;
+    font-weight: 800;
 }
 
 .qc-upload-icon {
