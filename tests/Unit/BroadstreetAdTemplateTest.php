@@ -19,13 +19,18 @@ class BroadstreetAdTemplateTest extends TestCase
         self::assertStringContainsString('preview="true"', $template);
     }
 
-    public function test_leaderboard_slots_match_lasentinel_responsive_inventory(): void
+    public function test_leaderboard_slots_use_google_publisher_responsive_inventory(): void
     {
         $template = file_get_contents(
-            dirname(__DIR__, 2).'/Modules/Site/resources/views/partials/broadstreet-ad.blade.php'
+            dirname(__DIR__, 2).'/Modules/Site/resources/views/partials/google-publisher-leaderboard.blade.php'
         );
 
-        self::assertStringContainsString("'leaderboard' => 'mx-auto min-h-[50px] w-[320px] max-w-full md:min-h-[90px] md:w-[728px]'", $template);
+        self::assertStringContainsString("config('advertising.google_publisher.slots.leaderboard', '/17020487/LeaderBoard')", $template);
+        self::assertStringContainsString('[[728, 90], [320, 50]]', $template);
+        self::assertStringContainsString('.addSize([768, 0], [728, 90])', $template);
+        self::assertStringContainsString('.addSize([0, 0], [320, 50])', $template);
+        self::assertStringContainsString('md:w-[728px]', $template);
+        self::assertStringContainsString('w-[320px]', $template);
     }
 
     public function test_layout_loads_broadstreet_v2_script_asynchronously(): void
@@ -47,7 +52,8 @@ class BroadstreetAdTemplateTest extends TestCase
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_BODY_SECONDARY', 187229)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226)", $config);
-        self::assertStringContainsString("env('BROADSTREET_ZONE_LEADERBOARD', env('BROADSTREET_ZONE_BILLBOARD', 187227))", $config);
+        self::assertStringContainsString("env('GOOGLE_PUBLISHER_SLOT_LEADERBOARD', '/17020487/LeaderBoard')", $config);
+        self::assertStringContainsString("env('GOOGLE_PUBLISHER_SLOT_TILE_4', '/17020487/Tile_4')", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_DISPLAY', env('BROADSTREET_ZONE_CUBE', 187228))", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SKYSCRAPER', env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225))", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_HALF_PAGE', env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226))", $config);
@@ -65,9 +71,9 @@ class BroadstreetAdTemplateTest extends TestCase
 
         self::assertStringContainsString("@include('site::partials.broadstreet-ad'", $home);
         self::assertStringContainsString("@include('site::partials.broadstreet-ad'", $index);
-        self::assertStringContainsString("'zone' => 'leaderboard'", $home);
+        self::assertStringContainsString("@include('site::partials.google-publisher-leaderboard'", $home);
         self::assertStringContainsString("'zone' => 'display'", $home);
-        self::assertStringContainsString("'zone' => 'leaderboard'", $index);
+        self::assertStringContainsString("@include('site::partials.google-publisher-leaderboard'", $index);
         self::assertStringContainsString("'zone' => 'display'", $index);
         self::assertStringContainsString("'zone' => 'sidebar_skyscraper'", $index);
         self::assertStringContainsString("'zone' => 'sidebar_half_page'", $index);
@@ -99,7 +105,7 @@ class BroadstreetAdTemplateTest extends TestCase
         );
 
         self::assertStringContainsString('securepubads.g.doubleclick.net/tag/js/gpt.js', $layout);
-        self::assertStringContainsString("defineSlot('/17020487/Tile_4', [300, 250], 'div-gpt-ad-1778596674801-0')", $layout);
+        self::assertStringContainsString("config('advertising.google_publisher.slots.tile_4', '/17020487/Tile_4')", $layout);
         self::assertStringContainsString("googletag.display('div-gpt-ad-1778596674801-0')", $tile);
         self::assertStringContainsString("@include('site::partials.google-publisher-tile'", $detail);
         self::assertStringNotContainsString("'zone' => 'cube'", $detail);

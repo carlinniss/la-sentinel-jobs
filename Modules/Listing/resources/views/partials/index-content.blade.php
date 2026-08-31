@@ -82,9 +82,7 @@
         ])
     </section>
 
-    @include('site::partials.broadstreet-ad', [
-        'zone' => 'leaderboard',
-        'format' => 'leaderboard',
+    @include('site::partials.google-publisher-leaderboard', [
         'placement' => 'jobs-search-leaderboard',
     ])
 

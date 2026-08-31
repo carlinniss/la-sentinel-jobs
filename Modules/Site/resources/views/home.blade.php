@@ -195,9 +195,7 @@
     </section>
     @endif
 
-    @include('site::partials.broadstreet-ad', [
-        'zone' => 'leaderboard',
-        'format' => 'leaderboard',
+    @include('site::partials.google-publisher-leaderboard', [
         'placement' => 'home-top-leaderboard',
     ])
 
@@ -478,9 +476,7 @@
         'placement' => 'home-after-community-outreach',
     ])
 
-    @include('site::partials.broadstreet-ad', [
-        'zone' => 'leaderboard',
-        'format' => 'leaderboard',
+    @include('site::partials.google-publisher-leaderboard', [
         'placement' => 'home-midpage-leaderboard',
     ])
 
