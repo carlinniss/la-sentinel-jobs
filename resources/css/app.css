@@ -1045,6 +1045,186 @@ body.oc-header-menu-open .oc-nav-wrap {
     box-shadow: 0 20px 42px rgba(20, 17, 15, 0.26);
 }
 
+.community-visual-story {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.55fr);
+    gap: clamp(1rem, 2.6vw, 1.5rem);
+    align-items: stretch;
+}
+
+.community-visual-story-main,
+.community-visual-tile {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgba(214, 166, 65, 0.42);
+    background: #14110f;
+    box-shadow: 0 24px 58px rgba(54, 32, 19, 0.16);
+}
+
+.community-visual-story-main {
+    min-height: clamp(25rem, 46vw, 34rem);
+    border-radius: 30px;
+}
+
+.community-visual-story-main::after,
+.community-visual-tile::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background:
+        linear-gradient(90deg, rgba(20, 17, 15, 0.92), rgba(20, 17, 15, 0.58) 46%, rgba(20, 17, 15, 0.12)),
+        radial-gradient(circle at 8% 12%, rgba(214, 166, 65, 0.28), transparent 28%);
+}
+
+.community-visual-story-main img,
+.community-visual-tile img {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.community-visual-story-main img {
+    object-position: center;
+}
+
+.community-visual-story-copy {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: inherit;
+    max-width: min(33rem, 76%);
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: clamp(1.35rem, 4vw, 2.5rem);
+    color: #fff8e8;
+}
+
+.community-visual-story-copy .community-kicker {
+    color: #f3d995;
+}
+
+.community-visual-story-copy h2 {
+    margin-top: 0.5rem;
+    color: #fff8e8;
+    font-size: clamp(2.55rem, 5.6vw, 5.25rem);
+    font-weight: 950;
+    line-height: 0.9;
+}
+
+.community-visual-story-copy p {
+    margin-top: 1rem;
+    color: rgba(255, 248, 232, 0.88);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    font-weight: 750;
+    line-height: 1.5;
+}
+
+.community-visual-story-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.35rem;
+}
+
+.community-visual-story-actions .btn-primary,
+.community-visual-story-actions .community-secondary-button {
+    min-height: 3rem;
+    padding-inline: 1.35rem;
+}
+
+.community-visual-story-side {
+    display: grid;
+    gap: clamp(1rem, 2.6vw, 1.5rem);
+}
+
+.community-visual-tile {
+    display: flex;
+    min-height: 15.75rem;
+    align-items: flex-end;
+    border-radius: 26px;
+    color: #fff8e8;
+    text-decoration: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.community-visual-tile::after {
+    background:
+        linear-gradient(180deg, rgba(20, 17, 15, 0.04), rgba(20, 17, 15, 0.82)),
+        radial-gradient(circle at 82% 12%, rgba(214, 166, 65, 0.24), transparent 30%);
+}
+
+.community-visual-tile span {
+    position: relative;
+    z-index: 1;
+    display: block;
+    max-width: 15rem;
+    padding: 1.25rem;
+    color: inherit;
+    font-size: clamp(1.25rem, 2.4vw, 1.8rem);
+    font-weight: 950;
+    line-height: 0.98;
+    text-transform: uppercase;
+    text-shadow: 0 2px 14px rgba(20, 17, 15, 0.5);
+}
+
+.community-visual-tile:hover,
+.community-visual-tile:focus-visible {
+    border-color: rgba(214, 166, 65, 0.72);
+    box-shadow: 0 28px 62px rgba(54, 32, 19, 0.2);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+    .community-visual-story {
+        grid-template-columns: 1fr;
+    }
+
+    .community-visual-story-main {
+        min-height: 31rem;
+    }
+
+    .community-visual-story-copy {
+        max-width: 34rem;
+    }
+
+    .community-visual-story-side {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .community-visual-tile {
+        min-height: 13rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .community-visual-story-main {
+        min-height: 29rem;
+    }
+
+    .community-visual-story-main::after {
+        background:
+            linear-gradient(180deg, rgba(20, 17, 15, 0.22), rgba(20, 17, 15, 0.94)),
+            radial-gradient(circle at 12% 14%, rgba(214, 166, 65, 0.26), transparent 34%);
+    }
+
+    .community-visual-story-copy {
+        max-width: none;
+    }
+
+    .community-visual-story-copy h2 {
+        font-size: clamp(2.25rem, 13vw, 3.5rem);
+    }
+
+    .community-visual-story-side {
+        grid-template-columns: 1fr;
+    }
+}
+
 .community-mini-step {
     --step-accent: var(--oc-burgundy);
     --step-soft: rgba(139, 29, 34, 0.12);

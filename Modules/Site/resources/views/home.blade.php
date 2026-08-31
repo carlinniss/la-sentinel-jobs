@@ -162,13 +162,13 @@
             <a href="{{ $jobSearchRoute }}" class="btn-primary community-action-primary community-action-card justify-center px-6 py-3 text-sm font-black" style="--action-image: url('{{ asset('images/la-sentinel/cta-apply-jobs.png') }}');">
                 <span>Search Jobs</span>
             </a>
-            <a href="{{ $resumeRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/cta-post-resume.png') }}');">
+            <a href="{{ $resumeRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/resume-pathway-campaign.webp') }}');">
                 <span>Post Your Resume</span>
             </a>
-            <a href="{{ $postJobRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/cta-post-job.png') }}');">
+            <a href="{{ $postJobRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/employer-partner-campaign.webp') }}');">
                 <span>Post Jobs</span>
             </a>
-            <a href="{{ $partnerRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/community-workforce-la.png') }}');">
+            <a href="{{ $partnerRoute }}" class="community-secondary-button community-action-card" style="--action-image: url('{{ asset('images/la-sentinel/workforce-pathways-campaign.webp') }}');">
                 <span>Partner With Us</span>
             </a>
         </div>
@@ -198,6 +198,31 @@
     @include('site::partials.google-publisher-leaderboard', [
         'placement' => 'home-top-leaderboard',
     ])
+
+    <section class="community-visual-story" aria-labelledby="community-visual-story-heading">
+        <div class="community-visual-story-main">
+            <img src="{{ asset('images/la-sentinel/workforce-pathways-campaign.webp') }}" alt="Los Angeles professionals connecting with local hiring partners">
+            <div class="community-visual-story-copy">
+                <p class="community-kicker">Workforce Access</p>
+                <h2 id="community-visual-story-heading">A bigger stage for local careers.</h2>
+                <p>LA Sentinel Jobs turns listings, resumes, hiring events, and employer partnerships into one visible community pathway.</p>
+                <div class="community-visual-story-actions">
+                    <a href="{{ $jobSearchRoute }}" class="btn-primary">Find a job</a>
+                    <a href="{{ $resumeRoute }}" class="community-secondary-button">Post your resume</a>
+                </div>
+            </div>
+        </div>
+        <div class="community-visual-story-side">
+            <a href="{{ $resumeRoute }}" class="community-visual-tile">
+                <img src="{{ asset('images/la-sentinel/resume-pathway-campaign.webp') }}" alt="Jobseeker reviewing a resume with a career coach">
+                <span>Resume-ready candidates</span>
+            </a>
+            <a href="{{ $partnerRoute }}" class="community-visual-tile">
+                <img src="{{ asset('images/la-sentinel/employer-partner-campaign.webp') }}" alt="Hiring partners meeting candidates at a local career event">
+                <span>Employer and partner access</span>
+            </a>
+        </div>
+    </section>
 
     <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-start">
         <div>
