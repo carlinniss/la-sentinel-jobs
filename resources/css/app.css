@@ -1128,13 +1128,18 @@ body.oc-header-menu-open .oc-nav-wrap {
     display: flex;
     flex-wrap: wrap;
     gap: 0.75rem;
+    align-items: center;
     margin-top: 1.35rem;
 }
 
 .community-visual-story-actions .btn-primary,
 .community-visual-story-actions .community-secondary-button {
+    display: inline-flex;
     min-height: 3rem;
+    align-items: center;
+    justify-content: center;
     padding-inline: 1.35rem;
+    line-height: 1;
 }
 
 .community-visual-story-side {
