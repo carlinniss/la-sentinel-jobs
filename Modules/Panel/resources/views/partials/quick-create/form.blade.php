@@ -201,12 +201,8 @@
                         type="button"
                         class="qc-button"
                         wire:click="goToCategoryStep"
-                        wire:loading.attr="disabled"
-                        wire:target="photos,goToCategoryStep"
-                        @disabled($isDetecting)
                     >
-                        <span wire:loading.remove wire:target="photos,goToCategoryStep">Next</span>
-                        <span wire:loading wire:target="photos,goToCategoryStep">Working...</span>
+                        Next
                     </button>
                 </div>
             @endif

@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->forceCodespacesUrlRoot();
+        $this->forceSentinelUrlRoot();
 
         Gate::before(function ($user): ?bool {
             if (method_exists($user, 'hasRole') && $user->hasRole('admin')) {
@@ -69,6 +70,22 @@ class AppServiceProvider extends ServiceProvider
         return;
     }
 
+    private function forceSentinelUrlRoot(): void
+    {
+        if ($this->app->runningInConsole()) {
+            return;
+        }
+
+        $host = $this->sentinelHost();
+
+        if (! is_string($host)) {
+            return;
+        }
+
+        URL::forceRootUrl('https://'.$host);
+        URL::forceScheme('https');
+    }
+
     private function codespacesHost(): ?string
     {
         $hosts = [
@@ -86,6 +103,30 @@ class AppServiceProvider extends ServiceProvider
             $hostWithoutPort = explode(':', $host)[0] ?? $host;
 
             if (str_ends_with($hostWithoutPort, '.github.dev') || str_ends_with($hostWithoutPort, '.app.github.dev')) {
+                return $host;
+            }
+        }
+
+        return null;
+    }
+
+    private function sentinelHost(): ?string
+    {
+        $hosts = [
+            $this->firstForwardedHeaderValue((string) request()->headers->get('x-forwarded-host', '')),
+            request()->getHost(),
+        ];
+
+        foreach ($hosts as $host) {
+            $host = strtolower(trim($host));
+
+            if ($host === '') {
+                continue;
+            }
+
+            $hostWithoutPort = explode(':', $host)[0] ?? $host;
+
+            if ($hostWithoutPort === 'lasentinel.net' || str_ends_with($hostWithoutPort, '.lasentinel.net')) {
                 return $host;
             }
         }
