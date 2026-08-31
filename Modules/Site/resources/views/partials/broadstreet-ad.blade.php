@@ -9,7 +9,7 @@
 
     $formatClasses = match ($format) {
         'billboard' => 'mx-auto min-h-[100px] w-full max-w-[970px] md:min-h-[180px] lg:min-h-[250px]',
-        'leaderboard' => 'mx-auto min-h-[50px] w-full max-w-[728px] md:min-h-[90px]',
+        'leaderboard' => 'mx-auto min-h-[50px] w-[320px] max-w-full md:min-h-[90px] md:w-[728px]',
         'display' => 'mx-auto min-h-[250px] w-full max-w-[300px]',
         'cube' => 'mx-auto min-h-[250px] w-full max-w-[360px]',
         'skyscraper' => 'mx-auto min-h-[600px] w-full max-w-[160px]',

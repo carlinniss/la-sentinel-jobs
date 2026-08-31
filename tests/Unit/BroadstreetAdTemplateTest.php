@@ -19,6 +19,15 @@ class BroadstreetAdTemplateTest extends TestCase
         self::assertStringContainsString('preview="true"', $template);
     }
 
+    public function test_leaderboard_slots_match_lasentinel_responsive_inventory(): void
+    {
+        $template = file_get_contents(
+            dirname(__DIR__, 2).'/Modules/Site/resources/views/partials/broadstreet-ad.blade.php'
+        );
+
+        self::assertStringContainsString("'leaderboard' => 'mx-auto min-h-[50px] w-[320px] max-w-full md:min-h-[90px] md:w-[728px]'", $template);
+    }
+
     public function test_layout_loads_broadstreet_v2_script_asynchronously(): void
     {
         $layout = file_get_contents(
