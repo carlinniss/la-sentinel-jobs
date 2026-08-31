@@ -1503,6 +1503,257 @@ body.oc-header-menu-open .oc-nav-wrap {
     filter: drop-shadow(0 12px 26px rgba(0, 0, 0, 0.18));
 }
 
+.featured-employer-logo-panel--st-johns {
+    border-color: rgba(191, 229, 220, 0.95);
+    background: linear-gradient(135deg, #0d5f52, #12806a);
+}
+
+.sj-proof-pill {
+    border-radius: 999px;
+    background: #eef8f5;
+    padding: 0.375rem 0.75rem;
+    color: #11735f;
+    font-size: 0.75rem;
+    font-weight: 900;
+    box-shadow: inset 0 0 0 1px #bfe5dc;
+}
+
+.featured-employer-badge {
+    --partner-accent: #005eb8;
+    --partner-accent-strong: #004b93;
+    --partner-accent-soft: #eef6ff;
+    --partner-accent-border: #b9d8f2;
+    color: #0f172a;
+}
+
+.featured-employer-badge--st-johns {
+    --partner-accent: #11735f;
+    --partner-accent-strong: #0d5f52;
+    --partner-accent-soft: #eef8f5;
+    --partner-accent-border: #bfe5dc;
+}
+
+.featured-employer-badge--community {
+    --partner-accent: var(--oc-burgundy);
+    --partner-accent-strong: var(--oc-primary-strong);
+    --partner-accent-soft: #fff7e8;
+    --partner-accent-border: rgba(139, 29, 34, 0.22);
+}
+
+.featured-employer-badge--strip,
+.featured-employer-badge--detail,
+.featured-employer-badge--card {
+    border: 1px solid var(--partner-accent-border);
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 255, 255, 0.62)),
+        var(--partner-accent-soft);
+    box-shadow: 0 14px 30px rgba(29, 29, 31, 0.08);
+}
+
+.featured-employer-badge--strip {
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.featured-employer-badge__strip-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.featured-employer-badge__identity,
+.featured-employer-badge--card {
+    display: inline-flex;
+    min-width: 0;
+    align-items: center;
+    gap: 1rem;
+    color: inherit;
+}
+
+.featured-employer-badge__identity {
+    flex: 1 1 20rem;
+}
+
+.featured-employer-badge--card {
+    max-width: 100%;
+    gap: 0.5rem;
+    border-radius: 1rem;
+    padding: 0.45rem 0.6rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.featured-employer-badge--card:hover,
+.featured-employer-badge__identity:hover {
+    color: inherit;
+}
+
+.featured-employer-badge--card:hover {
+    border-color: var(--partner-accent);
+    box-shadow: 0 14px 28px rgba(29, 29, 31, 0.12);
+    transform: translateY(-1px);
+}
+
+.featured-employer-badge__logo {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid var(--partner-accent-border);
+    border-radius: 0.9rem;
+    background: #ffffff;
+    padding: 0.5rem;
+}
+
+.featured-employer-badge__logo img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.featured-employer-badge__logo > span {
+    display: grid;
+    width: 3rem;
+    height: 3rem;
+    place-items: center;
+    border-radius: 0.75rem;
+    background: var(--partner-accent-strong);
+    color: #ffffff;
+    font-weight: 900;
+}
+
+.featured-employer-badge__logo--small {
+    width: 6.6rem;
+    height: 2.5rem;
+    padding: 0.25rem 0.45rem;
+}
+
+.featured-employer-badge__logo--small img {
+    max-height: 1.9rem;
+}
+
+.featured-employer-badge__logo--large {
+    min-height: 6.5rem;
+    padding: 1rem;
+}
+
+.featured-employer-badge__logo--large img {
+    max-height: 4.4rem;
+}
+
+.featured-employer-badge__copy {
+    display: block;
+    min-width: 0;
+}
+
+.featured-employer-badge__eyebrow {
+    display: block;
+    color: var(--partner-accent);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+}
+
+.featured-employer-badge__name {
+    display: block;
+    margin-top: 0.25rem;
+    color: #0f172a;
+    font-size: 1.25rem;
+    font-weight: 900;
+    line-height: 1.15;
+}
+
+.featured-employer-badge__summary {
+    display: block;
+    margin-top: 0.25rem;
+    color: #475569;
+    font-size: 0.9rem;
+    font-weight: 700;
+    line-height: 1.45;
+}
+
+.featured-employer-badge__button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    min-height: 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: var(--partner-accent);
+    padding: 0 1.25rem;
+    color: #ffffff;
+    font-size: 0.875rem;
+    font-weight: 900;
+}
+
+.featured-employer-badge__button:hover {
+    background: var(--partner-accent-strong);
+    color: #ffffff;
+}
+
+.featured-employer-badge--detail {
+    border-radius: 1rem;
+    padding: 1rem;
+}
+
+.featured-employer-badge__detail-name {
+    margin-top: 0.35rem;
+    color: #0f172a;
+    font-size: 1rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.featured-employer-badge__detail-summary {
+    margin-top: 0.35rem;
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.featured-employer-badge__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.8rem;
+}
+
+.featured-employer-badge__tags span,
+.featured-employer-badge__tags a {
+    display: inline-flex;
+    min-height: 1.8rem;
+    align-items: center;
+    border-radius: 999px;
+    background: #ffffff;
+    padding: 0 0.75rem;
+    color: var(--partner-accent);
+    font-size: 0.75rem;
+    font-weight: 900;
+    box-shadow: inset 0 0 0 1px var(--partner-accent-border);
+}
+
+.featured-employer-badge__tags a:last-child {
+    background: var(--partner-accent);
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.featured-employer-badge__compact-name {
+    display: block;
+    max-width: 10.5rem;
+    overflow: hidden;
+    color: #1e293b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .featured-employer-aside {
     padding: clamp(1rem, 2.5vw, 1.5rem);
 }
@@ -1525,6 +1776,36 @@ body.oc-header-menu-open .oc-nav-wrap {
 
     .featured-employer-logo-panel {
         min-height: 11rem;
+    }
+
+    .featured-employer-badge__identity,
+    .featured-employer-badge__strip-inner {
+        align-items: stretch;
+    }
+
+    .featured-employer-badge__button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .featured-employer-badge--card {
+        gap: 0.45rem;
+        padding: 0.4rem 0.5rem;
+    }
+
+    .featured-employer-badge__logo--small {
+        width: 4.8rem;
+    }
+
+    .featured-employer-badge__eyebrow {
+        font-size: 0.58rem;
+        letter-spacing: 0.1em;
+    }
+
+    .featured-employer-badge__compact-name {
+        max-width: 6.2rem;
+        font-size: 0.68rem;
     }
 }
 

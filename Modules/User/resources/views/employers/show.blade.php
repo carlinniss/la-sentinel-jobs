@@ -15,6 +15,8 @@
     $primary = $brand['primary'] ?? '#005eb8';
     $soft = $brand['soft'] ?? '#eef6ff';
     $softBorder = $brand['soft_border'] ?? '#b9d8f2';
+    $panelBackground = $brand['panel_background'] ?? 'linear-gradient(135deg, #061b35, #082f58)';
+    $eyebrow = ($brand['key'] ?? null) === 'st-johns' ? 'Healthcare launch partner' : 'Featured employer partner';
     $formatCompensation = static function ($listing): string {
         if (is_null($listing->price) || (float) $listing->price <= 0) {
             return __('listing::messages.price_on_request');
@@ -47,7 +49,7 @@
 
     <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
         <div class="grid lg:grid-cols-[1fr,1.15fr]">
-            <div class="bg-[#061b35] p-6 md:p-8">
+            <div class="p-6 md:p-8" style="background: {{ $panelBackground }};">
                 <div class="flex min-h-72 items-center justify-center rounded-3xl border border-white/15 bg-white p-10 shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
                     @if($brand)
                         <img src="{{ asset($brand['logo']) }}" alt="{{ $brand['logo_alt'] }}" class="h-40 w-auto max-w-full object-contain">
@@ -60,7 +62,7 @@
             </div>
 
             <div class="p-6 md:p-8">
-                <p class="text-xs font-black uppercase tracking-[0.24em]" style="color: {{ $primary }};">Featured employer partner</p>
+                <p class="text-xs font-black uppercase tracking-[0.24em]" style="color: {{ $primary }};">{{ $eyebrow }}</p>
                 <h1 class="mt-3 text-4xl font-bold tracking-tight text-slate-950">{{ $employerName }}</h1>
                 @if($location !== '')
                     <p class="mt-2 text-sm font-semibold text-slate-500">{{ $location }}</p>
@@ -105,12 +107,12 @@
                     <div class="flex items-start justify-between gap-3">
                         <p class="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">{{ $listing->category?->name ?? 'Job' }}</p>
                         @if($listing->is_featured)
-                            <span class="rounded-full bg-[#eef6ff] px-2.5 py-1 text-[11px] font-bold text-[#005eb8]">Featured role</span>
+                            <span class="rounded-full px-2.5 py-1 text-[11px] font-bold" style="background: {{ $soft }}; color: {{ $primary }};">Featured role</span>
                         @endif
                     </div>
-                    <h3 class="mt-3 text-lg font-bold leading-tight text-slate-950 group-hover:text-[#005eb8]">{{ $listing->title }}</h3>
+                    <h3 class="mt-3 text-lg font-bold leading-tight text-slate-950 group-hover:opacity-80">{{ $listing->title }}</h3>
                     <div class="mt-4 flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
-                        <p class="text-sm font-semibold text-[#005eb8]">{{ $formatCompensation($listing) }}</p>
+                        <p class="text-sm font-semibold" style="color: {{ $primary }};">{{ $formatCompensation($listing) }}</p>
                         <p class="truncate text-sm text-slate-500">{{ collect([$listing->city, $listing->country])->filter()->join(', ') }}</p>
                     </div>
                 </a>

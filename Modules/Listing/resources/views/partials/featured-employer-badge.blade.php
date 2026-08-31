@@ -5,68 +5,115 @@
     $bio = trim((string) ($profile?->bio ?? ''));
     $website = trim((string) ($profile?->website ?? ''));
     $employer = $employer ?? null;
-    $profileUrl = $employer ? route('employers.show', $employer) : null;
+    $linkEmployerProfile = (bool) ($linkEmployerProfile ?? true);
+    $profileUrl = ($linkEmployerProfile && $employer) ? route('employers.show', $employer) : null;
     $brand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($employerName);
-    $primary = $brand['primary'] ?? '#005eb8';
-    $soft = $brand['soft'] ?? '#eef6ff';
-    $softBorder = $brand['soft_border'] ?? '#b9d8f2';
+    $themeClass = $brand ? 'featured-employer-badge--'.$brand['key'] : 'featured-employer-badge--community';
+    $eyebrow = ($brand['key'] ?? null) === 'st-johns' ? 'Healthcare launch partner' : 'Featured employer partner';
+    $summary = $brand['summary'] ?? 'This employer is hiring through LA Sentinel Jobs with local workforce opportunities.';
+    $detailSummary = $bio !== '' ? \Illuminate\Support\Str::limit($bio, 230) : ($brand['detail_summary'] ?? $summary);
+    $tags = $brand['tags'] ?? ['Local hiring', 'Community impact'];
+    $careersLabel = $brand['careers_label'] ?? 'Careers site';
+    $logoPath = $brand['logo'] ?? null;
+    $logoAlt = $brand['logo_alt'] ?? $employerName;
 @endphp
 
-@if ($brand && $variant === 'feature-strip')
-    <div class="rounded-2xl p-4 shadow-sm" style="border: 1px solid {{ $softBorder }}; background: linear-gradient(90deg, {{ $soft }}, #fff, #fff8f6);">
-        <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <a @if($profileUrl) href="{{ $profileUrl }}" @endif class="flex items-center gap-4" aria-label="View {{ $employerName }} employer profile">
-                <span class="flex min-h-20 w-40 shrink-0 items-center justify-center rounded-2xl bg-white px-5 py-4 shadow-sm" style="border: 1px solid {{ $softBorder }};">
-                    <img src="{{ asset($brand['logo']) }}" alt="{{ $brand['logo_alt'] }}" class="h-14 w-auto max-w-full object-contain">
-                </span>
-                <span>
-                    <span class="block text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $primary }};">Featured employer partner</span>
-                    <span class="mt-1 block text-xl font-black text-slate-950">{{ $employerName }}</span>
-                    <span class="mt-1 block text-sm font-semibold text-slate-600">{{ $brand['summary'] }}</span>
-                </span>
-            </a>
+@if ($variant === 'feature-strip')
+    <div class="featured-employer-badge {{ $themeClass }} featured-employer-badge--strip">
+        <div class="featured-employer-badge__strip-inner">
+            @if ($profileUrl)
+                <a href="{{ $profileUrl }}" class="featured-employer-badge__identity" aria-label="View {{ $employerName }} employer profile">
+                    <span class="featured-employer-badge__logo">
+                        @if($logoPath)
+                            <img src="{{ asset($logoPath) }}" alt="{{ $logoAlt }}">
+                        @else
+                            <span>{{ mb_strtoupper(mb_substr($employerName, 0, 1)) }}</span>
+                        @endif
+                    </span>
+                    <span class="featured-employer-badge__copy">
+                        <span class="featured-employer-badge__eyebrow">{{ $eyebrow }}</span>
+                        <span class="featured-employer-badge__name">{{ $employerName }}</span>
+                        <span class="featured-employer-badge__summary">{{ $summary }}</span>
+                    </span>
+                </a>
+            @else
+                <div class="featured-employer-badge__identity">
+                    <span class="featured-employer-badge__logo">
+                        @if($logoPath)
+                            <img src="{{ asset($logoPath) }}" alt="{{ $logoAlt }}">
+                        @else
+                            <span>{{ mb_strtoupper(mb_substr($employerName, 0, 1)) }}</span>
+                        @endif
+                    </span>
+                    <span class="featured-employer-badge__copy">
+                        <span class="featured-employer-badge__eyebrow">{{ $eyebrow }}</span>
+                        <span class="featured-employer-badge__name">{{ $employerName }}</span>
+                        <span class="featured-employer-badge__summary">{{ $summary }}</span>
+                    </span>
+                </div>
+            @endif
 
             @if ($profileUrl)
-                <a href="{{ $profileUrl }}" class="inline-flex h-11 shrink-0 items-center justify-center rounded-full px-5 text-sm font-black text-white transition hover:opacity-90" style="background: {{ $primary }};">
+                <a href="{{ $profileUrl }}" class="featured-employer-badge__button">
                     View featured profile
                 </a>
             @endif
         </div>
     </div>
-@elseif ($brand && $variant === 'detail')
-    <div class="rounded-2xl p-4 shadow-sm" style="border: 1px solid {{ $softBorder }}; background: linear-gradient(135deg, #fff, {{ $soft }});">
-        <div class="space-y-4">
-            <a @if($profileUrl) href="{{ $profileUrl }}" @endif class="flex min-h-24 items-center justify-center rounded-2xl bg-white px-5 py-4 shadow-sm" style="border: 1px solid {{ $softBorder }};" aria-label="View {{ $employerName }} employer profile">
-                <img src="{{ asset($brand['logo']) }}" alt="{{ $brand['logo_alt'] }}" class="h-16 w-auto max-w-full object-contain">
-            </a>
-            <div class="min-w-0">
-                <p class="text-[0.68rem] font-bold uppercase tracking-[0.2em]" style="color: {{ $primary }};">Featured employer partner</p>
-                <h3 class="mt-1 text-base font-bold leading-tight text-slate-950">{{ $employerName }}</h3>
-                <p class="mt-1 text-sm leading-5 text-slate-600">
-                    {{ $bio !== '' ? \Illuminate\Support\Str::limit($bio, 230) : $brand['detail_summary'] }}
-                </p>
-            </div>
+@elseif ($variant === 'detail')
+    <div class="featured-employer-badge {{ $themeClass }} featured-employer-badge--detail">
+        <div class="featured-employer-badge__logo featured-employer-badge__logo--large">
+            @if($logoPath)
+                <img src="{{ asset($logoPath) }}" alt="{{ $logoAlt }}">
+            @else
+                <span>{{ mb_strtoupper(mb_substr($employerName, 0, 1)) }}</span>
+            @endif
         </div>
-        <div class="mt-3 flex flex-wrap gap-2">
-            @foreach($brand['tags'] as $tag)
-                <span class="rounded-full bg-white px-3 py-1 text-xs font-bold" style="color: {{ $primary }}; box-shadow: 0 0 0 1px {{ $softBorder }};">{{ $tag }}</span>
+        <div class="featured-employer-badge__copy">
+            <p class="featured-employer-badge__eyebrow">{{ $eyebrow }}</p>
+            <h3 class="featured-employer-badge__detail-name">{{ $employerName }}</h3>
+            <p class="featured-employer-badge__detail-summary">{{ $detailSummary }}</p>
+        </div>
+        <div class="featured-employer-badge__tags">
+            @foreach($tags as $tag)
+                <span>{{ $tag }}</span>
             @endforeach
             @if ($profileUrl)
-                <a href="{{ $profileUrl }}" class="rounded-full bg-white px-3 py-1 text-xs font-bold" style="color: {{ $primary }}; box-shadow: 0 0 0 1px {{ $softBorder }};">Employer profile</a>
+                <a href="{{ $profileUrl }}">Employer profile</a>
             @endif
             @if ($website !== '')
-                <a href="{{ $website }}" target="_blank" rel="noopener" class="rounded-full px-3 py-1 text-xs font-bold text-white" style="background: {{ $primary }};">{{ $brand['careers_label'] }}</a>
+                <a href="{{ $website }}" target="_blank" rel="noopener">{{ $careersLabel }}</a>
             @endif
         </div>
     </div>
-@elseif ($brand)
-    <a @if($profileUrl) href="{{ $profileUrl }}" @endif aria-label="View {{ $employerName }} employer profile" class="inline-flex min-w-0 max-w-full items-center gap-2 rounded-2xl px-2.5 py-2 shadow-sm" style="border: 1px solid {{ $softBorder }}; background: {{ $soft }};">
-        <span class="flex h-8 w-24 shrink-0 items-center justify-center">
-            <img src="{{ asset($brand['logo']) }}" alt="{{ $brand['logo_alt'] }}" class="h-7 w-auto max-w-full object-contain">
-        </span>
-        <span class="min-w-0">
-            <span class="block truncate text-[0.62rem] font-black uppercase tracking-[0.16em]" style="color: {{ $primary }};">Featured employer</span>
-            <span class="block truncate text-xs font-bold text-slate-800">{{ $employerName }}</span>
-        </span>
-    </a>
+@else
+    @if ($profileUrl)
+        <a href="{{ $profileUrl }}" aria-label="View {{ $employerName }} employer profile" class="featured-employer-badge {{ $themeClass }} featured-employer-badge--card">
+            <span class="featured-employer-badge__logo featured-employer-badge__logo--small">
+                @if($logoPath)
+                    <img src="{{ asset($logoPath) }}" alt="{{ $logoAlt }}">
+                @else
+                    <span>{{ mb_strtoupper(mb_substr($employerName, 0, 1)) }}</span>
+                @endif
+            </span>
+            <span class="featured-employer-badge__copy">
+                <span class="featured-employer-badge__eyebrow">Featured employer</span>
+                <span class="featured-employer-badge__compact-name">{{ $employerName }}</span>
+            </span>
+        </a>
+    @else
+        <div class="featured-employer-badge {{ $themeClass }} featured-employer-badge--card">
+            <span class="featured-employer-badge__logo featured-employer-badge__logo--small">
+                @if($logoPath)
+                    <img src="{{ asset($logoPath) }}" alt="{{ $logoAlt }}">
+                @else
+                    <span>{{ mb_strtoupper(mb_substr($employerName, 0, 1)) }}</span>
+                @endif
+            </span>
+            <span class="featured-employer-badge__copy">
+                <span class="featured-employer-badge__eyebrow">Featured employer</span>
+                <span class="featured-employer-badge__compact-name">{{ $employerName }}</span>
+            </span>
+        </div>
+    @endif
 @endif

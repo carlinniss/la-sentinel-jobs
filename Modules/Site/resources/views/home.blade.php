@@ -274,7 +274,7 @@
                     @if($spotlightEmployer !== '')
                     <div class="mb-3 flex items-center gap-2">
                         @if($spotlightBrand)
-                        @include('listing::partials.featured-employer-badge', ['employerName' => $spotlightEmployer, 'employer' => $spotlightListing->user])
+                        @include('listing::partials.featured-employer-badge', ['employerName' => $spotlightEmployer, 'employer' => $spotlightListing->user, 'linkEmployerProfile' => false])
                         @else
                         <span class="truncate text-xs font-semibold text-[var(--oc-muted)]">{{ $spotlightEmployer }}</span>
                         @endif

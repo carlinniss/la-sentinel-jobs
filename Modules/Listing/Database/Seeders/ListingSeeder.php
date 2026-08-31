@@ -16,7 +16,6 @@ use Modules\User\App\Support\DemoUserCatalog;
 class ListingSeeder extends Seeder
 {
     private const BMO_EMAIL = 'j@j.com';
-
     private const ST_JOHNS_EMAIL = 'k@k.com';
 
     private const BMO_JOB_TITLES = [
@@ -85,6 +84,7 @@ class ListingSeeder extends Seeder
         'Baldwin Hills Hospitality Group',
         'Vermont Slauson Economic Development',
         'BMO Community Banking Careers',
+        "St. John's Community Health Careers",
         'LA County Workforce Desk',
         'South LA College & Career Bridge',
         'Crenshaw Chamber Employer Network',
