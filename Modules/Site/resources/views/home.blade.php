@@ -159,6 +159,129 @@
         </div>
     </section>
 
+    <section class="featured-employers-section">
+        <div class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div class="text-left">
+                <p class="community-kicker">Featured Employers</p>
+                <h2 class="mt-2 text-2xl font-black text-[var(--oc-text)] md:text-3xl">Hiring partners investing in community careers</h2>
+                <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--oc-muted)]">Featured employers appear higher on the jobs board, get dedicated profiles, and give LA Sentinel a clearer way to show applicant attribution.</p>
+            </div>
+            <a href="{{ route('listings.index') }}" class="oc-text-link text-left text-sm font-bold md:text-right">Browse partner jobs</a>
+        </div>
+
+        <div class="grid gap-4 lg:grid-cols-[minmax(0,1.25fr),minmax(18rem,0.75fr)]">
+            <div class="grid gap-4">
+                @forelse($featuredEmployerCards->take(3) as $featuredEmployer)
+                @php
+                    $featuredEmployerName = trim((string) $featuredEmployer->name);
+                    $featuredEmployerBio = trim((string) ($featuredEmployer->profile?->bio ?? ''));
+                    $featuredEmployerWebsite = trim((string) ($featuredEmployer->profile?->website ?? ''));
+                    $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($featuredEmployerName);
+                    $isLeadFeaturedEmployer = ($featuredEmployerBrand['key'] ?? null) === 'st-johns';
+                @endphp
+                <article @class([
+                    'featured-employer-card',
+                    'featured-employer-card-lead' => $isLeadFeaturedEmployer,
+                ]) @if($isLeadFeaturedEmployer) style="border-color: {{ $featuredEmployerBrand['soft_border'] }}; box-shadow: 0 22px 50px rgba(188, 66, 47, 0.14);" @endif>
+                    <div class="featured-employer-logo-panel" @if($featuredEmployerBrand) style="background: {{ $featuredEmployerBrand['panel_background'] }}; border-color: {{ $featuredEmployerBrand['soft_border'] }};" @endif>
+                        @if($featuredEmployerBrand)
+                            <img src="{{ asset($featuredEmployerBrand['logo']) }}" alt="{{ $featuredEmployerBrand['logo_alt'] }}" @class([
+                                'w-auto max-w-full object-contain',
+                                'h-28 md:h-36' => $isLeadFeaturedEmployer,
+                                'h-24 md:h-28' => ! $isLeadFeaturedEmployer,
+                            ])>
+                        @else
+                            <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-950 text-3xl font-black text-white">
+                                {{ mb_strtoupper(mb_substr($featuredEmployerName, 0, 1)) }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="min-w-0 text-left">
+                        <p class="text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Featured employer partner</p>
+                        <h3 class="mt-2 text-2xl font-black text-slate-950">{{ $featuredEmployerName }}</h3>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">
+                            {{ $featuredEmployerBio !== '' ? \Illuminate\Support\Str::limit($featuredEmployerBio, 220) : 'This featured employer is hiring through LA Sentinel Jobs with roles connected to local workforce pathways.' }}
+                        </p>
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <span class="rounded-full px-3 py-1.5 text-xs font-black" style="background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }}; box-shadow: 0 0 0 1px {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }};">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
+                            @if($isLeadFeaturedEmployer)
+                                <span class="community-proof-pill">Healthcare roles</span>
+                                <span class="community-proof-pill">Mission-driven care</span>
+                            @else
+                                <span class="community-proof-pill">Career pathways</span>
+                                <span class="community-proof-pill">Applicant attribution</span>
+                            @endif
+                        </div>
+                        @if($isLeadFeaturedEmployer)
+                            <div class="featured-employer-visual-callout" style="--callout-image: url('{{ asset('images/la-sentinel/community-workforce-la.png') }}');">
+                                <div>
+                                    <p>Healthcare hiring spotlight</p>
+                                    <strong>Clinical, dental, behavioral health, and patient-support jobs for Southern California communities.</strong>
+                                </div>
+                                <span>Now featured</span>
+                            </div>
+                        @endif
+                        <div class="mt-5 flex flex-wrap gap-3">
+                            <a href="{{ route('employers.show', $featuredEmployer) }}" class="btn-primary inline-flex min-h-11 items-center px-5 text-sm font-black">View profile</a>
+                            <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="inline-flex min-h-11 items-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:border-[#005eb8]">View jobs</a>
+                            @if($featuredEmployerWebsite !== '')
+                                <a href="{{ $featuredEmployerWebsite }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full px-5 text-sm font-black" style="border: 1px solid {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }}; background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Careers site</a>
+                            @endif
+                        </div>
+                    </div>
+                </article>
+                @empty
+                <article class="featured-employer-card">
+                    <div class="featured-employer-logo-panel">
+                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-24 w-auto max-w-full md:h-28">
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</p>
+                        <h3 class="mt-2 text-2xl font-black text-slate-950">BMO Community Banking Careers</h3>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">BMO connects Los Angeles candidates with customer-facing banking, branch leadership, small business, and operations career pathways.</p>
+                    </div>
+                </article>
+                @endforelse
+            </div>
+
+            <aside class="featured-employer-aside">
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'display',
+                    'format' => 'display',
+                    'placement' => 'home-featured-employer-sidebar-top',
+                ])
+                <p class="community-kicker">Direct Employer Access</p>
+                <h3 class="mt-2 text-lg font-black text-slate-950">Find jobs by hiring partner</h3>
+                <div class="mt-4">
+                    @if($featuredEmployerCards->isNotEmpty())
+                    <label for="featured-employer-jump" class="sr-only">Select featured employer</label>
+                    <select id="featured-employer-jump" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-800" onchange="if (this.value) window.location.href = this.value;">
+                        <option value="">Choose an employer</option>
+                        @foreach($featuredEmployerCards as $featuredEmployer)
+                            <option value="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}">{{ $featuredEmployer->name }}</option>
+                        @endforeach
+                    </select>
+                    <div class="mt-4 space-y-2">
+                        @foreach($featuredEmployerCards as $featuredEmployer)
+                            <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-bold text-slate-800 hover:border-[#005eb8]">
+                                <span>{{ $featuredEmployer->name }}</span>
+                                <span class="shrink-0 text-xs text-slate-500">{{ number_format((int) $featuredEmployer->active_listings_count) }} jobs</span>
+                            </a>
+                        @endforeach
+                    </div>
+                    @else
+                    <a href="{{ route('listings.index') }}" class="community-secondary-button justify-center">Browse all employers</a>
+                    @endif
+                </div>
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'display',
+                    'format' => 'display',
+                    'placement' => 'home-featured-employer-display',
+                ])
+            </aside>
+        </div>
+    </section>
+
     <section class="community-action-strip community-action-strip-loud">
         <div class="min-w-0">
             <p class="community-kicker">Start Here</p>
@@ -346,129 +469,6 @@
                     <p class="mt-1 text-xs font-bold text-[var(--oc-muted)]">outreach</p>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <section class="featured-employers-section">
-        <div class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
-            <div class="text-left">
-                <p class="community-kicker">Featured Employers</p>
-                <h2 class="mt-2 text-2xl font-black text-[var(--oc-text)] md:text-3xl">Hiring partners investing in community careers</h2>
-                <p class="mt-2 max-w-2xl text-sm leading-6 text-[var(--oc-muted)]">Featured employers appear higher on the jobs board, get dedicated profiles, and give LA Sentinel a clearer way to show applicant attribution.</p>
-            </div>
-            <a href="{{ route('listings.index') }}" class="oc-text-link text-left text-sm font-bold md:text-right">Browse partner jobs</a>
-        </div>
-
-        <div class="grid gap-4 lg:grid-cols-[minmax(0,1.25fr),minmax(18rem,0.75fr)]">
-            <div class="grid gap-4">
-                @forelse($featuredEmployerCards->take(3) as $featuredEmployer)
-                @php
-                    $featuredEmployerName = trim((string) $featuredEmployer->name);
-                    $featuredEmployerBio = trim((string) ($featuredEmployer->profile?->bio ?? ''));
-                    $featuredEmployerWebsite = trim((string) ($featuredEmployer->profile?->website ?? ''));
-                    $featuredEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($featuredEmployerName);
-                    $isLeadFeaturedEmployer = ($featuredEmployerBrand['key'] ?? null) === 'st-johns';
-                @endphp
-                <article @class([
-                    'featured-employer-card',
-                    'featured-employer-card-lead' => $isLeadFeaturedEmployer,
-                ]) @if($isLeadFeaturedEmployer) style="border-color: {{ $featuredEmployerBrand['soft_border'] }}; box-shadow: 0 22px 50px rgba(188, 66, 47, 0.14);" @endif>
-                    <div class="featured-employer-logo-panel" @if($featuredEmployerBrand) style="background: {{ $featuredEmployerBrand['panel_background'] }}; border-color: {{ $featuredEmployerBrand['soft_border'] }};" @endif>
-                        @if($featuredEmployerBrand)
-                            <img src="{{ asset($featuredEmployerBrand['logo']) }}" alt="{{ $featuredEmployerBrand['logo_alt'] }}" @class([
-                                'w-auto max-w-full object-contain',
-                                'h-28 md:h-36' => $isLeadFeaturedEmployer,
-                                'h-24 md:h-28' => ! $isLeadFeaturedEmployer,
-                            ])>
-                        @else
-                            <div class="flex h-20 w-20 items-center justify-center rounded-3xl bg-slate-950 text-3xl font-black text-white">
-                                {{ mb_strtoupper(mb_substr($featuredEmployerName, 0, 1)) }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="min-w-0 text-left">
-                        <p class="text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Featured employer partner</p>
-                        <h3 class="mt-2 text-2xl font-black text-slate-950">{{ $featuredEmployerName }}</h3>
-                        <p class="mt-3 text-sm leading-6 text-slate-600">
-                            {{ $featuredEmployerBio !== '' ? \Illuminate\Support\Str::limit($featuredEmployerBio, 220) : 'This featured employer is hiring through LA Sentinel Jobs with roles connected to local workforce pathways.' }}
-                        </p>
-                        <div class="mt-4 flex flex-wrap gap-2">
-                            <span class="rounded-full px-3 py-1.5 text-xs font-black" style="background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }}; box-shadow: 0 0 0 1px {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }};">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
-                            @if($isLeadFeaturedEmployer)
-                                <span class="community-proof-pill">Healthcare roles</span>
-                                <span class="community-proof-pill">Mission-driven care</span>
-                            @else
-                                <span class="community-proof-pill">Career pathways</span>
-                                <span class="community-proof-pill">Applicant attribution</span>
-                            @endif
-                        </div>
-                        @if($isLeadFeaturedEmployer)
-                            <div class="featured-employer-visual-callout" style="--callout-image: url('{{ asset('images/la-sentinel/community-workforce-la.png') }}');">
-                                <div>
-                                    <p>Healthcare hiring spotlight</p>
-                                    <strong>Clinical, dental, behavioral health, and patient-support jobs for Southern California communities.</strong>
-                                </div>
-                                <span>Now featured</span>
-                            </div>
-                        @endif
-                        <div class="mt-5 flex flex-wrap gap-3">
-                            <a href="{{ route('employers.show', $featuredEmployer) }}" class="btn-primary inline-flex min-h-11 items-center px-5 text-sm font-black">View profile</a>
-                            <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="inline-flex min-h-11 items-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:border-[#005eb8]">View jobs</a>
-                            @if($featuredEmployerWebsite !== '')
-                                <a href="{{ $featuredEmployerWebsite }}" target="_blank" rel="noopener" class="inline-flex min-h-11 items-center rounded-full px-5 text-sm font-black" style="border: 1px solid {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }}; background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Careers site</a>
-                            @endif
-                        </div>
-                    </div>
-                </article>
-                @empty
-                <article class="featured-employer-card">
-                    <div class="featured-employer-logo-panel">
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-24 w-auto max-w-full md:h-28">
-                    </div>
-                    <div class="text-left">
-                        <p class="text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</p>
-                        <h3 class="mt-2 text-2xl font-black text-slate-950">BMO Community Banking Careers</h3>
-                        <p class="mt-3 text-sm leading-6 text-slate-600">BMO connects Los Angeles candidates with customer-facing banking, branch leadership, small business, and operations career pathways.</p>
-                    </div>
-                </article>
-                @endforelse
-            </div>
-
-            <aside class="featured-employer-aside">
-                @include('site::partials.broadstreet-ad', [
-                    'zone' => 'display',
-                    'format' => 'display',
-                    'placement' => 'home-featured-employer-sidebar-top',
-                ])
-                <p class="community-kicker">Direct Employer Access</p>
-                <h3 class="mt-2 text-lg font-black text-slate-950">Find jobs by hiring partner</h3>
-                <div class="mt-4">
-                    @if($featuredEmployerCards->isNotEmpty())
-                    <label for="featured-employer-jump" class="sr-only">Select featured employer</label>
-                    <select id="featured-employer-jump" class="w-full rounded-2xl border border-slate-300 bg-white px-4 py-3 text-sm font-bold text-slate-800" onchange="if (this.value) window.location.href = this.value;">
-                        <option value="">Choose an employer</option>
-                        @foreach($featuredEmployerCards as $featuredEmployer)
-                            <option value="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}">{{ $featuredEmployer->name }}</option>
-                        @endforeach
-                    </select>
-                    <div class="mt-4 space-y-2">
-                        @foreach($featuredEmployerCards as $featuredEmployer)
-                            <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-white px-4 py-3 text-left text-sm font-bold text-slate-800 hover:border-[#005eb8]">
-                                <span>{{ $featuredEmployer->name }}</span>
-                                <span class="shrink-0 text-xs text-slate-500">{{ number_format((int) $featuredEmployer->active_listings_count) }} jobs</span>
-                            </a>
-                        @endforeach
-                    </div>
-                    @else
-                    <a href="{{ route('listings.index') }}" class="community-secondary-button justify-center">Browse all employers</a>
-                    @endif
-                </div>
-                @include('site::partials.broadstreet-ad', [
-                    'zone' => 'display',
-                    'format' => 'display',
-                    'placement' => 'home-featured-employer-display',
-                ])
-            </aside>
         </div>
     </section>
 
