@@ -371,9 +371,23 @@
                         </p>
                         <div class="mt-4 flex flex-wrap gap-2">
                             <span class="rounded-full px-3 py-1.5 text-xs font-black" style="background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }}; box-shadow: 0 0 0 1px {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }};">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
-                            <span class="community-proof-pill">Career pathways</span>
-                            <span class="community-proof-pill">Applicant attribution</span>
+                            @if($isLeadFeaturedEmployer)
+                                <span class="community-proof-pill">Healthcare roles</span>
+                                <span class="community-proof-pill">Mission-driven care</span>
+                            @else
+                                <span class="community-proof-pill">Career pathways</span>
+                                <span class="community-proof-pill">Applicant attribution</span>
+                            @endif
                         </div>
+                        @if($isLeadFeaturedEmployer)
+                            <div class="featured-employer-visual-callout" style="--callout-image: url('{{ asset('images/la-sentinel/community-workforce-la.png') }}');">
+                                <div>
+                                    <p>Healthcare hiring spotlight</p>
+                                    <strong>Clinical, dental, behavioral health, and patient-support jobs for Southern California communities.</strong>
+                                </div>
+                                <span>Now featured</span>
+                            </div>
+                        @endif
                         <div class="mt-5 flex flex-wrap gap-3">
                             <a href="{{ route('employers.show', $featuredEmployer) }}" class="btn-primary inline-flex min-h-11 items-center px-5 text-sm font-black">View profile</a>
                             <a href="{{ route('listings.index', ['user' => $featuredEmployer->getKey()]) }}" class="inline-flex min-h-11 items-center rounded-full border border-slate-300 bg-white px-5 text-sm font-black text-slate-800 hover:border-[#005eb8]">View jobs</a>

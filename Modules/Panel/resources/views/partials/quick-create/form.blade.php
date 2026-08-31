@@ -108,10 +108,15 @@
                                     @for ($index = 0; $index < $visiblePhotoSlotCount; $index++)
                                         <div class="qc-photo-slot">
                                             @if (isset($photos[$index]))
-                                                <div class="flex h-full w-full flex-col items-center justify-center gap-1 bg-slate-100 text-slate-500">
-                                                    <x-heroicon-o-photo class="h-8 w-8" />
-                                                    <span class="text-xs font-bold">Photo {{ $index + 1 }}</span>
-                                                </div>
+                                                @php($previewUrl = $this->photoPreviewUrl($index))
+                                                @if ($previewUrl)
+                                                    <img src="{{ $previewUrl }}" alt="Selected photo {{ $index + 1 }}">
+                                                @else
+                                                    <div class="flex h-full w-full flex-col items-center justify-center gap-1 bg-slate-100 text-slate-500">
+                                                        <x-heroicon-o-photo class="h-8 w-8" />
+                                                        <span class="text-xs font-bold">Photo {{ $index + 1 }}</span>
+                                                    </div>
+                                                @endif
                                                 <button type="button" class="qc-remove" wire:click="removePhoto({{ $index }})">×</button>
                                                 @if ($index === 0)
                                                     <div class="qc-cover">Cover</div>
@@ -194,9 +199,12 @@
                         type="button"
                         class="qc-button"
                         wire:click="goToCategoryStep"
+                        wire:loading.attr="disabled"
+                        wire:target="photos,goToCategoryStep"
                         @disabled($isDetecting)
                     >
-                        Next
+                        <span wire:loading.remove wire:target="photos,goToCategoryStep">Next</span>
+                        <span wire:loading wire:target="photos,goToCategoryStep">Working...</span>
                     </button>
                 </div>
             @endif
@@ -333,10 +341,15 @@
                         <div class="qc-photo-strip">
                             @foreach (array_slice($photos, 0, 4) as $index => $photo)
                                 <div class="qc-photo-slot">
-                                    <div class="flex h-full w-full flex-col items-center justify-center gap-1 bg-slate-100 text-slate-500">
-                                        <x-heroicon-o-photo class="h-8 w-8" />
-                                        <span class="text-xs font-bold">Photo {{ $index + 1 }}</span>
-                                    </div>
+                                    @php($previewUrl = $this->photoPreviewUrl($index))
+                                    @if ($previewUrl)
+                                        <img src="{{ $previewUrl }}" alt="Selected photo {{ $index + 1 }}">
+                                    @else
+                                        <div class="flex h-full w-full flex-col items-center justify-center gap-1 bg-slate-100 text-slate-500">
+                                            <x-heroicon-o-photo class="h-8 w-8" />
+                                            <span class="text-xs font-bold">Photo {{ $index + 1 }}</span>
+                                        </div>
+                                    @endif
                                     <button type="button" class="qc-remove" wire:click="removePhoto({{ $index }})">×</button>
                                     @if ($index === 0)
                                         <div class="qc-cover">Cover</div>
@@ -488,10 +501,15 @@
                             <div class="qc-review-gallery">
                                 <div class="qc-gallery-main">
                                     @if (isset($photos[0]))
-                                        <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-100 text-slate-500">
-                                            <x-heroicon-o-photo class="h-12 w-12" />
-                                            <span class="text-sm font-bold">Cover photo added</span>
-                                        </div>
+                                        @php($coverPreviewUrl = $this->photoPreviewUrl(0))
+                                        @if ($coverPreviewUrl)
+                                            <img src="{{ $coverPreviewUrl }}" alt="Selected cover photo">
+                                        @else
+                                            <div class="flex h-full w-full flex-col items-center justify-center gap-2 bg-slate-100 text-slate-500">
+                                                <x-heroicon-o-photo class="h-12 w-12" />
+                                                <span class="text-sm font-bold">Cover photo added</span>
+                                            </div>
+                                        @endif
                                     @else
                                         <x-heroicon-o-photo class="h-12 w-12 text-slate-400" />
                                     @endif
@@ -500,7 +518,12 @@
                                 <div class="qc-review-thumbs">
                                     @foreach (array_slice($photos, 0, 4) as $index => $photo)
                                         <div class="qc-review-thumb">
-                                            <x-heroicon-o-photo class="h-6 w-6 text-slate-400" />
+                                            @php($previewUrl = $this->photoPreviewUrl($index))
+                                            @if ($previewUrl)
+                                                <img src="{{ $previewUrl }}" alt="Selected photo {{ $index + 1 }}">
+                                            @else
+                                                <x-heroicon-o-photo class="h-6 w-6 text-slate-400" />
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>

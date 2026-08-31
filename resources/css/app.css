@@ -1487,6 +1487,28 @@ body.oc-header-menu-open .oc-nav-wrap {
     padding: clamp(1rem, 2.5vw, 1.5rem);
 }
 
+.featured-employer-card-lead {
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 243, 239, 0.92)),
+        radial-gradient(circle at 100% 0%, rgba(230, 95, 69, 0.14), transparent 34rem);
+}
+
+.featured-employer-card-lead::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        linear-gradient(90deg, rgba(230, 95, 69, 0.16), transparent 18rem),
+        repeating-linear-gradient(135deg, rgba(230, 95, 69, 0.06) 0 1px, transparent 1px 14px);
+}
+
+.featured-employer-card-lead > * {
+    position: relative;
+}
+
 .featured-employer-logo-panel {
     display: flex;
     min-height: 15rem;
@@ -1506,6 +1528,50 @@ body.oc-header-menu-open .oc-nav-wrap {
 .featured-employer-logo-panel--st-johns {
     border-color: rgba(191, 229, 220, 0.95);
     background: linear-gradient(135deg, #0d5f52, #12806a);
+}
+
+.featured-employer-visual-callout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: end;
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 18px;
+    background:
+        linear-gradient(90deg, rgba(20, 17, 15, 0.88), rgba(20, 17, 15, 0.58)),
+        var(--callout-image) center / cover;
+    padding: 1.1rem;
+    color: #ffffff;
+}
+
+.featured-employer-visual-callout p {
+    margin: 0 0 0.35rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-size: 0.68rem;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.featured-employer-visual-callout strong {
+    display: block;
+    max-width: 32rem;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+.featured-employer-visual-callout span {
+    display: inline-flex;
+    min-height: 2rem;
+    align-items: center;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 0 0.75rem;
+    color: #bc422f;
+    font-size: 0.75rem;
+    font-weight: 900;
+    white-space: nowrap;
 }
 
 .sj-proof-pill {
@@ -1758,6 +1824,128 @@ body.oc-header-menu-open .oc-nav-wrap {
     padding: clamp(1rem, 2.5vw, 1.5rem);
 }
 
+.featured-employer-profile-hero {
+    overflow: hidden;
+    border: 1px solid rgb(226, 232, 240);
+    border-radius: 1.5rem;
+    background: #ffffff;
+    box-shadow: 0 16px 36px rgba(54, 32, 19, 0.08);
+}
+
+.featured-employer-profile-hero--st-johns {
+    border-color: rgba(244, 181, 167, 0.78);
+    box-shadow: 0 24px 58px rgba(188, 66, 47, 0.13);
+}
+
+.featured-employer-profile-logo-card {
+    display: flex;
+    min-height: 18rem;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.56);
+    border-radius: 1.5rem;
+    background: #ffffff;
+    padding: clamp(2rem, 5vw, 3.2rem);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.18);
+}
+
+.featured-employer-profile-photo {
+    display: flex;
+    min-height: 8.5rem;
+    align-items: flex-end;
+    margin-top: 1rem;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background:
+        linear-gradient(180deg, transparent, rgba(20, 17, 15, 0.82)),
+        var(--profile-photo) center / cover;
+    padding: 1rem;
+}
+
+.featured-employer-profile-photo span,
+.featured-employer-showcase__media span {
+    display: inline-flex;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.92);
+    padding: 0.45rem 0.75rem;
+    color: #bc422f;
+    font-size: 0.72rem;
+    font-weight: 900;
+}
+
+.featured-employer-showcase {
+    display: grid;
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1fr);
+    gap: clamp(1rem, 2.5vw, 1.5rem);
+    align-items: stretch;
+    margin-top: 1.5rem;
+    border: 1px solid rgba(244, 181, 167, 0.78);
+    border-radius: 1.5rem;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 243, 239, 0.92)),
+        radial-gradient(circle at 100% 0%, rgba(230, 95, 69, 0.12), transparent 28rem);
+    padding: clamp(1rem, 2.5vw, 1.5rem);
+    box-shadow: 0 18px 42px rgba(54, 32, 19, 0.08);
+}
+
+.featured-employer-showcase__media {
+    display: flex;
+    min-height: 18rem;
+    align-items: flex-end;
+    overflow: hidden;
+    border-radius: 1.25rem;
+    background:
+        linear-gradient(180deg, transparent 35%, rgba(20, 17, 15, 0.82)),
+        var(--showcase-image) center / cover;
+    padding: 1rem;
+}
+
+.featured-employer-showcase__copy {
+    align-self: center;
+    padding: clamp(0.25rem, 1.5vw, 1rem);
+}
+
+.featured-employer-showcase__copy h2 {
+    margin-top: 0.5rem;
+    color: #0f172a;
+    font-size: clamp(1.65rem, 3vw, 2.5rem);
+    font-weight: 900;
+    line-height: 1.05;
+}
+
+.featured-employer-showcase__copy p:not(.community-kicker) {
+    margin-top: 1rem;
+    color: #475569;
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.7;
+}
+
+.featured-employer-showcase__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+}
+
+.featured-employer-showcase__stats span {
+    display: block;
+    border: 1px solid rgba(244, 181, 167, 0.75);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.82);
+    padding: 0.9rem;
+    color: #475569;
+    font-size: 0.78rem;
+    font-weight: 900;
+}
+
+.featured-employer-showcase__stats strong {
+    display: block;
+    color: #bc422f;
+    font-size: 1.55rem;
+    line-height: 1;
+}
+
 @media (max-width: 767px) {
     .community-action-strip,
     .listing-action-strip,
@@ -1774,8 +1962,26 @@ body.oc-header-menu-open .oc-nav-wrap {
         grid-template-columns: 1fr;
     }
 
+    .featured-employer-visual-callout,
+    .featured-employer-showcase {
+        grid-template-columns: 1fr;
+    }
+
+    .featured-employer-showcase__stats {
+        grid-template-columns: 1fr;
+    }
+
     .featured-employer-logo-panel {
         min-height: 11rem;
+    }
+
+    .featured-employer-profile-logo-card {
+        min-height: 13rem;
+        padding: 2rem;
+    }
+
+    .featured-employer-showcase__media {
+        min-height: 13rem;
     }
 
     .featured-employer-badge__identity,

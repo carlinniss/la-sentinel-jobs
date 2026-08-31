@@ -172,10 +172,6 @@ class PanelQuickListingForm extends Component
         $this->validatePhotos();
         $this->validateVideos();
         $this->currentStep = 2;
-
-        if (! $this->isDetecting && ! $this->detectedCategoryId) {
-            $this->detectCategoryFromImage();
-        }
     }
 
     public function goToDetailsStep(): void
@@ -224,6 +220,23 @@ class PanelQuickListingForm extends Component
 
         if ($this->detectedCategoryId) {
             $this->selectCategory($this->detectedCategoryId);
+        }
+    }
+
+    public function photoPreviewUrl(int $index): ?string
+    {
+        $photo = $this->photos[$index] ?? null;
+
+        if (! $photo instanceof TemporaryUploadedFile) {
+            return null;
+        }
+
+        try {
+            return $photo->temporaryUrl();
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return null;
         }
     }
 

@@ -17,6 +17,7 @@
     $softBorder = $brand['soft_border'] ?? '#b9d8f2';
     $panelBackground = $brand['panel_background'] ?? 'linear-gradient(135deg, #061b35, #082f58)';
     $eyebrow = ($brand['key'] ?? null) === 'st-johns' ? 'Healthcare launch partner' : 'Featured employer partner';
+    $isStJohnsBrand = ($brand['key'] ?? null) === 'st-johns';
     $formatCompensation = static function ($listing): string {
         if (is_null($listing->price) || (float) $listing->price <= 0) {
             return __('listing::messages.price_on_request');
@@ -47,10 +48,10 @@
         </span>
     </div>
 
-    <section class="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <section @class(['featured-employer-profile-hero', 'featured-employer-profile-hero--st-johns' => $isStJohnsBrand])>
         <div class="grid lg:grid-cols-[1fr,1.15fr]">
             <div class="p-6 md:p-8" style="background: {{ $panelBackground }};">
-                <div class="flex min-h-72 items-center justify-center rounded-3xl border border-white/15 bg-white p-10 shadow-[0_20px_50px_rgba(0,0,0,0.18)]">
+                <div class="featured-employer-profile-logo-card">
                     @if($brand)
                         <img src="{{ asset($brand['logo']) }}" alt="{{ $brand['logo_alt'] }}" class="h-40 w-auto max-w-full object-contain">
                     @else
@@ -59,6 +60,11 @@
                         </div>
                     @endif
                 </div>
+                @if($isStJohnsBrand)
+                    <div class="featured-employer-profile-photo" style="--profile-photo: url('{{ asset('images/la-sentinel/community-jobs-hero-alt.png') }}');">
+                        <span>Community healthcare careers</span>
+                    </div>
+                @endif
             </div>
 
             <div class="p-6 md:p-8">
@@ -94,6 +100,24 @@
             </div>
         </div>
     </section>
+
+    @if($isStJohnsBrand)
+        <section class="featured-employer-showcase" aria-label="St. John's hiring spotlight">
+            <div class="featured-employer-showcase__media" style="--showcase-image: url('{{ asset('images/la-sentinel/community-workforce-la.png') }}');">
+                <span>LA Sentinel healthcare hiring spotlight</span>
+            </div>
+            <div class="featured-employer-showcase__copy">
+                <p class="community-kicker">Why This Partner Stands Out</p>
+                <h2>Careers with purpose, visibility, and local impact.</h2>
+                <p>St. John's openings are presented as part of a focused healthcare pathway: easy to browse, connected to a dedicated employer profile, and built for candidates looking for meaningful work in community care.</p>
+                <div class="featured-employer-showcase__stats">
+                    <span><strong>{{ number_format($listings->total()) }}</strong> active roles</span>
+                    <span><strong>4</strong> care pathways</span>
+                    <span><strong>1964</strong> community roots</span>
+                </div>
+            </div>
+        </section>
+    @endif
 
     <section class="mt-8">
         <div class="mb-4 flex items-center justify-between gap-3">
