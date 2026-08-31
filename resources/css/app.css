@@ -1828,6 +1828,7 @@ body.oc-header-menu-open .oc-nav-wrap {
 }
 
 .featured-employer-badge--card {
+    width: 100%;
     max-width: 100%;
     gap: 0.5rem;
     border-radius: 1rem;
@@ -1995,14 +1996,13 @@ body.oc-header-menu-open .oc-nav-wrap {
 
 .featured-employer-badge__compact-name {
     display: block;
-    max-width: 10.5rem;
-    overflow: hidden;
+    max-width: 100%;
     color: #1e293b;
     font-size: 0.75rem;
     font-weight: 800;
     line-height: 1.2;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 
 .featured-employer-aside {
