@@ -40,8 +40,9 @@ COPY docker/php-upload.ini /usr/local/etc/php/conf.d/uploads.ini
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
 
-RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+RUN mkdir -p /var/lib/nginx/tmp/client_body /var/lib/nginx/tmp/fastcgi /run/nginx \
+    && chown -R www-data:www-data storage bootstrap/cache /var/lib/nginx /run/nginx \
+    && chmod -R 775 storage bootstrap/cache /var/lib/nginx /run/nginx
 
 EXPOSE 80
 
