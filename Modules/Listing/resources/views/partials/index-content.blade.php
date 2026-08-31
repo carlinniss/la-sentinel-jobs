@@ -75,17 +75,17 @@
             <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
             <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
         </div>
-        @include('site::partials.google-ad-placeholder', [
+        @include('site::partials.broadstreet-ad', [
+            'zone' => 'display',
             'format' => 'display',
             'placement' => 'jobs-search-top-display',
-            'label' => 'Jobs sponsor ad',
         ])
     </section>
 
-    @include('site::partials.google-ad-placeholder', [
+    @include('site::partials.broadstreet-ad', [
+        'zone' => 'leaderboard',
         'format' => 'leaderboard',
         'placement' => 'jobs-search-leaderboard',
-        'label' => 'Jobs board leaderboard',
     ])
 
     <div class="grid grid-cols-1 lg:grid-cols-[300px,1fr] xl:grid-cols-[360px,1fr] gap-4 lg:gap-5">
@@ -230,17 +230,17 @@
                 ])
             </div>
             <div class="hidden lg:block">
-                @include('site::partials.google-ad-placeholder', [
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'sidebar_skyscraper',
                     'format' => 'skyscraper',
                     'placement' => 'jobs-search-sidebar-skyscraper',
-                    'label' => 'Sidebar skyscraper ad',
                 ])
             </div>
             <div class="hidden xl:block">
-                @include('site::partials.google-ad-placeholder', [
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'sidebar_half_page',
                     'format' => 'half-page',
                     'placement' => 'jobs-search-sidebar-half-page',
-                    'label' => 'Wide sidebar ad',
                 ])
             </div>
             </div>

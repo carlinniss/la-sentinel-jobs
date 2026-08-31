@@ -38,7 +38,32 @@ class BroadstreetAdTemplateTest extends TestCase
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_BODY_SECONDARY', 187229)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225)", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226)", $config);
+        self::assertStringContainsString("env('BROADSTREET_ZONE_LEADERBOARD', env('BROADSTREET_ZONE_BILLBOARD', 187227))", $config);
+        self::assertStringContainsString("env('BROADSTREET_ZONE_DISPLAY', env('BROADSTREET_ZONE_CUBE', 187228))", $config);
+        self::assertStringContainsString("env('BROADSTREET_ZONE_SKYSCRAPER', env('BROADSTREET_ZONE_SOURCE_HEADER_LEFT', 187225))", $config);
+        self::assertStringContainsString("env('BROADSTREET_ZONE_HALF_PAGE', env('BROADSTREET_ZONE_SOURCE_HEADER_RIGHT', 187226))", $config);
         self::assertStringContainsString("env('BROADSTREET_ZONE_CUBE', 187228)", $config);
+    }
+
+    public function test_public_home_and_search_pages_use_live_broadstreet_slots(): void
+    {
+        $home = file_get_contents(
+            dirname(__DIR__, 2).'/Modules/Site/resources/views/home.blade.php'
+        );
+        $index = file_get_contents(
+            dirname(__DIR__, 2).'/Modules/Listing/resources/views/partials/index-content.blade.php'
+        );
+
+        self::assertStringContainsString("@include('site::partials.broadstreet-ad'", $home);
+        self::assertStringContainsString("@include('site::partials.broadstreet-ad'", $index);
+        self::assertStringContainsString("'zone' => 'leaderboard'", $home);
+        self::assertStringContainsString("'zone' => 'display'", $home);
+        self::assertStringContainsString("'zone' => 'leaderboard'", $index);
+        self::assertStringContainsString("'zone' => 'display'", $index);
+        self::assertStringContainsString("'zone' => 'sidebar_skyscraper'", $index);
+        self::assertStringContainsString("'zone' => 'sidebar_half_page'", $index);
+        self::assertStringNotContainsString("@include('site::partials.google-ad-placeholder'", $home);
+        self::assertStringNotContainsString("@include('site::partials.google-ad-placeholder'", $index);
     }
 
     public function test_broadstreet_slots_do_not_render_fake_ad_creative(): void

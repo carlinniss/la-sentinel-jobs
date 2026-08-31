@@ -195,10 +195,10 @@
     </section>
     @endif
 
-    @include('site::partials.google-ad-placeholder', [
+    @include('site::partials.broadstreet-ad', [
+        'zone' => 'leaderboard',
         'format' => 'leaderboard',
         'placement' => 'home-top-leaderboard',
-        'label' => 'Top jobs sponsor ad',
     ])
 
     <section class="community-hero-grid grid lg:grid-cols-[1.1fr,0.9fr] gap-8 lg:gap-12 items-start">
@@ -412,10 +412,10 @@
             </div>
 
             <aside class="featured-employer-aside">
-                @include('site::partials.google-ad-placeholder', [
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'display',
                     'format' => 'display',
                     'placement' => 'home-featured-employer-sidebar-top',
-                    'label' => 'Hiring partner sponsor ad',
                 ])
                 <p class="community-kicker">Direct Employer Access</p>
                 <h3 class="mt-2 text-lg font-black text-slate-950">Find jobs by hiring partner</h3>
@@ -440,10 +440,10 @@
                     <a href="{{ route('listings.index') }}" class="community-secondary-button justify-center">Browse all employers</a>
                     @endif
                 </div>
-                @include('site::partials.google-ad-placeholder', [
+                @include('site::partials.broadstreet-ad', [
+                    'zone' => 'display',
                     'format' => 'display',
                     'placement' => 'home-featured-employer-display',
-                    'label' => 'Featured sponsor ad',
                 ])
             </aside>
         </div>
@@ -460,15 +460,15 @@
             <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Employers show up clearly</h2>
             <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Hiring teams can share mission, pay, benefits, location, and next steps before applicants apply.</p>
         </article>
-        @include('site::partials.google-ad-placeholder', [
+        @include('site::partials.broadstreet-ad', [
+            'zone' => 'display',
             'format' => 'display',
             'placement' => 'home-outreach-grid-display-1',
-            'label' => 'Workforce partner ad',
         ])
-        @include('site::partials.google-ad-placeholder', [
+        @include('site::partials.broadstreet-ad', [
+            'zone' => 'display',
             'format' => 'display',
             'placement' => 'home-outreach-grid-display-2',
-            'label' => 'Community careers ad',
         ])
     </section>
 
@@ -478,10 +478,10 @@
         'placement' => 'home-after-community-outreach',
     ])
 
-    @include('site::partials.google-ad-placeholder', [
+    @include('site::partials.broadstreet-ad', [
+        'zone' => 'leaderboard',
         'format' => 'leaderboard',
         'placement' => 'home-midpage-leaderboard',
-        'label' => 'Community jobs sponsor ad',
     ])
 
     <section>
