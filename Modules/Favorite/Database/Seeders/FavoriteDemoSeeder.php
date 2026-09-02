@@ -32,7 +32,9 @@ class FavoriteDemoSeeder extends Seeder
             $user->favoriteSellers()->detach();
         });
 
-        FavoriteSearch::query()->whereIn('user_id', $users->pluck('id'))->delete();
+        FavoriteSearch::withTrashed()
+            ->whereIn('user_id', $users->pluck('id'))
+            ->forceDelete();
 
         foreach ($users as $index => $user) {
             $favoriteSeller = $users->get(($index + 1) % $users->count());
