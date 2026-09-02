@@ -24,17 +24,25 @@ class CategorySeeder extends Seeder
         ];
 
         foreach ($categories as $index => $data) {
-            $parent = Category::updateOrCreate(
+            $parent = Category::withTrashed()->updateOrCreate(
                 ['slug' => $data['slug']],
                 ['name' => $data['name'], 'slug' => $data['slug'], 'icon' => $data['icon'], 'level' => 0, 'sort_order' => $index, 'is_active' => true]
             );
 
+            if ($parent->trashed()) {
+                $parent->restore();
+            }
+
             foreach ($data['children'] as $i => $childName) {
                 $childSlug = $data['slug'].'-'.Str::slug($childName);
-                Category::updateOrCreate(
+                $child = Category::withTrashed()->updateOrCreate(
                     ['slug' => $childSlug],
                     ['name' => $childName, 'slug' => $childSlug, 'parent_id' => $parent->id, 'level' => 1, 'sort_order' => $i, 'is_active' => true]
                 );
+
+                if ($child->trashed()) {
+                    $child->restore();
+                }
             }
         }
 

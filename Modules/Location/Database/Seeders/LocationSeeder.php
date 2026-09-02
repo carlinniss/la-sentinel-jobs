@@ -14,7 +14,7 @@ class LocationSeeder extends Seeder
     public function run(): void
     {
         foreach ($this->countries() as $country) {
-            Country::updateOrCreate(
+            $seededCountry = Country::withTrashed()->updateOrCreate(
                 ['code' => $country['code']],
                 [
                     'name' => $country['name'],
@@ -22,6 +22,10 @@ class LocationSeeder extends Seeder
                     'is_active' => true,
                 ]
             );
+
+            if ($seededCountry->trashed()) {
+                $seededCountry->restore();
+            }
         }
 
         $unitedStates = Country::query()->where('code', 'US')->first();
@@ -30,10 +34,14 @@ class LocationSeeder extends Seeder
             $laCities = $this->losAngelesCities();
 
             foreach ($laCities as $city) {
-                City::updateOrCreate(
+                $seededCity = City::withTrashed()->updateOrCreate(
                     ['country_id' => (int) $unitedStates->id, 'name' => $city],
                     ['is_active' => true]
                 );
+
+                if ($seededCity->trashed()) {
+                    $seededCity->restore();
+                }
             }
         }
 
@@ -43,10 +51,14 @@ class LocationSeeder extends Seeder
             $turkeyCities = $this->turkeyCities();
 
             foreach ($turkeyCities as $city) {
-                City::updateOrCreate(
+                $seededCity = City::withTrashed()->updateOrCreate(
                     ['country_id' => (int) $turkey->id, 'name' => $city],
                     ['is_active' => true]
                 );
+
+                if ($seededCity->trashed()) {
+                    $seededCity->restore();
+                }
             }
 
             City::query()

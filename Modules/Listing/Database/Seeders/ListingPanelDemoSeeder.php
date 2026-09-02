@@ -24,12 +24,12 @@ class ListingPanelDemoSeeder extends Seeder
 
     public function run(): void
     {
-        Listing::query()
+        Listing::withTrashed()
             ->whereIn('slug', self::LEGACY_SLUGS)
             ->get()
             ->each(function (Listing $listing): void {
                 $listing->clearMediaCollection('listing-images');
-                $listing->delete();
+                $listing->forceDelete();
             });
 
         foreach (DemoUserCatalog::emails() as $email) {

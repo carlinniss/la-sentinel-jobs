@@ -16,7 +16,7 @@ class AuthUserSeeder extends Seeder
     {
         $users = collect(DemoUserCatalog::records())
             ->map(function (array $record): User {
-                $user = User::query()->updateOrCreate(
+                $user = User::withTrashed()->updateOrCreate(
                     ['email' => $record['email']],
                     [
                         'name' => $record['name'],
@@ -25,10 +25,18 @@ class AuthUserSeeder extends Seeder
                     ],
                 );
 
-                Profile::query()->updateOrCreate(
+                if ($user->trashed()) {
+                    $user->restore();
+                }
+
+                $profile = Profile::withTrashed()->updateOrCreate(
                     ['user_id' => $user->getKey()],
                     $this->profilePayload($record),
                 );
+
+                if ($profile->trashed()) {
+                    $profile->restore();
+                }
 
                 return $user;
             });

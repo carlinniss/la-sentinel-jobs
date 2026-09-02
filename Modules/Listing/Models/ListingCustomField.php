@@ -114,7 +114,7 @@ class ListingCustomField extends Model
 
     public static function upsertSeeded(Category $category, array $attributes): self
     {
-        return static::query()->updateOrCreate(
+        $field = static::withTrashed()->updateOrCreate(
             ['name' => (string) ($attributes['name'] ?? '')],
             [
                 'label' => (string) ($attributes['label'] ?? ''),
@@ -128,6 +128,12 @@ class ListingCustomField extends Model
                 'sort_order' => (int) ($attributes['sort_order'] ?? 0),
             ],
         );
+
+        if ($field->trashed()) {
+            $field->restore();
+        }
+
+        return $field;
     }
 
     public static function panelFieldDefinitions(?int $categoryId): array

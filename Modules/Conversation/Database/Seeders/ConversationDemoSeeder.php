@@ -25,14 +25,14 @@ class ConversationDemoSeeder extends Seeder
             return;
         }
 
-        ConversationMessage::query()
+        ConversationMessage::withTrashed()
             ->whereHas('conversation', fn ($query) => $query->whereIn('buyer_id', $users->pluck('id'))->orWhereIn('seller_id', $users->pluck('id')))
-            ->delete();
+            ->forceDelete();
 
-        Conversation::query()
+        Conversation::withTrashed()
             ->whereIn('buyer_id', $users->pluck('id'))
             ->orWhereIn('seller_id', $users->pluck('id'))
-            ->delete();
+            ->forceDelete();
 
         foreach ($users as $index => $buyer) {
             $primarySeller = $users->get(($index + 1) % $users->count());

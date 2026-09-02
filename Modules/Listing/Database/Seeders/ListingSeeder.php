@@ -141,7 +141,7 @@ class ListingSeeder extends Seeder
             ->get()
             ->each(function (Listing $listing): void {
                 $listing->clearMediaCollection('listing-images');
-                $listing->delete();
+                $listing->forceDelete();
             });
     }
 
@@ -338,7 +338,7 @@ class ListingSeeder extends Seeder
 
     private function upsertListing(array $data, Category $category, User $user): Listing
     {
-        $listing = Listing::updateOrCreate(
+        $listing = Listing::withTrashed()->updateOrCreate(
             ['slug' => $data['slug']],
             [
                 'title' => $data['title'],
@@ -353,6 +353,10 @@ class ListingSeeder extends Seeder
                 'expires_at' => $data['expires_at'],
             ]
         );
+
+        if ($listing->trashed()) {
+            $listing->restore();
+        }
 
         $listing->applyAdminFormData([
             'slug' => $data['slug'],
