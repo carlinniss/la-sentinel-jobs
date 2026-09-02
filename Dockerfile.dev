@@ -20,7 +20,7 @@ RUN apk add --no-cache \
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /workspaces/la-sentinel-jobs
 
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY docker/php-upload.ini /usr/local/etc/php/conf.d/uploads.ini

@@ -9,8 +9,7 @@
         "5173": {"label": "Vite HMR"},
         "8025": {"label": "Mailpit"}
     },
-    "postCreateCommand": "cp -n .env.example .env || true",
-    "postStartCommand": "php artisan migrate --force && php artisan db:seed --force || true",
+    "postCreateCommand": "true",
     "customizations": {
         "vscode": {
             "extensions": [
