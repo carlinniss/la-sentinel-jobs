@@ -16,6 +16,8 @@ fi
 composer install
 npm install
 
+php artisan optimize:clear || true
+
 if ! grep -q '^APP_KEY=' .env; then
     printf '\nAPP_KEY=\n' >> .env
 fi
