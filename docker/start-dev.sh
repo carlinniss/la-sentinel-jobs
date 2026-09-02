@@ -59,6 +59,6 @@ php artisan db:seed --force
 php artisan storage:link || true
 
 php artisan queue:listen --tries=1 --timeout=0 &
-npm run dev -- --host 0.0.0.0 &
+npm run dev -- --host 0.0.0.0 --origin http://localhost:5173 &
 
 exec php artisan serve --host=0.0.0.0 --port=8000
