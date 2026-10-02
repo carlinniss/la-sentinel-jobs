@@ -27,6 +27,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock* ./
+COPY packages ./packages
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 
 COPY . .
