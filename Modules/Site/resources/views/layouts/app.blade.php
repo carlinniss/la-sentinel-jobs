@@ -72,7 +72,8 @@
     $citiesRouteTemplate = \Illuminate\Support\Facades\Route::has('locations.cities')
         ? route('locations.cities', ['country' => '__COUNTRY__'], false)
         : '';
-    $simplePage = trim((string) $__env->yieldContent('simple_page')) === '1';
+    $resumeOnlyMode = ! \Modules\Site\App\Http\Middleware\ResumeOnlyMode::boardEnabled();
+    $simplePage = $resumeOnlyMode || trim((string) $__env->yieldContent('simple_page')) === '1';
     $headerAccount = is_array($headerAccountMeta ?? null) ? $headerAccountMeta : null;
     $headerMessageCount = max(0, (int) ($headerAccount['messages'] ?? 0));
     $headerNotificationCount = max(0, (int) ($headerAccount['notifications'] ?? 0));
@@ -165,6 +166,20 @@
                 </span>
             </a>
 
+            @if($resumeOnlyMode)
+            <div class="flex items-center gap-2 sm:gap-3">
+                @auth
+                <a href="{{ route('panel.profile.edit') }}" class="hidden min-h-11 items-center justify-center rounded-full px-3 text-sm font-semibold text-slate-700 hover:text-slate-900 sm:inline-flex">My Profile</a>
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="inline-flex min-h-11 items-center justify-center rounded-full px-3 text-sm font-semibold text-slate-700 hover:text-slate-900">Log out</button>
+                </form>
+                @else
+                <a href="{{ route('resume.post', ['mode' => 'login']) }}" class="inline-flex min-h-11 items-center justify-center rounded-full px-3 text-sm font-semibold text-slate-700 hover:text-slate-900">Log in</a>
+                @endauth
+                <a href="{{ route('resume.post') }}" class="inline-flex min-h-11 items-center justify-center rounded-full bg-[#8b1d22] px-4 text-sm font-bold text-white hover:bg-[#5b1014]">Post Resume</a>
+            </div>
+            @else
             <div class="flex items-center gap-3">
                 @auth
                 <a href="{{ route('panel.listings.index') }}" class="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-200 bg-white px-4 text-sm font-semibold text-slate-700 hover:border-slate-300 hover:text-slate-900">
@@ -175,6 +190,7 @@
                     {{ __('site::messages.exit') }}
                 </a>
             </div>
+            @endif
         </div>
     </nav>
     @else

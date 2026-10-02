@@ -142,6 +142,40 @@ class PostResumeTest extends TestCase
         ])->assertRedirect('/resume');
     }
 
+    public function test_resume_only_mode_redirects_job_board_pages_to_the_form(): void
+    {
+        config(['resume.jobs_board_enabled' => false]);
+
+        $this->get('/?src=tos2026')->assertRedirect('/resume?src=tos2026');
+        $this->get('/listings')->assertRedirect('/resume');
+        $this->get('/register')->assertRedirect('/resume');
+        $this->get('/partners/inquiry')->assertRedirect('/resume');
+        $this->post('/partners/inquiry')->assertNotFound();
+
+        $this->get('/resume')->assertOk()->assertSee('Launching soon');
+        $this->get('/terms')->assertOk()->assertSee('Terms of Use');
+        $this->get('/privacy')->assertOk()->assertSee('Privacy Policy');
+        $this->get('/login')->assertOk();
+    }
+
+    public function test_resume_only_mode_keeps_member_resume_tools(): void
+    {
+        config(['resume.jobs_board_enabled' => false]);
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->get('/dashboard')->assertRedirect('/resume');
+        $this->actingAs($user)->get('/panel/my-listings')->assertRedirect('/resume');
+        $this->actingAs($user)->get('/panel/my-profile')->assertOk();
+    }
+
+    public function test_board_enabled_restores_job_pages(): void
+    {
+        config(['resume.jobs_board_enabled' => true]);
+
+        $this->get('/resume')->assertOk()->assertDontSee('Launching soon');
+        $this->get('/register')->assertOk();
+    }
+
     private function signupPayload(array $overrides = []): array
     {
         return array_merge([

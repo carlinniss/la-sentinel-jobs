@@ -8,7 +8,8 @@
     $hasResume = (bool) $profile?->hasResume();
     $source = (string) session('resume_signup_source', '');
     $isEventVisitor = str_starts_with($source, 'tos');
-    $mode = old('auth_mode') === 'login' ? 'login' : 'signup';
+    $mode = old('auth_mode') === 'login' || (! old('auth_mode') && request('mode') === 'login') ? 'login' : 'signup';
+    $boardEnabled = \Modules\Site\App\Http\Middleware\ResumeOnlyMode::boardEnabled();
     $isFree = $feeCents === 0;
     $inputClass = 'block w-full rounded-2xl border border-[#d8c7a8] bg-white px-4 py-3.5 text-base text-[#17120f] placeholder:text-[#9a8f82] focus:border-[#8b1d22] focus:outline-none focus:ring-2 focus:ring-[#8b1d22]/20';
     $labelClass = 'mb-1.5 block text-sm font-semibold text-[#17120f]';
@@ -20,12 +21,14 @@
         <img src="{{ asset('images/la-sentinel/resume-pathway-campaign.webp') }}" alt="" class="absolute inset-0 h-full w-full object-cover opacity-25">
         <div class="relative mx-auto max-w-[640px] px-4 pb-24 pt-8 sm:pt-12">
             <p class="text-xs font-bold uppercase tracking-[0.22em] text-[#f3d27a]">
-                {{ $isEventVisitor ? 'Welcome, Taste of Soul' : 'LA Sentinel Jobs' }}
+                {{ $isEventVisitor ? 'Welcome, Taste of Soul' : ($boardEnabled ? 'LA Sentinel Jobs' : 'LA Sentinel Jobs · Launching soon') }}
             </p>
             <h1 class="mt-2 text-[clamp(2rem,8vw,2.75rem)] font-extrabold leading-[1.05] tracking-tight">Post your resume</h1>
             <p class="mt-3 max-w-[34rem] text-base leading-7 text-white/90">
                 @if($user)
                     Add or update your resume below. It stays private until you choose to let verified employers find it.
+                @elseif(! $boardEnabled)
+                    Our jobs board opens soon. Post your resume now so local employers can find you first. No resume on your phone? Sign up now and add it later.
                 @else
                     Create your account and add your resume in one step. No resume on your phone? Sign up now and add it later.
                 @endif
@@ -109,7 +112,7 @@
 
                     <label class="flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#17120f]">
                         <input type="checkbox" name="terms" value="1" @checked(old('terms')) required class="mt-0.5 h-5 w-5 shrink-0 rounded border-[#b9a98c] text-[#8b1d22] focus:ring-[#8b1d22]">
-                        <span>I agree to the LA Sentinel Jobs terms of use.</span>
+                        <span>I agree to the LA Sentinel Jobs <a href="{{ route('legal.terms') }}" target="_blank" class="font-semibold text-[#8b1d22] underline underline-offset-2">Terms of Use</a> and <a href="{{ route('legal.privacy') }}" target="_blank" class="font-semibold text-[#8b1d22] underline underline-offset-2">Privacy Policy</a>.</span>
                     </label>
                     @error('terms')<p class="{{ $errorClass }} -mt-3">{{ $message }}</p>@enderror
 
@@ -174,8 +177,10 @@
 
                 <p class="mt-5 text-center text-sm text-[#675d52]">
                     <a href="{{ route('panel.profile.edit') }}" class="font-semibold text-[#8b1d22] underline-offset-4 hover:underline">Manage your full profile</a>
+                    @if($boardEnabled)
                     <span aria-hidden="true">·</span>
                     <a href="{{ route('listings.index') }}" class="font-semibold text-[#8b1d22] underline-offset-4 hover:underline">Browse jobs</a>
+                    @endif
                 </p>
             </div>
             @endauth
@@ -183,6 +188,13 @@
 
         <p class="mx-auto mt-5 max-w-[30rem] text-center text-sm leading-6 text-[#675d52]">
             Your resume is never public. Only verified employers can see it, and only if you allow it. You can change this or remove your resume anytime.
+        </p>
+        <p class="mt-3 text-center text-sm text-[#675d52]">
+            <a href="{{ route('legal.terms') }}" class="font-semibold underline underline-offset-2">Terms</a>
+            <span aria-hidden="true">·</span>
+            <a href="{{ route('legal.privacy') }}" class="font-semibold underline underline-offset-2">Privacy</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://lasentinel.net" class="font-semibold underline underline-offset-2">LA Sentinel</a>
         </p>
     </div>
 </div>

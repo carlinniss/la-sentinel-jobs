@@ -16,6 +16,8 @@ Route::middleware('web')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home');
     Route::get('/partners/inquiry', [PartnerInquiryController::class, 'create'])->name('partners.inquiry');
     Route::post('/partners/inquiry', [PartnerInquiryController::class, 'store'])->name('partners.inquiry.store');
+    Route::view('/terms', 'site::legal.terms')->name('legal.terms');
+    Route::view('/privacy', 'site::legal.privacy')->name('legal.privacy');
     Route::get('/lang/{locale}', [LanguageController::class, 'switch'])->name('lang.switch');
     Route::get('/dashboard', fn () => auth()->check()
         ? redirect()->route('panel.listings.index')

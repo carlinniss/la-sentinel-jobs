@@ -5,6 +5,7 @@
 @section('content')
 @php
     $hasResume = (bool) $profile?->hasResume();
+    $boardEnabled = \Modules\Site\App\Http\Middleware\ResumeOnlyMode::boardEnabled();
     $firstName = \Illuminate\Support\Str::of((string) $user->name)->before(' ')->toString();
     $secondaryButton = 'flex min-h-[52px] w-full items-center justify-center rounded-2xl border-2 border-[#8b1d22] bg-white px-6 text-base font-bold text-[#8b1d22] hover:bg-[#fff0d2]';
     $primaryButton = 'flex min-h-[56px] w-full items-center justify-center rounded-2xl bg-[#8b1d22] px-6 text-lg font-bold text-white shadow-sm hover:bg-[#5b1014]';
@@ -36,12 +37,19 @@
 
         <div class="mt-7 space-y-3">
             @if($hasResume)
+                @if($boardEnabled)
                 <a href="{{ route('listings.index') }}" class="{{ $primaryButton }}">Browse jobs</a>
-                <a href="{{ route('panel.profile.edit') }}" class="{{ $secondaryButton }}">Complete my profile</a>
+                @endif
+                <a href="{{ route('panel.profile.edit') }}" class="{{ $boardEnabled ? $secondaryButton : $primaryButton }}">Complete my profile</a>
             @else
                 <a href="{{ route('resume.post') }}" class="{{ $primaryButton }}">Upload my resume now</a>
+                @if($boardEnabled)
                 <a href="{{ route('listings.index') }}" class="{{ $secondaryButton }}">Browse jobs</a>
+                @endif
             @endif
+            @unless($boardEnabled)
+                <p class="pt-2 text-sm leading-6 text-[#675d52]">The LA Sentinel Jobs board opens soon. We'll email you when jobs go live.</p>
+            @endunless
         </div>
     </div>
 </div>

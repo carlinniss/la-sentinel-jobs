@@ -6,6 +6,7 @@ namespace Modules\User\App\Notifications;
 
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Modules\Site\App\Http\Middleware\ResumeOnlyMode;
 
 class ResumeSignupNotification extends Notification
 {
@@ -23,11 +24,13 @@ class ResumeSignupNotification extends Notification
             ->greeting('Welcome to LA Sentinel Jobs');
 
         if ($this->hasResume) {
-            return $message
+            $message
                 ->line('Your account is ready and your resume is saved privately to your profile.')
-                ->line('You choose whether verified employers can discover it, and you can change that or remove your resume at any time.')
-                ->action('Browse current jobs', route('listings.index'))
-                ->line('Manage your resume anytime from My Profile.');
+                ->line('You choose whether verified employers can discover it, and you can change that or remove your resume at any time.');
+
+            return ResumeOnlyMode::boardEnabled()
+                ? $message->action('Browse current jobs', route('listings.index'))->line('Manage your resume anytime from My Profile.')
+                : $message->action('Manage my resume', route('resume.post'))->line('The LA Sentinel Jobs board opens soon. We will email you when jobs go live.');
         }
 
         return $message
