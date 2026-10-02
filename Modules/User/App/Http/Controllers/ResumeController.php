@@ -12,27 +12,28 @@ use Illuminate\View\View;
 use Modules\User\App\Models\Profile;
 use Modules\User\App\Models\ResumeView;
 use Modules\User\App\Services\ResumeCheckoutService;
+use Modules\User\App\Services\ResumeUploadService;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
 class ResumeController extends Controller
 {
-    public function __construct(private readonly ResumeCheckoutService $checkout)
-    {
-    }
+    public function __construct(
+        private readonly ResumeCheckoutService $checkout,
+        private readonly ResumeUploadService $uploads,
+    ) {}
 
     public function update(Request $request): RedirectResponse
     {
         $request->validateWithBag('resume', [
-            'resume' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+            'resume' => ResumeUploadService::FILE_RULES,
             'resume_searchable' => ['nullable', 'boolean'],
         ]);
 
         $user = $request->user();
-        $profile = $user->profile()->firstOrCreate(['user_id' => $user->getKey()]);
+        $profile = $this->uploads->profileFor($user);
         $file = $request->file('resume');
-        $feeCents = max(0, (int) config('resume.upload_fee_cents'));
-        $requiresPayment = $feeCents > 0 && $profile->resume_paid_at === null;
+        $requiresPayment = $this->uploads->requiresPayment($profile);
 
         if (! $file && ! $profile->hasResume()) {
             return back()->withErrors(['resume' => 'Choose a PDF, DOC, or DOCX resume to upload.'], 'resume');
@@ -42,31 +43,7 @@ class ResumeController extends Controller
             return back()->withErrors(['resume' => 'Resume payment is not configured yet. Please try again later.'], 'resume');
         }
 
-        if ($file) {
-            $oldPath = $profile->resume_path;
-            $path = $file->store('resumes/'.$user->getKey(), 'local');
-
-            $profile->fill([
-                'resume_path' => $path,
-                'resume_original_name' => $file->getClientOriginalName(),
-                'resume_mime' => $file->getMimeType(),
-                'resume_size' => $file->getSize(),
-                'resume_uploaded_at' => now(),
-                'resume_fee_cents' => $feeCents,
-            ]);
-
-            if ($feeCents === 0) {
-                $profile->resume_paid_at = now();
-                $profile->resume_checkout_session_id = null;
-            }
-
-            if (is_string($oldPath) && $oldPath !== '' && $oldPath !== $path) {
-                Storage::disk('local')->delete($oldPath);
-            }
-        }
-
-        $profile->resume_searchable = $request->boolean('resume_searchable');
-        $profile->save();
+        $this->uploads->store($user, $profile, $file, $request->boolean('resume_searchable'));
 
         if ($requiresPayment) {
             try {

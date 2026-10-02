@@ -6,7 +6,7 @@
         ? $activeCategoryName.' Jobs and Compensation'
         : 'All Jobs and Compensation';
     $sentinelUrl = 'https://lasentinel.net';
-    $resumeRoute = auth()->check() ? route('panel.profile.edit') : route('register');
+    $resumeRoute = route('resume.post');
     $postJobRoute = auth()->check() ? route('panel.listings.create') : route('login');
     $canSaveSearch = $search !== '' || ! is_null($categoryId);
     $normalizeQuery = static fn ($value): bool => ! is_null($value) && $value !== '';

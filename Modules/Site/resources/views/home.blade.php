@@ -61,7 +61,7 @@
 
     $sentinelUrl = 'https://lasentinel.net';
     $jobSearchRoute = route('listings.index');
-    $resumeRoute = auth()->check() ? route('panel.profile.edit') : route('register');
+    $resumeRoute = route('resume.post');
     $postJobRoute = auth()->check() ? route('panel.listings.create') : route('login');
     $partnerRoute = route('partners.inquiry');
     $partnerLogoCards = $featuredEmployerCards

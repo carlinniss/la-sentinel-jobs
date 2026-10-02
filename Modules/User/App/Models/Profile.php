@@ -32,6 +32,7 @@ class Profile extends Model
         'resume_fee_cents',
         'resume_paid_at',
         'resume_checkout_session_id',
+        'signup_source',
     ];
 
     protected $casts = [
@@ -76,6 +77,24 @@ class Profile extends Model
     public function canBrowseResumes(): bool
     {
         return $this->is_verified && $this->resume_access_enabled;
+    }
+
+    public function recordSignupSource(?string $source): void
+    {
+        if ($source === null || filled($this->signup_source)) {
+            return;
+        }
+
+        $this->signup_source = $source;
+        $this->save();
+    }
+
+    public static function normalizeSource(mixed $source): ?string
+    {
+        $source = strtolower(trim((string) $source));
+        $source = (string) preg_replace('/[^a-z0-9_-]/', '', $source);
+
+        return $source === '' ? null : substr($source, 0, 64);
     }
 
     public static function detailsForUser(User $user): ?self

@@ -306,15 +306,21 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="m12 3 2.8 5.67 6.2.9-4.5 4.39 1.06 6.2L12 17.21 6.44 20.16 7.5 13.96 3 9.57l6.2-.9L12 3z"/>
                         </svg>
                     </a>
-                    <a href="{{ $panelCreateRoute }}" class="btn-primary oc-cta">
-                        Post
+                    <a href="{{ $panelCreateRoute }}" class="oc-text-link oc-auth-link">
+                        Post a Job
+                    </a>
+                    <a href="{{ route('resume.post') }}" class="btn-primary oc-cta">
+                        Post Resume
                     </a>
                     @else
                     <a href="{{ $loginRoute }}" class="oc-text-link oc-auth-link">
                         {{ __('site::messages.login') }}
                     </a>
-                    <a href="{{ $panelCreateRoute }}" class="btn-primary oc-cta">
-                        Post
+                    <a href="{{ $panelCreateRoute }}" class="oc-text-link oc-auth-link">
+                        Post a Job
+                    </a>
+                    <a href="{{ route('resume.post') }}" class="btn-primary oc-cta">
+                        Post Resume
                     </a>
                     @endauth
                 </div>
@@ -334,8 +340,9 @@
                     </div>
 
                     <div class="oc-mobile-menu-actions">
+                        <a href="{{ route('resume.post') }}" class="oc-mobile-menu-primary oc-mobile-menu-primary-strong col-span-2">Post Your Resume</a>
                         <a href="{{ route('listings.index') }}" class="oc-mobile-menu-primary">{{ __('site::messages.browse') }}</a>
-                        <a href="{{ $panelCreateRoute }}" class="oc-mobile-menu-primary oc-mobile-menu-primary-strong">{{ __('site::messages.sell') }}</a>
+                        <a href="{{ $panelCreateRoute }}" class="oc-mobile-menu-primary">Post a Job</a>
                     </div>
 
                     <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="mx-4 mb-4 flex items-center gap-3 rounded-2xl border border-[#d9c08a] bg-[#fffaf0] px-4 py-3 text-sm font-extrabold text-[#7b1a1f]">
