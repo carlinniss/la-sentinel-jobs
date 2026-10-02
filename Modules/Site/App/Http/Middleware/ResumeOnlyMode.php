@@ -26,6 +26,13 @@ class ResumeOnlyMode
         'livewire.*',
     ];
 
+    private const ALLOWED_PATHS = [
+        'login',
+        'confirm-password',
+        'livewire/*',
+        'up',
+    ];
+
     public static function boardEnabled(): bool
     {
         return (bool) config('resume.jobs_board_enabled', false);
@@ -33,7 +40,7 @@ class ResumeOnlyMode
 
     public function handle(Request $request, Closure $next): Response
     {
-        if (self::boardEnabled() || $request->routeIs(...self::ALLOWED_ROUTES) || $request->is('livewire/*', 'up')) {
+        if (self::boardEnabled() || $request->routeIs(...self::ALLOWED_ROUTES) || $request->is(...self::ALLOWED_PATHS)) {
             return $next($request);
         }
 

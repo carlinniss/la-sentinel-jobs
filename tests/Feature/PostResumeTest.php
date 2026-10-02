@@ -133,6 +133,8 @@ class PostResumeTest extends TestCase
 
     public function test_login_from_resume_page_returns_to_it(): void
     {
+        config(['resume.jobs_board_enabled' => false]);
+
         User::factory()->create(['email' => 'pat@example.com', 'password' => 'Secret-password-123']);
 
         $this->post(route('login'), [
