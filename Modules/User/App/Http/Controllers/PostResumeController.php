@@ -17,6 +17,7 @@ use Modules\User\App\Models\User;
 use Modules\User\App\Notifications\ResumeSignupNotification;
 use Modules\User\App\Services\ResumeCheckoutService;
 use Modules\User\App\Services\ResumeUploadService;
+use RuntimeException;
 use Throwable;
 
 class PostResumeController extends Controller
@@ -137,7 +138,17 @@ class PostResumeController extends Controller
             $request->session()->flash('resume_notice', 'Resume payment is not available right now, so your file was not saved. Please try again later.');
         }
 
-        $this->uploads->store($user, $profile, $file, $request->boolean('resume_searchable'));
+        try {
+            $this->uploads->store($user, $profile, $file, $request->boolean('resume_searchable'));
+        } catch (RuntimeException $exception) {
+            report($exception);
+
+            return redirect()->route('resume.post')->withErrors([
+                'resume' => $notify
+                    ? 'Your account was created, but we could not save your resume file. Please try uploading it again.'
+                    : 'We could not save your resume file. Please try again.',
+            ]);
+        }
 
         if ($notify) {
             $this->sendConfirmation($user, $profile->hasResume());

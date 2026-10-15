@@ -13,6 +13,7 @@ use Modules\User\App\Models\Profile;
 use Modules\User\App\Models\ResumeView;
 use Modules\User\App\Services\ResumeCheckoutService;
 use Modules\User\App\Services\ResumeUploadService;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Throwable;
 
@@ -43,7 +44,13 @@ class ResumeController extends Controller
             return back()->withErrors(['resume' => 'Resume payment is not configured yet. Please try again later.'], 'resume');
         }
 
-        $this->uploads->store($user, $profile, $file, $request->boolean('resume_searchable'));
+        try {
+            $this->uploads->store($user, $profile, $file, $request->boolean('resume_searchable'));
+        } catch (RuntimeException $exception) {
+            report($exception);
+
+            return back()->withErrors(['resume' => 'We could not save your resume file. Please try again.'], 'resume');
+        }
 
         if ($requiresPayment) {
             try {

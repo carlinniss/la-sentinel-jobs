@@ -6,6 +6,7 @@ namespace Modules\User\App\Services;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use RuntimeException;
 use Modules\User\App\Models\Profile;
 use Modules\User\App\Models\User;
 
@@ -36,6 +37,13 @@ class ResumeUploadService
         if ($file) {
             $oldPath = $profile->resume_path;
             $path = $file->store('resumes/'.$user->getKey(), 'local');
+
+            // The local disk is configured with 'throw' => false, so a failed
+            // write (unwritable storage volume, full disk) returns false instead
+            // of raising. Fail loudly so the person is told and nothing is saved.
+            if (! is_string($path) || $path === '') {
+                throw new RuntimeException('Resume file could not be written to storage for user '.$user->getKey().'.');
+            }
 
             $profile->fill([
                 'resume_path' => $path,
