@@ -9,10 +9,10 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-Artisan::command('jobs:signup-report {source? : Only report one source, e.g. tos2026}', function (?string $source = null) {
+Artisan::command('jobs:signup-report {source? : Only report one source, e.g. tos2026, or "none" for sign-ups with no code}', function (?string $source = null) {
     $rows = Profile::query()
-        ->whereNotNull('signup_source')
-        ->when($source, fn ($query) => $query->where('signup_source', Profile::normalizeSource($source)))
+        ->when($source === 'none', fn ($query) => $query->whereNull('signup_source'))
+        ->when($source !== null && $source !== 'none', fn ($query) => $query->where('signup_source', Profile::normalizeSource($source)))
         ->selectRaw('signup_source')
         ->selectRaw('count(*) as signups')
         ->selectRaw('sum(case when resume_path is not null then 1 else 0 end) as with_resume')
@@ -22,11 +22,20 @@ Artisan::command('jobs:signup-report {source? : Only report one source, e.g. tos
         ->orderByDesc('signups')
         ->get();
 
-    $this->table(
-        ['Source', 'Sign-ups', 'With resume', 'Discoverable', 'Newsletter'],
-        $rows->map(fn ($row) => [$row->signup_source, $row->signups, $row->with_resume, $row->discoverable, $row->newsletter])->all(),
-    );
-})->purpose('Count job-seeker sign-ups and resumes by campaign source');
+    $table = $rows->map(fn ($row) => [
+        $row->signup_source ?? '(no code)',
+        (int) $row->signups,
+        (int) $row->with_resume,
+        (int) $row->discoverable,
+        (int) $row->newsletter,
+    ]);
+
+    if ($table->count() > 1) {
+        $table->push(['TOTAL', $table->sum(1), $table->sum(2), $table->sum(3), $table->sum(4)]);
+    }
+
+    $this->table(['Source', 'Sign-ups', 'With resume', 'Discoverable', 'Newsletter'], $table->all());
+})->purpose('Count job-seeker sign-ups and resumes by campaign source, including sign-ups with no code');
 
 Artisan::command('jobs:newsletter-export', function () {
     $out = fopen('php://stdout', 'w');
