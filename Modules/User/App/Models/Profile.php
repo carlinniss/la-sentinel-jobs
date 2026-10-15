@@ -33,6 +33,7 @@ class Profile extends Model
         'resume_paid_at',
         'resume_checkout_session_id',
         'signup_source',
+        'newsletter_opt_in_at',
     ];
 
     protected $casts = [
@@ -42,6 +43,7 @@ class Profile extends Model
         'resume_access_enabled' => 'boolean',
         'resume_fee_cents' => 'integer',
         'resume_paid_at' => 'datetime',
+        'newsletter_opt_in_at' => 'datetime',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -60,6 +62,13 @@ class Profile extends Model
     public function resumeViews()
     {
         return $this->hasMany(ResumeView::class);
+    }
+
+    public function recordNewsletterOptIn(bool $optedIn): void
+    {
+        if ($optedIn && $this->newsletter_opt_in_at === null) {
+            $this->newsletter_opt_in_at = now();
+        }
     }
 
     public function hasResume(): bool

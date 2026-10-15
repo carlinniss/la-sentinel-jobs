@@ -82,6 +82,7 @@ class PostResumeController extends Controller
             'resume' => ResumeUploadService::FILE_RULES,
             'resume_searchable' => ['nullable', 'boolean'],
             'phone' => ['nullable', 'string', 'max:40'],
+            'newsletter' => ['nullable', 'boolean'],
         ], [
             'email.unique' => 'An account already uses this email. Log in below to add your resume.',
             'terms.accepted' => 'Please accept the terms to create your account.',
@@ -105,6 +106,7 @@ class PostResumeController extends Controller
         }
 
         $profile->recordSignupSource($request->session()->get(self::SOURCE_SESSION_KEY));
+        $profile->recordNewsletterOptIn($request->boolean('newsletter'));
 
         return $this->saveResume($request, $user, $profile, notify: true);
     }
@@ -114,9 +116,11 @@ class PostResumeController extends Controller
         $request->validate([
             'resume' => ResumeUploadService::FILE_RULES,
             'resume_searchable' => ['nullable', 'boolean'],
+            'newsletter' => ['nullable', 'boolean'],
         ]);
 
         $profile = $this->uploads->profileFor($user);
+        $profile->recordNewsletterOptIn($request->boolean('newsletter'));
 
         if (! $request->hasFile('resume') && ! $profile->hasResume()) {
             return back()->withErrors(['resume' => 'Choose a PDF, DOC, or DOCX file to upload.']);

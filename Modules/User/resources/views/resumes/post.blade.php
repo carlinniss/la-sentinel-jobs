@@ -110,6 +110,8 @@
                         @error('phone')<p class="{{ $errorClass }}">{{ $message }}</p>@enderror
                     </div>
 
+                    @include('user::resumes.partials.post-newsletter')
+
                     <label class="flex cursor-pointer items-start gap-3 text-sm leading-6 text-[#17120f]">
                         <input type="checkbox" name="terms" value="1" @checked(old('terms')) required class="mt-0.5 h-5 w-5 shrink-0 rounded border-[#b9a98c] text-[#8b1d22] focus:ring-[#8b1d22]">
                         <span>I agree to the LA Sentinel Jobs <a href="{{ route('legal.terms') }}" target="_blank" class="font-semibold text-[#8b1d22] underline underline-offset-2">Terms of Use</a> and <a href="{{ route('legal.privacy') }}" target="_blank" class="font-semibold text-[#8b1d22] underline underline-offset-2">Privacy Policy</a>.</span>
@@ -171,6 +173,10 @@
                     @include('user::resumes.partials.post-file-field', ['optional' => false, 'replacing' => $hasResume])
 
                     @include('user::resumes.partials.post-consent', ['checked' => (bool) old('resume_searchable', $profile?->resume_searchable)])
+
+                    @if(! $profile?->newsletter_opt_in_at)
+                        @include('user::resumes.partials.post-newsletter')
+                    @endif
 
                     <button type="submit" class="{{ $primaryButton }}">{{ $hasResume ? 'Save resume' : 'Post my resume' }}</button>
                 </form>

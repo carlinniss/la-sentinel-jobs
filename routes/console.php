@@ -17,15 +17,42 @@ Artisan::command('jobs:signup-report {source? : Only report one source, e.g. tos
         ->selectRaw('count(*) as signups')
         ->selectRaw('sum(case when resume_path is not null then 1 else 0 end) as with_resume')
         ->selectRaw('sum(case when resume_searchable = 1 and resume_path is not null then 1 else 0 end) as discoverable')
+        ->selectRaw('sum(case when newsletter_opt_in_at is not null then 1 else 0 end) as newsletter')
         ->groupBy('signup_source')
         ->orderByDesc('signups')
         ->get();
 
     $this->table(
-        ['Source', 'Sign-ups', 'With resume', 'Discoverable'],
-        $rows->map(fn ($row) => [$row->signup_source, $row->signups, $row->with_resume, $row->discoverable])->all(),
+        ['Source', 'Sign-ups', 'With resume', 'Discoverable', 'Newsletter'],
+        $rows->map(fn ($row) => [$row->signup_source, $row->signups, $row->with_resume, $row->discoverable, $row->newsletter])->all(),
     );
 })->purpose('Count job-seeker sign-ups and resumes by campaign source');
+
+Artisan::command('jobs:newsletter-export', function () {
+    $out = fopen('php://stdout', 'w');
+    fputcsv($out, ['email', 'first_name', 'last_name', 'opted_in_at', 'source']);
+
+    Profile::query()
+        ->whereNotNull('newsletter_opt_in_at')
+        ->with('user:id,name,email')
+        ->orderBy('newsletter_opt_in_at')
+        ->each(function (Profile $profile) use ($out): void {
+            if (! $profile->user) {
+                return;
+            }
+
+            [$first, $last] = array_pad(explode(' ', (string) $profile->user->name, 2), 2, '');
+            fputcsv($out, [
+                $profile->user->email,
+                $first,
+                $last,
+                $profile->newsletter_opt_in_at?->toDateTimeString(),
+                $profile->signup_source,
+            ]);
+        });
+
+    fclose($out);
+})->purpose('Print newsletter opt-ins as CSV for importing into the mailing list');
 
 if (config('demo.enabled')) {
     Schedule::command('demo:cleanup')->hourly();

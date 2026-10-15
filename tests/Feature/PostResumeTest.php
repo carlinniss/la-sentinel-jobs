@@ -80,6 +80,20 @@ class PostResumeTest extends TestCase
         $this->get(route('resume.done'))->assertOk()->assertSee('Upload my resume now');
     }
 
+    public function test_newsletter_opt_in_is_unchecked_and_recorded_only_when_ticked(): void
+    {
+        $this->get('/resume')->assertOk()->assertSee('Send me the LA Sentinel newsletter and digital paper');
+
+        $this->post('/resume', $this->signupPayload())->assertRedirect(route('resume.done'));
+        $this->assertNull(User::query()->where('email', 'jane@example.com')->firstOrFail()->profile->newsletter_opt_in_at);
+
+        auth()->logout();
+
+        $this->post('/resume', $this->signupPayload(['email' => 'sam@example.com', 'newsletter' => '1']))
+            ->assertRedirect(route('resume.done'));
+        $this->assertNotNull(User::query()->where('email', 'sam@example.com')->firstOrFail()->profile->newsletter_opt_in_at);
+    }
+
     public function test_existing_email_is_told_to_log_in(): void
     {
         User::factory()->create(['email' => 'jane@example.com']);
