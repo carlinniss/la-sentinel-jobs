@@ -6,6 +6,7 @@ namespace Modules\Listing\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Modules\Category\Models\Category;
 use Modules\Conversation\App\Models\Conversation;
 use Modules\Favorite\App\Models\FavoriteSearch;
@@ -204,6 +205,15 @@ class ListingController extends Controller
         abort_unless($listing->canRevealContactTo(auth()->user()), 403);
 
         return response()->json($listing->contactDetailsFor(auth()->user()));
+    }
+
+    public function apply(Listing $listing): RedirectResponse
+    {
+        abort_unless($listing->acceptsEmailApplications(), 404);
+
+        $listing->recordApplyClick(auth()->id(), request()->query('src'));
+
+        return redirect()->away($listing->applyMailtoUrl());
     }
 
     public function create()

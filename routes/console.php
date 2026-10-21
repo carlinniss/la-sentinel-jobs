@@ -63,6 +63,19 @@ Artisan::command('jobs:newsletter-export', function () {
     fclose($out);
 })->purpose('Print newsletter opt-ins as CSV for importing into the mailing list');
 
+Artisan::command('jobs:apply-report {--days=30 : How many days back to count}', function () {
+    $since = now()->subDays(max(1, (int) $this->option('days')));
+    $rows = \Modules\Listing\Models\Listing::query()
+        ->withCount(['applyClicks as clicks' => fn ($query) => $query->where('created_at', '>=', $since)])
+        ->with('user:id,name')
+        ->orderByDesc('clicks')
+        ->get()
+        ->map(fn ($listing) => [$listing->user?->name ?? '-', $listing->title, $listing->clicks]);
+
+    $this->table(['Employer', 'Job', 'Apply clicks'], $rows->all());
+    $this->line(sprintf('Total apply clicks in the last %d days: %d', (int) $this->option('days'), $rows->sum(2)));
+})->purpose('Count Apply button clicks per job, to report applicants sent by LA Sentinel Jobs');
+
 if (config('demo.enabled')) {
     Schedule::command('demo:cleanup')->hourly();
 }

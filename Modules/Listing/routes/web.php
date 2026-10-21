@@ -9,5 +9,6 @@ Route::middleware('web')->prefix('listings')->name('listings.')->group(function 
     Route::get('/create', [ListingController::class, 'create'])->name('create');
     Route::post('/', [ListingController::class, 'store'])->name('store');
     Route::middleware(['auth', 'throttle:30,1'])->get('/{listing}/contact', [ListingController::class, 'contact'])->name('contact');
+    Route::middleware('throttle:20,1')->get('/{listing}/apply', [ListingController::class, 'apply'])->name('apply');
     Route::get('/{listing}', [ListingController::class, 'show'])->name('show');
 });

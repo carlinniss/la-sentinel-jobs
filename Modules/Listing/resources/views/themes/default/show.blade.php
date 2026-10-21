@@ -100,6 +100,12 @@
             </div>
             @endif
 
+            @if($listing->acceptsEmailApplications())
+            <div class="mt-6 lg:hidden">
+                <a href="{{ route('listings.apply', $listing) }}" class="btn-primary w-full justify-center py-3 text-base font-bold" rel="nofollow">Apply for this job</a>
+            </div>
+            @endif
+
             <div class="mt-8 border-t border-[var(--oc-border)] pt-6">
                 <h2 class="job-description-title">{{ __('listing::messages.description') }}</h2>
                 @php
@@ -217,6 +223,14 @@
                     @endif
                     @endif
 
+                    @if($listing->acceptsEmailApplications())
+                        <a href="{{ route('listings.apply', $listing) }}" class="btn-primary w-full justify-center py-3 text-base font-bold" rel="nofollow">
+                            Apply for this job
+                        </a>
+                        <p class="mt-2 text-xs leading-5 text-[var(--oc-muted)]">Opens your email with the job title filled in. Attach your resume and send.</p>
+                    @endif
+
+                    @if(config('resume.chat_enabled'))
                     @auth
                         @if($listing->user && (int) $listing->user->id !== (int) auth()->id())
                             @if($detailConversation)
@@ -237,6 +251,7 @@
                         {{ __('listing::messages.log_in_to_contact_seller') }}
                     </a>
                     @endauth
+                    @endif
                 </div>
             </div>
 

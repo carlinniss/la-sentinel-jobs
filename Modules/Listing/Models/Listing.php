@@ -717,6 +717,47 @@ class Listing extends Model implements HasMedia
         return $listing;
     }
 
+    public function applyClicks()
+    {
+        return $this->hasMany(ListingApplyClick::class);
+    }
+
+    public function acceptsEmailApplications(): bool
+    {
+        return filter_var(trim((string) $this->contact_email), FILTER_VALIDATE_EMAIL) !== false;
+    }
+
+    public function recordApplyClick(?int $userId, ?string $source): void
+    {
+        $this->applyClicks()->create([
+            'user_id' => $userId,
+            'source' => $source !== null ? mb_substr($source, 0, 64) : null,
+        ]);
+    }
+
+    public function applyMailtoUrl(): string
+    {
+        $subject = sprintf('Application via LA Sentinel Jobs - %s', $this->title);
+        $body = implode("\n", [
+            'Hello,',
+            '',
+            sprintf('I would like to apply for the %s position I found on LA Sentinel Jobs:', $this->title),
+            route('listings.show', $this),
+            '',
+            'My resume is attached.',
+            '',
+            'Thank you,',
+            '',
+        ]);
+
+        return sprintf(
+            'mailto:%s?subject=%s&body=%s',
+            trim((string) $this->contact_email),
+            rawurlencode($subject),
+            rawurlencode($body)
+        );
+    }
+
     public function applyAdminFormData(array $data): void
     {
         $this->fill(Arr::only($data, [

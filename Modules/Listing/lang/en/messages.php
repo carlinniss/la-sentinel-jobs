@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 return [
     'free' => 'Salary not listed',
-    'contact_seller' => 'Contact Employer',
+    'contact_seller' => 'Apply',
     'view' => 'View',
     'post_listing' => 'Post Job',
     'featured_listings' => 'Featured Jobs',
