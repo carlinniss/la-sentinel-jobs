@@ -433,16 +433,14 @@
                                     </div>
                                 @endif
                                 <a href="{{ route('listings.show', $listing) }}" class="block">
-                                    <p class="text-xl sm:text-2xl lg:text-3xl leading-none font-bold text-slate-900">
-                                        @if(!is_null($priceValue) && $priceValue > 0)
-                                            {{ $formatCompensation($listing) }}
-                                        @else
-                                            {{ __('listing::messages.price_on_request') }}
-                                        @endif
-                                    </p>
-                                    <h3 class="listing-title mt-2 text-sm font-semibold text-slate-900">
+                                    <h3 class="listing-title text-base sm:text-lg font-bold text-slate-900">
                                         {{ $listing->title }}
                                     </h3>
+                                    @if(!is_null($priceValue) && $priceValue > 0)
+                                        <p class="mt-1 text-base font-bold text-slate-900">{{ $formatCompensation($listing) }}</p>
+                                    @else
+                                        <p class="mt-1 text-xs font-semibold text-slate-500">{{ __('listing::messages.price_on_request') }}</p>
+                                    @endif
                                 </a>
 
                                 <p class="text-xs text-slate-500 mt-2">

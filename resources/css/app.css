@@ -6070,3 +6070,13 @@ body.listing-filters-open {
     word-break: normal;
     hyphens: none;
 }
+
+.listing-card {
+    text-align: left;
+}
+
+.listing-card .listing-title {
+    max-width: none;
+    margin-inline: 0;
+    line-height: 1.3;
+}
