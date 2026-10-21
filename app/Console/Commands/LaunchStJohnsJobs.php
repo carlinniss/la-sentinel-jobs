@@ -51,17 +51,27 @@ class LaunchStJohnsJobs extends Command
             : collect();
         $usersToDelete = $demoUsers->reject(fn (User $user): bool => $keptDemoAdmins->contains('id', $user->id));
 
-        $demoListings = Listing::withTrashed()->whereIn('user_id', $demoUsers->pluck('id'))->get();
-        $otherListings = Listing::withTrashed()->whereNotIn('user_id', $demoUsers->pluck('id'))->orWhereNull('user_id')->get();
+        $demoListings = Listing::withTrashed()
+            ->where(fn ($query) => $query->whereIn('user_id', $demoUsers->pluck('id'))->orWhereNull('user_id'))
+            ->get();
+        $otherListings = Listing::withTrashed()
+            ->whereNotNull('user_id')
+            ->whereNotIn('user_id', $demoUsers->pluck('id'))
+            ->where('slug', 'not like', 'st-johns-%')
+            ->get();
 
         $this->newLine();
         $this->info('Demo cleanup');
-        $this->line(sprintf('  Demo listings to delete: %d', $demoListings->count()));
+        $this->line(sprintf('  Demo listings to delete (demo-owned or with no owner): %d', $demoListings->count()));
         $this->line(sprintf('  Demo accounts to delete: %d (%s)', $usersToDelete->count(), $usersToDelete->pluck('email')->join(', ') ?: 'none'));
         $this->line(sprintf('  Real admin accounts: %s', $realAdmins->join(', ') ?: 'NONE'));
 
         if ($keptDemoAdmins->isNotEmpty()) {
             $this->warn(sprintf('  Keeping demo admin %s because it is the only admin. Change its email and password in /admin, then re-run.', $keptDemoAdmins->pluck('email')->join(', ')));
+        }
+
+        if ($realAdmins->isEmpty()) {
+            $this->warn('  No admin can log in to /admin. Create one with: php artisan jobs:make-admin you@example.com');
         }
 
         if ($otherListings->isNotEmpty()) {
