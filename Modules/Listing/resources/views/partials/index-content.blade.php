@@ -64,23 +64,6 @@
         </a>
     </div>
 
-    <section class="listing-action-strip mb-5">
-        <div class="min-w-0 text-left">
-            <p class="community-kicker">Jobs and Resumes</p>
-            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Apply faster and keep your resume visible to community hiring partners.</h2>
-            <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">LA Sentinel Jobs is built to help jobseekers apply through the platform while employers can see which applicants came from LA Sentinel outreach.</p>
-        </div>
-        <div class="listing-action-buttons">
-            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Your Resume</a>
-            <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
-            <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
-        </div>
-        @include('site::partials.broadstreet-ad', [
-            'zone' => 'display',
-            'format' => 'display',
-            'placement' => 'jobs-search-top-display',
-        ])
-    </section>
 
     @include('site::partials.google-publisher-leaderboard', [
         'placement' => 'jobs-search-leaderboard',
@@ -99,7 +82,7 @@
                         <h2 class="text-2xl font-bold text-slate-900 leading-none">Categories</h2>
                     </div>
 
-                    <div class="space-y-1 max-h-[330px] overflow-y-auto pr-1">
+                    <div class="listing-category-list space-y-1">
                         @php
                             $allCategoriesLink = route('listings.index', $baseCategoryQuery);
                         @endphp
@@ -121,7 +104,10 @@
                                 <span>{{ number_format($categoryCount) }}</span>
                             </a>
 
-                            @foreach($category->children as $childCategory)
+                            @php
+                                $showChildren = $isSelectedParent || $category->children->contains(fn ($child): bool => (int) $child->id === (int) $categoryId);
+                            @endphp
+                            @foreach($showChildren ? $category->children : [] as $childCategory)
                                 @php
                                     $isSelectedChild = (int) $categoryId === (int) $childCategory->id;
                                     $childUrl = route('listings.index', array_filter(array_merge($baseCategoryQuery, [
@@ -368,7 +354,7 @@
                     {{ __('listing::messages.no_listings_match_filter') }}
                 </div>
             @else
-                <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3">
+                <div class="listing-grid grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
                     @foreach($listings as $listing)
                         @php
                             $listingImage = $listing->primaryImageData('card');
@@ -462,4 +448,22 @@
             </div>
         </section>
     </div>
+
+    <section class="listing-action-strip mt-8">
+        <div class="min-w-0 text-left">
+            <p class="community-kicker">Jobs and Resumes</p>
+            <h2 class="mt-2 text-2xl font-black text-slate-950 md:text-3xl">Apply faster and keep your resume visible to community hiring partners.</h2>
+            <p class="mt-2 max-w-3xl text-sm leading-6 text-slate-600">LA Sentinel Jobs is built to help jobseekers apply through the platform while employers can see which applicants came from LA Sentinel outreach.</p>
+        </div>
+        <div class="listing-action-buttons">
+            <a href="{{ $resumeRoute }}" class="btn-primary justify-center px-6 py-3 text-sm font-black">Post Your Resume</a>
+            <a href="{{ route('listings.index') }}" class="community-secondary-button">Apply for Jobs</a>
+            <a href="{{ $postJobRoute }}" class="community-secondary-button">Post a Job</a>
+        </div>
+        @include('site::partials.broadstreet-ad', [
+            'zone' => 'display',
+            'format' => 'display',
+            'placement' => 'jobs-search-top-display',
+        ])
+    </section>
 </div>

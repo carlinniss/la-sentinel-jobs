@@ -108,6 +108,9 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" dir="{{ in_array(app()->getLocale(), ['ar']) ? 'rtl' : 'ltr' }}">
 <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@600;700;800&display=swap">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -580,5 +583,26 @@
     @endif
     @livewireScripts
     <x-impersonate::banner />
+<script>
+(() => {
+    const settle = (slot) => {
+        const zone = slot.querySelector('broadstreet-zone');
+        if (!zone) return;
+        const filled = !!zone.querySelector('img, iframe, video, picture, svg') && zone.offsetHeight > 4;
+        slot.classList.toggle('is-filled', filled);
+        slot.classList.toggle('is-empty', !filled);
+    };
+    const watch = () => {
+        document.querySelectorAll('.broadstreet-ad-slot').forEach((slot) => {
+            const zone = slot.querySelector('broadstreet-zone');
+            if (zone && 'MutationObserver' in window) {
+                new MutationObserver(() => settle(slot)).observe(zone, { childList: true, subtree: true });
+            }
+            [2500, 6000, 12000].forEach((delay) => setTimeout(() => settle(slot), delay));
+        });
+    };
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', watch) : watch();
+})();
+</script>
 </body>
 </html>

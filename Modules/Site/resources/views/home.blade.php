@@ -217,7 +217,7 @@
                         @endif
                     </div>
                     <div class="min-w-0 text-left">
-                        <p class="text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">{{ $isLeadFeaturedEmployer ? 'Founding sponsor' : 'Featured employer partner' }}</p>
+                        <p class="text-xs font-black" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">{{ $isLeadFeaturedEmployer ? 'Founding sponsor' : 'Featured employer partner' }}</p>
                         <h3 class="mt-2 text-2xl font-black text-slate-950">{{ $featuredEmployerName }}</h3>
                         <p class="mt-3 text-sm leading-6 text-slate-600">
                             {{ $featuredEmployerBio !== '' ? \Illuminate\Support\Str::limit($featuredEmployerBio, 220) : 'This featured employer is hiring through LA Sentinel Jobs with roles connected to local workforce pathways.' }}
@@ -254,7 +254,7 @@
                 @empty
                 <article class="featured-employer-card">
                     <div class="text-left">
-                        <p class="text-xs font-black uppercase tracking-[0.22em] text-[#8b1d22]">Hiring partners</p>
+                        <p class="text-xs font-black text-[#8b1d22]">Hiring partners</p>
                         <h3 class="mt-2 text-2xl font-black text-slate-950">More employers are coming soon</h3>
                         <p class="mt-3 text-sm leading-6 text-slate-600">LA Sentinel Jobs is onboarding local employers now. Want your organization featured here?</p>
                         <a href="{{ $partnerRoute }}" class="btn-primary mt-5 inline-flex min-h-11 items-center px-5 text-sm font-black">Become a hiring partner</a>

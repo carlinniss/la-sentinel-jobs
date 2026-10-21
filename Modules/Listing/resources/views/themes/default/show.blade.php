@@ -101,8 +101,38 @@
             @endif
 
             <div class="mt-8 border-t border-[var(--oc-border)] pt-6">
-                <h2 class="text-lg font-semibold text-[var(--oc-text)] mb-2">{{ __('listing::messages.description') }}</h2>
-                <p class="text-[var(--oc-muted)] leading-7 whitespace-pre-line">{{ $displayDescription }}</p>
+                <h2 class="job-description-title">{{ __('listing::messages.description') }}</h2>
+                @php
+                    $descriptionBlocks = \Modules\Listing\Support\ListingDescriptionBlocks::fromText($displayDescription);
+                @endphp
+                <div class="job-description">
+                    @foreach($descriptionBlocks as $block)
+                        @switch($block['type'])
+                            @case('meta')
+                                <ul class="job-description-meta">
+                                    @foreach($block['items'] as $item)
+                                        <li>{{ $item }}</li>
+                                    @endforeach
+                                </ul>
+                                @break
+                            @case('note')
+                                <p class="job-description-note">{{ $block['text'] }}</p>
+                                @break
+                            @case('heading')
+                                <h3>{{ $block['text'] }}</h3>
+                                @break
+                            @case('list')
+                                <ul class="job-description-list">
+                                    @foreach($block['items'] as $item)
+                                        <li>{{ $item }}</li>
+                                    @endforeach
+                                </ul>
+                                @break
+                            @default
+                                <p>{{ $block['text'] }}</p>
+                        @endswitch
+                    @endforeach
+                </div>
             </div>
 
             @if(($listingVideos ?? collect())->isNotEmpty())
