@@ -6048,3 +6048,25 @@ body.listing-filters-open {
         font-size: 1.9rem;
     }
 }
+
+.featured-employer-badge--card {
+    flex-wrap: wrap;
+    row-gap: 0.4rem;
+}
+
+.featured-employer-badge--card .featured-employer-badge__copy {
+    flex: 1 1 9rem;
+    min-width: 0;
+}
+
+.featured-employer-badge--card .featured-employer-badge__eyebrow {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+}
+
+.featured-employer-badge--card .featured-employer-badge__compact-name {
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+}

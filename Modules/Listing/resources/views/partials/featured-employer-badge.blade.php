@@ -9,7 +9,8 @@
     $profileUrl = ($linkEmployerProfile && $employer) ? route('employers.show', $employer) : null;
     $brand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($employerName);
     $themeClass = $brand ? 'featured-employer-badge--'.$brand['key'] : 'featured-employer-badge--community';
-    $eyebrow = ($brand['key'] ?? null) === 'st-johns' ? 'Healthcare launch partner' : 'Featured employer partner';
+    $eyebrow = ($brand['key'] ?? null) === 'st-johns' ? 'Founding sponsor' : 'Featured employer partner';
+    $compactEyebrow = ($brand['key'] ?? null) === 'st-johns' ? 'Founding sponsor' : 'Featured employer';
     $summary = $brand['summary'] ?? 'This employer is hiring through LA Sentinel Jobs with local workforce opportunities.';
     $detailSummary = $bio !== '' ? \Illuminate\Support\Str::limit($bio, 230) : ($brand['detail_summary'] ?? $summary);
     $tags = $brand['tags'] ?? ['Local hiring', 'Community impact'];
@@ -97,7 +98,7 @@
                 @endif
             </span>
             <span class="featured-employer-badge__copy">
-                <span class="featured-employer-badge__eyebrow">Featured employer</span>
+                <span class="featured-employer-badge__eyebrow">{{ $compactEyebrow }}</span>
                 <span class="featured-employer-badge__compact-name">{{ $employerName }}</span>
             </span>
         </a>
@@ -111,7 +112,7 @@
                 @endif
             </span>
             <span class="featured-employer-badge__copy">
-                <span class="featured-employer-badge__eyebrow">Featured employer</span>
+                <span class="featured-employer-badge__eyebrow">{{ $compactEyebrow }}</span>
                 <span class="featured-employer-badge__compact-name">{{ $employerName }}</span>
             </span>
         </div>
