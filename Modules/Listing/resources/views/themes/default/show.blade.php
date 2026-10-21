@@ -136,10 +136,14 @@
 
         <div>
             <div class="rounded-2xl border border-[var(--oc-border)] p-5 sticky top-24">
-                <p class="text-3xl font-semibold text-[var(--oc-text)]">
+                <h1 class="text-left text-2xl font-bold leading-tight text-[var(--oc-text)]">{{ $displayTitle }}</h1>
+                <p @class([
+                    'mt-2 text-left',
+                    'text-xl font-semibold text-[var(--oc-text)]' => $hasPrice,
+                    'text-sm font-semibold text-[var(--oc-muted)]' => ! $hasPrice,
+                ])>
                     {{ $formatCompensation($priceValue, $listing->currency ?? 'USD') }}
                 </p>
-                <h1 class="mt-2 text-lg font-semibold text-[var(--oc-text)]">{{ $displayTitle }}</h1>
                 <p class="mt-1 text-sm text-[var(--oc-muted)]">{{ $location !== '' ? $location : __('listing::messages.location_not_specified') }}</p>
                 <p class="text-sm text-[var(--oc-muted)]">{{ __('listing::messages.posted_at', ['time' => $listing->created_at?->diffForHumans() ?? 'recently']) }}</p>
 
