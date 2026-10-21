@@ -125,11 +125,30 @@ class Category extends Model
             ->count();
     }
 
+    public static function idsWithActiveJobs(): Collection
+    {
+        $directIds = Listing::query()
+            ->active()
+            ->whereNotNull('category_id')
+            ->distinct()
+            ->pluck('category_id')
+            ->map(fn ($id): int => (int) $id);
+
+        $parentIds = static::query()
+            ->whereIn('id', $directIds)
+            ->whereNotNull('parent_id')
+            ->pluck('parent_id')
+            ->map(fn ($id): int => (int) $id);
+
+        return $directIds->merge($parentIds)->unique()->values();
+    }
+
     public static function homeParentCategories(int $limit = 8): Collection
     {
         return static::query()
             ->active()
             ->whereNull('parent_id')
+            ->whereIn('id', static::idsWithActiveJobs())
             ->ordered()
             ->limit($limit)
             ->get();
@@ -171,6 +190,7 @@ class Category extends Model
                 'active_listings_count' => $descendantIds((int) $category->id)
                     ->sum(fn (int $categoryId): int => (int) ($activeListingCounts[$categoryId] ?? 0)),
             ])
+            ->filter(fn (array $category): bool => $category['active_listings_count'] > 0)
             ->sortBy([
                 ['active_listings_count', 'desc'],
                 ['sort_order', 'asc'],
@@ -228,6 +248,7 @@ class Category extends Model
     {
         return static::query()
             ->active()
+            ->whereIn('id', static::idsWithActiveJobs())
             ->ordered()
             ->limit($limit)
             ->get(['id', 'name', 'slug']);
@@ -245,11 +266,14 @@ class Category extends Model
 
     public static function rootTreeWithActiveChildren(): Collection
     {
+        $idsWithJobs = static::idsWithActiveJobs();
+
         return static::query()
             ->active()
             ->whereNull('parent_id')
+            ->whereIn('id', $idsWithJobs)
             ->with([
-                'children' => fn ($query) => $query->active()->ordered(),
+                'children' => fn ($query) => $query->active()->whereIn('id', $idsWithJobs)->ordered(),
             ])
             ->ordered()
             ->get();

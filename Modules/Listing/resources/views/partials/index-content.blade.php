@@ -95,19 +95,26 @@
                             @php
                                 $categoryCount = (int) $category->active_listing_total;
                                 $isSelectedParent = (int) $categoryId === (int) $category->id;
+                                $hasSelectedChild = $category->children->contains(fn ($child): bool => (int) $child->id === (int) $categoryId);
                                 $categoryUrl = route('listings.index', array_filter(array_merge($baseCategoryQuery, [
                                     'category' => $category->id,
                                 ]), $normalizeQuery));
                             @endphp
+                            @if($categoryCount === 0 && ! $isSelectedParent && ! $hasSelectedChild)
+                                @continue
+                            @endif
                             <a href="{{ $categoryUrl }}" class="flex items-center justify-between rounded-lg px-2.5 py-2 text-sm font-semibold {{ $isSelectedParent ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-100' }}">
                                 <span>{{ $category->name }}</span>
                                 <span>{{ number_format($categoryCount) }}</span>
                             </a>
 
                             @php
-                                $showChildren = $isSelectedParent || $category->children->contains(fn ($child): bool => (int) $child->id === (int) $categoryId);
+                                $showChildren = $categoryCount > 0 || $isSelectedParent || $hasSelectedChild;
                             @endphp
                             @foreach($showChildren ? $category->children : [] as $childCategory)
+                                @if((int) $childCategory->active_listing_total === 0 && (int) $categoryId !== (int) $childCategory->id)
+                                    @continue
+                                @endif
                                 @php
                                     $isSelectedChild = (int) $categoryId === (int) $childCategory->id;
                                     $childUrl = route('listings.index', array_filter(array_merge($baseCategoryQuery, [

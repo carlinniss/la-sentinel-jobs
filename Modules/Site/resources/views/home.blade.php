@@ -478,7 +478,7 @@
         <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
             <p class="community-kicker">Access</p>
             <h2 class="mt-3 text-xl font-black text-[var(--oc-text)]">Good jobs close to home</h2>
-            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Roles across healthcare, education, banking, trades, media, hospitality, public service, and technology.</p>
+            <p class="mt-2 text-sm leading-6 text-[var(--oc-muted)]">Starting with healthcare and senior services, with more local employers joining soon.</p>
         </article>
         <article class="community-outreach-card rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
             <p class="community-kicker">Trust</p>
