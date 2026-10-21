@@ -6215,3 +6215,66 @@ h3,
     outline: 2px solid var(--oc-primary);
     outline-offset: 2px;
 }
+
+.featured-employer-badge--st-johns {
+    --partner-accent: #b8432f;
+    --partner-accent-strong: #8f3324;
+    --partner-accent-soft: #fff5f1;
+    --partner-accent-border: #f2c4b7;
+}
+
+.featured-employer-badge--strip .featured-employer-badge__identity {
+    flex: 1 1 26rem;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.featured-employer-badge--strip .featured-employer-badge__logo {
+    width: 10.5rem;
+    height: 5.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.featured-employer-badge--strip .featured-employer-badge__logo img {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.featured-employer-badge--strip .featured-employer-badge__copy {
+    flex: 1 1 16rem;
+    min-width: 0;
+}
+
+.featured-employer-badge--strip .featured-employer-badge__name {
+    font-size: 1.3rem;
+    line-height: 1.2;
+}
+
+.featured-employer-badge--strip .featured-employer-badge__summary {
+    max-width: 60ch;
+    font-weight: 500;
+}
+
+.featured-employer-badge--detail .featured-employer-badge__logo--large img {
+    width: auto;
+    max-height: 4.4rem;
+    object-fit: contain;
+}
+
+@media (max-width: 639px) {
+    .featured-employer-badge--strip .featured-employer-badge__identity {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .featured-employer-badge--strip .featured-employer-badge__logo {
+        width: 9rem;
+        height: 4.5rem;
+    }
+
+    .featured-employer-badge__button {
+        width: 100%;
+    }
+}
