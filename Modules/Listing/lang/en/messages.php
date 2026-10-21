@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'free' => 'Pay on request',
+    'free' => 'Salary not listed',
     'contact_seller' => 'Contact Employer',
     'view' => 'View',
     'post_listing' => 'Post Job',
@@ -23,7 +23,7 @@ return [
     'log_in_to_contact_seller' => 'Log in to contact employer',
     'location_not_specified' => 'Location not specified',
     'no_image' => 'No image',
-    'price_on_request' => 'Pay on request',
+    'price_on_request' => 'Salary not listed',
     'no_listings_yet' => 'No jobs yet.',
     'no_listings_match_filter' => 'No jobs match this filter.',
     'posted_at' => 'Posted :time',
