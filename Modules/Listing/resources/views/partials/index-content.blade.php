@@ -214,18 +214,10 @@
                 ])
             </div>
             <div class="hidden lg:block">
-                @include('site::partials.broadstreet-ad', [
-                    'zone' => 'sidebar_skyscraper',
-                    'format' => 'skyscraper',
-                    'placement' => 'jobs-search-sidebar-skyscraper',
-                ])
+                @include('site::partials.jobs-house-promo', ['promo' => 'resume'])
             </div>
-            <div class="hidden xl:block">
-                @include('site::partials.broadstreet-ad', [
-                    'zone' => 'sidebar_half_page',
-                    'format' => 'half-page',
-                    'placement' => 'jobs-search-sidebar-half-page',
-                ])
+            <div class="hidden lg:block">
+                @include('site::partials.jobs-house-promo', ['promo' => 'sponsor'])
             </div>
             </div>
         </aside>

@@ -6278,3 +6278,92 @@ h3,
         width: 100%;
     }
 }
+
+.jobs-house-promo {
+    padding: 1.4rem 1.35rem;
+    border-radius: var(--oc-radius-card);
+    text-align: left;
+}
+
+.jobs-house-promo h3 {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.jobs-house-promo p {
+    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+}
+
+.jobs-house-promo ul {
+    margin-top: 0.9rem;
+    padding-left: 1.1rem;
+    list-style: disc;
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.jobs-house-promo__button {
+    display: flex;
+    min-height: 2.75rem;
+    margin-top: 1.1rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    padding: 0 1.25rem;
+    font-size: 0.92rem;
+    font-weight: 800;
+}
+
+.jobs-house-promo--resume {
+    border: 1px solid #e3cfa6;
+    background: #fff8e8;
+    color: var(--oc-text);
+}
+
+.jobs-house-promo--resume ul li::marker {
+    color: var(--oc-primary);
+}
+
+.jobs-house-promo--resume .jobs-house-promo__button {
+    background: var(--oc-primary);
+    color: #ffffff;
+}
+
+.jobs-house-promo--resume .jobs-house-promo__button:hover {
+    background: var(--oc-primary-strong);
+}
+
+.jobs-house-promo--sponsor {
+    background: #5b1014;
+    color: #f7ecd6;
+}
+
+.jobs-house-promo--sponsor h3 {
+    color: #ffffff;
+}
+
+.jobs-house-promo__logo {
+    width: auto;
+    height: 2.4rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    background: #fffdf8;
+    padding: 0.3rem 0.6rem;
+}
+
+.jobs-house-promo__proof {
+    color: var(--oc-gold);
+    font-weight: 700;
+}
+
+.jobs-house-promo--sponsor .jobs-house-promo__button {
+    background: var(--oc-gold);
+    color: #2a1608;
+}
+
+.jobs-house-promo--sponsor .jobs-house-promo__button:hover {
+    background: #e6bb62;
+}
