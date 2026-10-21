@@ -28,7 +28,7 @@ class LaunchStJohnsJobs extends Command
 
     private const EMPLOYER_NAME = "St. John's Community Health";
 
-    private const EMPLOYER_WEBSITE = 'https://www.sjch.org';
+    private const EMPLOYER_WEBSITE = 'https://workforcenow.adp.com/mascsr/default/mdf/recruitment/recruitment.html?cid=1b4fa2f3-f716-4f84-ab6c-617cbf317c7b&ccId=19000101_000001&type=MP&lang=en_US';
 
     private const EMPLOYER_BIO = "St. John's Community Health is the founding sponsor of LA Sentinel Jobs. Since 1964, St. John's has provided accessible, community-centered care to underserved communities across Los Angeles, San Bernardino, and Riverside Counties through medical, dental, behavioral health, and social-support services. Its mission is to eliminate health disparities and foster community well-being by providing and promoting the highest quality care.";
 

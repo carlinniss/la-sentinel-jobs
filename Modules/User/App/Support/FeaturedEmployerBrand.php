@@ -26,7 +26,7 @@ final class FeaturedEmployerBrand
                 'profile_callout' => "St. John's is featured for healthcare careers that expand access to compassionate care and help reduce health disparities in underserved communities.",
                 'proof_points' => ['Founding sponsor', 'Community health careers', 'Mission-driven care', 'Southern California impact'],
                 'tags' => ['Healthcare careers', 'Community impact'],
-                'careers_label' => "St. John's careers",
+                'careers_label' => "See all St. John's openings",
             ];
         }
 

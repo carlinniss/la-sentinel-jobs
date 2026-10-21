@@ -361,7 +361,7 @@
                             $locationText = implode(', ', $locationParts);
                         @endphp
                         <article class="listing-card">
-                            <div class="relative h-40 sm:h-48 lg:h-52 bg-slate-200">
+                            <div class="listing-card__photo relative">
                                 @if($listingImage)
                                     <a href="{{ route('listings.show', $listing) }}" class="block w-full h-full">
                                         @include('listing::partials.responsive-image', [
@@ -379,7 +379,7 @@
                                 @endif
 
                                 @if($listing->is_featured)
-                                    <span class="absolute top-2 left-2 inline-flex items-center rounded-full bg-white border border-slate-200 text-slate-900 text-[11px] font-bold px-2.5 py-1">
+                                    <span class="listing-card__flag">
                                         Featured
                                     </span>
                                 @endif
@@ -400,34 +400,24 @@
                                 </div>
                             </div>
 
-                            <div class="px-3.5 py-3">
+                            <div class="listing-card__body">
                                 @if($employerName !== '')
-                                    <div class="mb-3 flex items-center gap-2">
-                                        @if($featuredEmployerBrand)
-                                            @include('listing::partials.featured-employer-badge', ['employerName' => $employerName, 'employer' => $listing->user])
-                                        @else
-                                            <span class="truncate text-xs font-semibold text-slate-500">{{ $employerName }}</span>
+                                    <p class="listing-card__employer">
+                                        @if($featuredEmployerBrand && ! empty($featuredEmployerBrand['logo']))
+                                            <span class="listing-card__employer-logo"><img src="{{ asset($featuredEmployerBrand['logo']) }}" alt=""></span>
                                         @endif
-                                    </div>
+                                        <span class="truncate">{{ $employerName }}</span>
+                                    </p>
                                 @endif
-                                <a href="{{ route('listings.show', $listing) }}" class="block">
-                                    <h3 class="listing-title text-base sm:text-lg font-bold text-slate-900">
-                                        {{ $listing->title }}
-                                    </h3>
-                                    @if(!is_null($priceValue) && $priceValue > 0)
-                                        <p class="mt-1 text-base font-bold text-slate-900">{{ $formatCompensation($listing) }}</p>
-                                    @else
-                                        <p class="mt-1 text-xs font-semibold text-slate-500">{{ __('listing::messages.price_on_request') }}</p>
-                                    @endif
-                                </a>
-
-                                <p class="text-xs text-slate-500 mt-2">
-                                    {{ $listing->category?->name ?: 'No category' }}
+                                <h3 class="listing-title">
+                                    <a href="{{ route('listings.show', $listing) }}">{{ $listing->title }}</a>
+                                </h3>
+                                <p @class(['listing-card__pay', 'is-muted' => is_null($priceValue) || $priceValue <= 0])>
+                                    {{ (! is_null($priceValue) && $priceValue > 0) ? $formatCompensation($listing) : __('listing::messages.price_on_request') }}
                                 </p>
-
-                                <div class="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-[12px] text-slate-500">
+                                <div class="listing-card__footer">
                                     <span class="truncate">{{ $locationText !== '' ? $locationText : 'Location not specified' }}</span>
-                                    <span class="shrink-0">{{ $listing->created_at?->format('M j, Y') }}</span>
+                                    <span class="shrink-0">{{ $listing->created_at?->format('M j') }}</span>
                                 </div>
                             </div>
                         </article>

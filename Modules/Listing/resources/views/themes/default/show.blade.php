@@ -33,47 +33,87 @@
     $detailEmployerName = trim((string) ($listing->user?->name ?? ''));
     $detailEmployerBrand = \Modules\User\App\Support\FeaturedEmployerBrand::forName($detailEmployerName);
 @endphp
-<div class="max-w-[1120px] mx-auto px-4 py-8">
-    <div class="community-sentinel-strip mb-5 flex flex-col gap-3 rounded-2xl border px-4 py-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
-        <a href="{{ $sentinelUrl }}" target="_blank" rel="noopener" class="flex items-center gap-3">
-            <span class="community-sentinel-logo rounded-xl px-3 py-2 shadow-sm">
-                <img src="{{ asset('images/la-sentinel/logo.webp') }}" alt="Los Angeles Sentinel" class="h-11 w-auto">
-            </span>
-            <span>
-                <span class="block text-sm font-extrabold text-[#7b1a1f]">Published on LA Sentinel Community Jobs</span>
-                <span class="block text-xs font-semibold text-slate-600">A Los Angeles Sentinel and Bakewell Media hiring platform for local workforce outreach.</span>
-            </span>
-        </a>
-        <a href="{{ route('listings.index') }}" class="inline-flex h-10 items-center justify-center rounded-full bg-[#14110f] px-4 text-sm font-bold text-white hover:bg-[#5c1015]">
-            Browse LA Sentinel Jobs
-        </a>
-    </div>
-
-    @if($detailEmployerBrand)
-        <div class="mb-5">
-            @include('listing::partials.featured-employer-badge', [
-                'employerName' => $detailEmployerName,
-                'variant' => 'feature-strip',
-                'profile' => $listing->user?->profile,
-                'employer' => $listing->user,
-            ])
-        </div>
-    @endif
-
+<div class="job-page">
     @if($breadcrumbs->isNotEmpty())
-    <nav class="text-xs text-[var(--oc-muted)] mb-4 flex flex-wrap items-center gap-1">
-        <a href="{{ route('listings.index') }}" class="oc-text-link">{{ __('site::messages.listings') }}</a>
+    <nav class="job-breadcrumbs" aria-label="Breadcrumb">
+        <a href="{{ route('listings.index') }}">{{ __('site::messages.listings') }}</a>
         @foreach($breadcrumbs as $crumb)
-        <span>/</span>
-        <a href="{{ route('listings.index', ['category' => $crumb->id]) }}" class="oc-text-link">{{ $crumb->name }}</a>
+        <span aria-hidden="true">/</span>
+        <a href="{{ route('listings.index', ['category' => $crumb->id]) }}">{{ $crumb->name }}</a>
         @endforeach
     </nav>
     @endif
 
-    <div class="grid lg:grid-cols-[1.3fr,0.7fr] gap-8">
-        <div>
-            <div class="rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] overflow-hidden aspect-[4/3]">
-                @if($mainImage)
+    <header class="job-hero">
+        <div class="job-hero__main">
+            @if($listing->user)
+            <a href="{{ route('employers.show', $listing->user) }}" class="job-hero__employer">
+                @if($detailEmployerBrand && ! empty($detailEmployerBrand['logo']))
+                <span class="job-hero__employer-logo"><img src="{{ asset($detailEmployerBrand['logo']) }}" alt=""></span>
+                @endif
+                <span>
+                    <strong>{{ $detailEmployerName }}</strong>
+                    @if(($detailEmployerBrand['key'] ?? null) === 'st-johns')
+                    <small>Founding sponsor of LA Sentinel Jobs</small>
+                    @endif
+                </span>
+            </a>
+            @endif
+            <h1 class="job-hero__title">{{ $displayTitle }}</h1>
+            <dl class="job-hero__facts">
+                <div>
+                    <dt>Pay</dt>
+                    <dd @class(['is-muted' => ! $hasPrice])>{{ $formatCompensation($priceValue, $listing->currency ?? 'USD') }}</dd>
+                </div>
+                <div>
+                    <dt>Location</dt>
+                    <dd>{{ $location !== '' ? $location : __('listing::messages.location_not_specified') }}</dd>
+                </div>
+                <div>
+                    <dt>Posted</dt>
+                    <dd>{{ $listing->created_at?->diffForHumans() ?? 'Recently' }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <div class="job-hero__actions">
+            @if($listing->acceptsEmailApplications())
+            <a href="{{ route('listings.apply', $listing) }}" class="job-apply-button" rel="nofollow">Apply for this job</a>
+            <p class="job-apply-help">Opens your email with the job title filled in. Attach your resume and send.</p>
+            @endif
+
+            @if(config('resume.chat_enabled') && $listing->user)
+                @auth
+                    @if((int) $listing->user->id !== (int) auth()->id())
+                        @if($detailConversation)
+                        <a href="{{ route('panel.inbox.index', ['conversation' => $detailConversation->id]) }}" class="job-secondary-button">{{ __('listing::messages.open_chat') }}</a>
+                        @else
+                        <form method="POST" action="{{ route('conversations.start', $listing) }}">
+                            @csrf
+                            <button type="submit" class="job-secondary-button">{{ __('listing::messages.message_seller') }}</button>
+                        </form>
+                        @endif
+                    @endif
+                @else
+                <a href="{{ route('login') }}" class="job-secondary-button">{{ __('listing::messages.log_in_to_contact_seller') }}</a>
+                @endauth
+            @endif
+
+            @auth
+            <form method="POST" action="{{ route('favorites.listings.toggle', $listing) }}">
+                @csrf
+                <button type="submit" class="job-save-button {{ $isListingFavorited ? 'is-active' : '' }}">
+                    {{ $isListingFavorited ? __('listing::messages.saved') : __('listing::messages.save_listing') }}
+                </button>
+            </form>
+            @endauth
+        </div>
+    </header>
+
+    <div class="job-layout">
+        <div class="job-layout__main">
+            @if($mainImage)
+            <figure class="job-photo">
                 @include('listing::partials.responsive-image', [
                     'image' => $mainImage['gallery'] ?? null,
                     'alt' => $displayTitle,
@@ -81,15 +121,13 @@
                     'loading' => 'eager',
                     'fetchpriority' => 'high',
                 ])
-                @else
-                <div class="w-full h-full grid place-items-center text-[var(--oc-muted)] text-sm">{{ __('listing::messages.no_image') }}</div>
-                @endif
-            </div>
+            </figure>
+            @endif
 
             @if($galleryImages->count() > 1)
-            <div class="mt-3 grid grid-cols-5 gap-2">
+            <div class="job-thumbs">
                 @foreach($galleryImages->skip(1)->take(5) as $image)
-                <div class="rounded-lg border border-[var(--oc-border)] overflow-hidden aspect-square">
+                <div>
                     @include('listing::partials.responsive-image', [
                         'image' => $image['thumb'] ?? null,
                         'alt' => $displayTitle,
@@ -100,14 +138,8 @@
             </div>
             @endif
 
-            @if($listing->acceptsEmailApplications())
-            <div class="mt-6 lg:hidden">
-                <a href="{{ route('listings.apply', $listing) }}" class="btn-primary w-full justify-center py-3 text-base font-bold" rel="nofollow">Apply for this job</a>
-            </div>
-            @endif
-
-            <div class="mt-8 border-t border-[var(--oc-border)] pt-6">
-                <h2 class="job-description-title">{{ __('listing::messages.description') }}</h2>
+            <section class="job-section">
+                <h2 class="job-description-title">About the job</h2>
                 @php
                     $descriptionBlocks = \Modules\Listing\Support\ListingDescriptionBlocks::fromText($displayDescription);
                 @endphp
@@ -139,11 +171,17 @@
                         @endswitch
                     @endforeach
                 </div>
-            </div>
+
+                @if($listing->acceptsEmailApplications())
+                <div class="job-section__apply">
+                    <a href="{{ route('listings.apply', $listing) }}" class="job-apply-button" rel="nofollow">Apply for this job</a>
+                </div>
+                @endif
+            </section>
 
             @if(($listingVideos ?? collect())->isNotEmpty())
-            <div class="mt-8 border-t border-[var(--oc-border)] pt-6">
-                <h2 class="text-lg font-semibold text-[var(--oc-text)] mb-3">{{ __('listing::messages.videos') }}</h2>
+            <section class="job-section">
+                <h2 class="job-description-title">{{ __('listing::messages.videos') }}</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     @foreach($listingVideos as $video)
                     <div class="rounded-xl border border-[var(--oc-border)] p-3">
@@ -152,128 +190,68 @@
                     </div>
                     @endforeach
                 </div>
-            </div>
+            </section>
             @endif
 
             @if(($presentableCustomFields ?? []) !== [])
-            <div class="mt-8 border-t border-[var(--oc-border)] pt-6">
-                <h2 class="text-lg font-semibold text-[var(--oc-text)] mb-3">{{ __('listing::messages.listing_details') }}</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <section class="job-section">
+                <h2 class="job-description-title">{{ __('listing::messages.listing_details') }}</h2>
+                <dl class="job-details-grid">
                     @foreach($presentableCustomFields as $field)
-                    <div class="rounded-lg border border-[var(--oc-border)] px-3 py-2">
-                        <p class="text-xs uppercase tracking-wide text-[var(--oc-muted)]">{{ $field['label'] }}</p>
-                        <p class="text-sm font-medium text-[var(--oc-text)] mt-1">{{ $field['value'] }}</p>
+                    <div>
+                        <dt>{{ $field['label'] }}</dt>
+                        <dd>{{ $field['value'] }}</dd>
                     </div>
                     @endforeach
-                </div>
-            </div>
+                </dl>
+            </section>
             @endif
         </div>
 
-        <div>
-            <div class="job-apply-panel rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
-                <h1 class="text-left text-2xl font-bold leading-tight text-[var(--oc-text)]">{{ $displayTitle }}</h1>
-                <p @class([
-                    'mt-2 text-left',
-                    'text-xl font-semibold text-[var(--oc-text)]' => $hasPrice,
-                    'text-sm font-semibold text-[var(--oc-muted)]' => ! $hasPrice,
-                ])>
-                    {{ $formatCompensation($priceValue, $listing->currency ?? 'USD') }}
-                </p>
-                <p class="mt-1 text-sm text-[var(--oc-muted)]">{{ $location !== '' ? $location : __('listing::messages.location_not_specified') }}</p>
-                <p class="text-sm text-[var(--oc-muted)]">{{ __('listing::messages.posted_at', ['time' => $listing->created_at?->diffForHumans() ?? 'recently']) }}</p>
-
-                <div class="mt-4 flex flex-wrap gap-2">
-                    @auth
-                    <form method="POST" action="{{ route('favorites.listings.toggle', $listing) }}">
-                        @csrf
-                        <button type="submit" class="oc-pill {{ $isListingFavorited ? 'is-active' : '' }}">
-                            {{ $isListingFavorited ? '♥ '.__('listing::messages.saved') : '♡ '.__('listing::messages.save_listing') }}
-                        </button>
-                    </form>
-                    @if($listing->user && (int) $listing->user->id !== (int) auth()->id())
-                    <form method="POST" action="{{ route('favorites.sellers.toggle', $listing->user) }}">
-                        @csrf
-                        <button type="submit" class="oc-pill {{ $isSellerFavorited ? 'is-active' : '' }}">
-                            {{ $isSellerFavorited ? __('listing::messages.seller_saved') : __('listing::messages.save_seller') }}
-                        </button>
-                    </form>
-                    @endif
-                    @else
-                    <a href="{{ route('login') }}" class="oc-pill">{{ __('listing::messages.log_in_to_save') }}</a>
-                    @endauth
-                </div>
-
-                <div class="mt-6 border-t border-[var(--oc-border)] pt-5">
-                    <h2 class="text-base font-semibold text-[var(--oc-text)] mb-3">{{ __('listing::messages.contact_seller') }}</h2>
-                    @if($listing->user)
-                    @if($detailEmployerBrand)
-                        <div class="mb-4">
-                            @include('listing::partials.featured-employer-badge', [
-                                'employerName' => $detailEmployerName,
-                                'variant' => 'detail',
-                                'profile' => $listing->user?->profile,
-                                'employer' => $listing->user,
-                            ])
-                        </div>
-                    @else
-                        <div class="mb-3 flex items-center gap-2">
-                            <p class="text-sm text-[var(--oc-text)]"><span class="text-[var(--oc-muted)]">Employer:</span> {{ $detailEmployerName }}</p>
-                        </div>
-                    @endif
-                    @endif
-
-                    @if($listing->acceptsEmailApplications())
-                        <a href="{{ route('listings.apply', $listing) }}" class="btn-primary w-full justify-center py-3 text-base font-bold" rel="nofollow">
-                            Apply for this job
-                        </a>
-                        <p class="mt-2 text-xs leading-5 text-[var(--oc-muted)]">Opens your email with the job title filled in. Attach your resume and send.</p>
-                    @endif
-
-                    @if(config('resume.chat_enabled'))
-                    @auth
-                        @if($listing->user && (int) $listing->user->id !== (int) auth()->id())
-                            @if($detailConversation)
-                            <a href="{{ route('panel.inbox.index', ['conversation' => $detailConversation->id]) }}" class="btn-primary w-full justify-center py-2.5 text-sm font-semibold">
-                                {{ __('listing::messages.open_chat') }}
-                            </a>
-                            @else
-                            <form method="POST" action="{{ route('conversations.start', $listing) }}">
-                                @csrf
-                                <button type="submit" class="btn-primary w-full justify-center py-2.5 text-sm font-semibold">
-                                    {{ __('listing::messages.message_seller') }}
-                                </button>
-                            </form>
-                            @endif
-                        @endif
-                    @else
-                    <a href="{{ route('login') }}" class="btn-primary w-full justify-center py-2.5 text-sm font-semibold">
-                        {{ __('listing::messages.log_in_to_contact_seller') }}
-                    </a>
-                    @endauth
+        <aside class="job-layout__aside">
+            @if($listing->user)
+            <section class="job-employer-card">
+                <h2>About the employer</h2>
+                @if($detailEmployerBrand && ! empty($detailEmployerBrand['logo']))
+                <div class="job-employer-card__logo"><img src="{{ asset($detailEmployerBrand['logo']) }}" alt="{{ $detailEmployerBrand['logo_alt'] ?? $detailEmployerName }}"></div>
+                @endif
+                <p class="job-employer-card__name">{{ $detailEmployerName }}</p>
+                @php
+                    $employerBio = trim((string) ($listing->user->profile?->bio ?? ''));
+                    $employerWebsite = trim((string) ($listing->user->profile?->website ?? ''));
+                @endphp
+                @if($employerBio !== '')
+                <p class="job-employer-card__bio">{{ \Illuminate\Support\Str::limit($employerBio, 260) }}</p>
+                @endif
+                <div class="job-employer-card__links">
+                    <a href="{{ route('employers.show', $listing->user) }}">Employer profile</a>
+                    <a href="{{ route('listings.index', ['user' => $listing->user->getKey()]) }}">All jobs from this employer</a>
+                    @if($employerWebsite !== '')
+                    <a href="{{ $employerWebsite }}" target="_blank" rel="noopener">{{ $detailEmployerBrand['careers_label'] ?? 'Website' }}</a>
                     @endif
                 </div>
-            </div>
+            </section>
+            @endif
 
-            <div class="mt-6">
+            <div class="job-layout__ad">
                 @include('site::partials.google-publisher-tile', [
                     'placement' => 'job-detail-sidebar',
                 ])
             </div>
-        </div>
+        </aside>
     </div>
 
     @if(($relatedListings ?? collect())->isNotEmpty())
-    <div class="mt-12 border-t border-[var(--oc-border)] pt-8">
-        <h2 class="text-lg font-semibold text-[var(--oc-text)] mb-4">{{ __('listing::messages.similar_listings') }}</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+    <section class="job-related">
+        <h2 class="job-description-title">More jobs like this</h2>
+        <div class="job-related__grid">
             @foreach($relatedListings as $related)
             @php
                 $relatedImage = $related->primaryImageData('card');
                 $relatedPrice = $formatCompensation($related->price, $related->currency ?? 'USD');
             @endphp
-            <a href="{{ route('listings.show', $related) }}" class="rounded-xl border border-[var(--oc-border)] overflow-hidden block">
-                <div class="h-32 bg-[var(--oc-bg)]">
+            <a href="{{ route('listings.show', $related) }}" class="job-related__card">
+                <div class="job-related__photo">
                     @if($relatedImage)
                     @include('listing::partials.responsive-image', [
                         'image' => $relatedImage,
@@ -282,14 +260,15 @@
                     ])
                     @endif
                 </div>
-                <div class="p-3">
-                    <p class="text-sm font-semibold text-[var(--oc-text)]">{{ $relatedPrice }}</p>
-                    <p class="text-xs text-[var(--oc-muted)] truncate mt-1">{{ $related->title }}</p>
+                <div class="job-related__body">
+                    <p class="job-related__title">{{ $related->title }}</p>
+                    <p class="job-related__meta">{{ $related->user?->name }}</p>
+                    <p class="job-related__meta">{{ $relatedPrice }}</p>
                 </div>
             </a>
             @endforeach
         </div>
-    </div>
+    </section>
     @endif
 </div>
 @endsection
