@@ -412,9 +412,11 @@
                                 <h3 class="listing-title">
                                     <a href="{{ route('listings.show', $listing) }}">{{ $listing->title }}</a>
                                 </h3>
-                                <p @class(['listing-card__pay', 'is-muted' => is_null($priceValue) || $priceValue <= 0])>
-                                    {{ (! is_null($priceValue) && $priceValue > 0) ? $formatCompensation($listing) : __('listing::messages.price_on_request') }}
-                                </p>
+                                @if(! is_null($priceValue) && $priceValue > 0)
+                                <p class="listing-card__pay">{{ $formatCompensation($listing) }}</p>
+                                @elseif($listing->category)
+                                <p class="listing-card__pay is-muted">{{ $listing->category->name }}</p>
+                                @endif
                                 <div class="listing-card__footer">
                                     <span class="truncate">{{ $locationText !== '' ? $locationText : 'Location not specified' }}</span>
                                     <span class="shrink-0">{{ $listing->created_at?->format('M j') }}</span>

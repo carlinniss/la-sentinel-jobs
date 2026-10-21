@@ -447,7 +447,7 @@
                     @endif
                     <div class="flex items-center justify-between gap-3">
                         <span class="community-proof-pill">{{ $spotlightCategory }}</span>
-                        <span class="text-sm font-semibold text-[var(--oc-text)]">{{ $formatCompensation($spotlightListing) }}</span>
+                        @if($spotlightListing->price && (float) $spotlightListing->price > 0)<span class="text-sm font-semibold text-[var(--oc-text)]">{{ $formatCompensation($spotlightListing) }}</span>@endif
                     </div>
                     <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">{{ $spotlightListing->title }}</h3>
                     <p class="mt-1 text-sm text-[var(--oc-muted)]">{{ $spotlightLocation !== '' ? $spotlightLocation : 'Los Angeles' }}</p>
@@ -597,8 +597,8 @@
                         @endif
                     </div>
                     @endif
-                    <p class="text-xl font-semibold text-[var(--oc-text)]">{{ $priceLabel }}</p>
-                    <h3 class="text-sm font-medium text-[var(--oc-text)] mt-1 truncate">{{ $listing->title }}</h3>
+                    <h3 class="text-lg font-bold leading-snug text-[var(--oc-text)]">{{ $listing->title }}</h3>
+                    <p class="mt-1 text-sm font-semibold text-[var(--oc-muted)]">{{ ($listing->price && (float) $listing->price > 0) ? $priceLabel : ($listing->category?->name ?? '') }}</p>
                     <div class="mt-3 flex items-center justify-between gap-3 text-xs text-[var(--oc-muted)]">
                         <span class="truncate">{{ $locationLabel !== '' ? $locationLabel : 'Location not specified' }}</span>
                         <span class="shrink-0">{{ $listing->created_at->diffForHumans() }}</span>

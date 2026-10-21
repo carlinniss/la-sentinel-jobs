@@ -6862,3 +6862,19 @@ h3,
 .listing-category-list a {
     padding: 0.5rem 0.7rem;
 }
+
+.job-description-title,
+.job-description h3,
+.job-employer-card h2,
+.job-related h2 {
+    margin-inline: 0;
+    text-align: left;
+}
+
+.site-main .job-page :is(h1, h2, h3, h4),
+.site-main .listing-index-shell :is(h2, h3, h4),
+.site-main .jobs-house-promo h3,
+.site-main .founding-sponsor-band h2 {
+    margin-inline: 0;
+    text-align: left;
+}

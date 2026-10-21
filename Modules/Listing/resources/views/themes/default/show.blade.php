@@ -61,10 +61,18 @@
             @endif
             <h1 class="job-hero__title">{{ $displayTitle }}</h1>
             <dl class="job-hero__facts">
+                @if($hasPrice && $priceValue > 0)
                 <div>
                     <dt>Pay</dt>
-                    <dd @class(['is-muted' => ! $hasPrice])>{{ $formatCompensation($priceValue, $listing->currency ?? 'USD') }}</dd>
+                    <dd>{{ $formatCompensation($priceValue, $listing->currency ?? 'USD') }}</dd>
                 </div>
+                @endif
+                @if($listing->category)
+                <div>
+                    <dt>Category</dt>
+                    <dd>{{ $listing->category->name }}</dd>
+                </div>
+                @endif
                 <div>
                     <dt>Location</dt>
                     <dd>{{ $location !== '' ? $location : __('listing::messages.location_not_specified') }}</dd>
@@ -248,7 +256,9 @@
             @foreach($relatedListings as $related)
             @php
                 $relatedImage = $related->primaryImageData('card');
-                $relatedPrice = $formatCompensation($related->price, $related->currency ?? 'USD');
+                $relatedDetail = ($related->price && (float) $related->price > 0)
+                    ? $formatCompensation($related->price, $related->currency ?? 'USD')
+                    : ($related->category?->name ?? '');
             @endphp
             <a href="{{ route('listings.show', $related) }}" class="job-related__card">
                 <div class="job-related__photo">
@@ -263,7 +273,9 @@
                 <div class="job-related__body">
                     <p class="job-related__title">{{ $related->title }}</p>
                     <p class="job-related__meta">{{ $related->user?->name }}</p>
-                    <p class="job-related__meta">{{ $relatedPrice }}</p>
+                    @if($relatedDetail !== '')
+                    <p class="job-related__meta">{{ $relatedDetail }}</p>
+                    @endif
                 </div>
             </a>
             @endforeach
