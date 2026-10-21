@@ -159,6 +159,26 @@
         </div>
     </section>
 
+    @php
+        $foundingSponsor = $featuredEmployerCards->first(fn ($employer): bool => (\Modules\User\App\Support\FeaturedEmployerBrand::forName((string) $employer->name)['key'] ?? null) === 'st-johns');
+    @endphp
+    @if($foundingSponsor)
+    <section class="founding-sponsor-band" aria-labelledby="founding-sponsor-heading">
+        <div class="founding-sponsor-logo">
+            <img src="{{ asset('images/employers/st-johns-community-health.webp') }}" alt="St. John's Community Health">
+        </div>
+        <div class="founding-sponsor-copy">
+            <p class="founding-sponsor-kicker">Founding Sponsor</p>
+            <h2 id="founding-sponsor-heading">Thank you, St. John's Community Health.</h2>
+            <p>St. John's is the first employer to stand behind LA Sentinel Jobs. As our founding sponsor and early adopter, they are helping us build a jobs platform that serves our community. Their open roles are featured below, and more employers are coming soon.</p>
+            <div class="founding-sponsor-actions">
+                <a href="{{ route('listings.index', ['user' => $foundingSponsor->getKey()]) }}" class="btn-primary inline-flex min-h-11 items-center px-5 text-sm font-black">See St. John's jobs</a>
+                <a href="{{ route('employers.show', $foundingSponsor) }}" class="founding-sponsor-link">About St. John's</a>
+            </div>
+        </div>
+    </section>
+    @endif
+
     <section class="featured-employers-section">
         <div class="mb-5 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
             <div class="text-left">
@@ -197,7 +217,7 @@
                         @endif
                     </div>
                     <div class="min-w-0 text-left">
-                        <p class="text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">Featured employer partner</p>
+                        <p class="text-xs font-black uppercase tracking-[0.22em]" style="color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }};">{{ $isLeadFeaturedEmployer ? 'Founding sponsor' : 'Featured employer partner' }}</p>
                         <h3 class="mt-2 text-2xl font-black text-slate-950">{{ $featuredEmployerName }}</h3>
                         <p class="mt-3 text-sm leading-6 text-slate-600">
                             {{ $featuredEmployerBio !== '' ? \Illuminate\Support\Str::limit($featuredEmployerBio, 220) : 'This featured employer is hiring through LA Sentinel Jobs with roles connected to local workforce pathways.' }}
@@ -206,6 +226,7 @@
                             <span class="rounded-full px-3 py-1.5 text-xs font-black" style="background: {{ $featuredEmployerBrand['soft'] ?? '#eef6ff' }}; color: {{ $featuredEmployerBrand['primary'] ?? '#005eb8' }}; box-shadow: 0 0 0 1px {{ $featuredEmployerBrand['soft_border'] ?? '#b9d8f2' }};">{{ number_format((int) $featuredEmployer->active_listings_count) }} featured jobs</span>
                             @if($isLeadFeaturedEmployer)
                                 <span class="community-proof-pill">Healthcare roles</span>
+                                <span class="community-proof-pill">Senior services</span>
                                 <span class="community-proof-pill">Mission-driven care</span>
                             @else
                                 <span class="community-proof-pill">Career pathways</span>
@@ -216,7 +237,7 @@
                             <div class="featured-employer-visual-callout" style="--callout-image: url('{{ asset('images/la-sentinel/community-workforce-la.png') }}');">
                                 <div>
                                     <p>Healthcare hiring spotlight</p>
-                                    <strong>Clinical, dental, behavioral health, and patient-support jobs for Southern California communities.</strong>
+                                    <strong>Physician, leadership, coordination, and outreach roles serving older adults across Los Angeles.</strong>
                                 </div>
                                 <span>Now featured</span>
                             </div>
@@ -232,13 +253,11 @@
                 </article>
                 @empty
                 <article class="featured-employer-card">
-                    <div class="featured-employer-logo-panel">
-                        <img src="{{ asset('images/employers/bmo.svg') }}" alt="BMO" class="h-24 w-auto max-w-full md:h-28">
-                    </div>
                     <div class="text-left">
-                        <p class="text-xs font-black uppercase tracking-[0.22em] text-[#005eb8]">Featured employer partner</p>
-                        <h3 class="mt-2 text-2xl font-black text-slate-950">BMO Community Banking Careers</h3>
-                        <p class="mt-3 text-sm leading-6 text-slate-600">BMO connects Los Angeles candidates with customer-facing banking, branch leadership, small business, and operations career pathways.</p>
+                        <p class="text-xs font-black uppercase tracking-[0.22em] text-[#8b1d22]">Hiring partners</p>
+                        <h3 class="mt-2 text-2xl font-black text-slate-950">More employers are coming soon</h3>
+                        <p class="mt-3 text-sm leading-6 text-slate-600">LA Sentinel Jobs is onboarding local employers now. Want your organization featured here?</p>
+                        <a href="{{ $partnerRoute }}" class="btn-primary mt-5 inline-flex min-h-11 items-center px-5 text-sm font-black">Become a hiring partner</a>
                     </div>
                 </article>
                 @endforelse
@@ -434,24 +453,7 @@
                     <p class="mt-1 text-sm text-[var(--oc-muted)]">{{ $spotlightLocation !== '' ? $spotlightLocation : 'Los Angeles' }}</p>
                 </a>
                 @empty
-                <div class="space-y-4">
-                    <div class="border-b border-slate-100 pb-4">
-                        <div class="flex items-center justify-between gap-3">
-                            <span class="community-proof-pill">Healthcare</span>
-                            <span class="text-sm font-semibold text-[var(--oc-text)]">$28/hr</span>
-                        </div>
-                        <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">Community Clinic Intake Coordinator</h3>
-                        <p class="mt-1 text-sm text-[var(--oc-muted)]">Crenshaw, United States</p>
-                    </div>
-                    <div>
-                        <div class="flex items-center justify-between gap-3">
-                            <span class="community-proof-pill">Education</span>
-                            <span class="text-sm font-semibold text-[var(--oc-text)]">$52,000/yr</span>
-                        </div>
-                        <h3 class="mt-3 text-lg font-semibold text-[var(--oc-text)]">After-School Literacy Instructor</h3>
-                        <p class="mt-1 text-sm text-[var(--oc-muted)]">Leimert Park, United States</p>
-                    </div>
-                </div>
+                <p class="text-sm leading-6 text-[var(--oc-muted)]">New roles are being added. Post your resume so employers can find you first.</p>
                 @endforelse
             </div>
 

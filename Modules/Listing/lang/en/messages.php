@@ -23,7 +23,7 @@ return [
     'log_in_to_contact_seller' => 'Log in to contact employer',
     'location_not_specified' => 'Location not specified',
     'no_image' => 'No image',
-    'price_on_request' => 'Price on request',
+    'price_on_request' => 'Pay on request',
     'no_listings_yet' => 'No jobs yet.',
     'no_listings_match_filter' => 'No jobs match this filter.',
     'posted_at' => 'Posted :time',

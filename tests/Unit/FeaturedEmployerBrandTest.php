@@ -9,12 +9,9 @@ use PHPUnit\Framework\TestCase;
 
 class FeaturedEmployerBrandTest extends TestCase
 {
-    public function test_it_preserves_bmo_branding(): void
+    public function test_it_no_longer_brands_bmo(): void
     {
-        $brand = FeaturedEmployerBrand::forName('BMO Community Banking Careers');
-
-        self::assertSame('bmo', $brand['key']);
-        self::assertSame('images/employers/bmo.svg', $brand['logo']);
+        self::assertNull(FeaturedEmployerBrand::forName('BMO Community Banking Careers'));
     }
 
     public function test_it_recognizes_st_johns_branding(): void

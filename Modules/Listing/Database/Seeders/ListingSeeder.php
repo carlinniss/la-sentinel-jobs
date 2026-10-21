@@ -15,17 +15,7 @@ use Modules\User\App\Support\DemoUserCatalog;
 
 class ListingSeeder extends Seeder
 {
-    private const BMO_EMAIL = 'j@j.com';
     private const ST_JOHNS_EMAIL = 'k@k.com';
-
-    private const BMO_JOB_TITLES = [
-        'Relationship Banker - Community Branch',
-        'Associate Banker - Customer Experience',
-        'Small Business Banking Associate',
-        'Community Banking Specialist',
-        'Client Service Representative',
-        'Branch Operations Associate',
-    ];
 
     private const ST_JOHNS_JOB_TITLES = [
         'Family Medicine Physician',
@@ -83,7 +73,6 @@ class ListingSeeder extends Seeder
         'Inner City Arts Workforce',
         'Baldwin Hills Hospitality Group',
         'Vermont Slauson Economic Development',
-        'BMO Community Banking Careers',
         "St. John's Community Health Careers",
         'LA County Workforce Desk',
         'South LA College & Career Bridge',
@@ -212,10 +201,6 @@ class ListingSeeder extends Seeder
 
     private function buildTitle(Category $category, int $index, User $user): string
     {
-        if ($this->isBmoUser($user)) {
-            return self::BMO_JOB_TITLES[$index % count(self::BMO_JOB_TITLES)];
-        }
-
         if ($this->isStJohnsUser($user)) {
             return self::ST_JOHNS_JOB_TITLES[$index % count(self::ST_JOHNS_JOB_TITLES)];
         }
@@ -244,14 +229,6 @@ class ListingSeeder extends Seeder
 
     private function buildDescription(string $title, string $city, int $index, User $user): string
     {
-        if ($this->isBmoUser($user)) {
-            return sprintf(
-                'BMO Community Banking Careers is hiring for %s in %s. BMO is a top ten North American bank serving 13 million customers, founded in 1817 and guided by its purpose to Boldly Grow the Good in business and life. This demo posting highlights customer-facing banking work, career development, competitive rewards and benefits, wellness support, inclusive teams, and community impact through financial education, economic mobility, and volunteer engagement.',
-                $title,
-                $city
-            );
-        }
-
         if ($this->isStJohnsUser($user)) {
             return sprintf(
                 "St. John's Community Health is hiring for %s in %s. This demo listing represents a mission-driven career supporting accessible medical, dental, behavioral health, and community services across Southern California. St. John's has served underserved Los Angeles communities since 1964 and works to improve community health, reduce disparities, and advance health equity. Confirm current responsibilities, qualifications, compensation, and benefits on the official careers site before applying.",
@@ -315,11 +292,6 @@ class ListingSeeder extends Seeder
             str_contains($title, 'Operations') => 34,
             default => 26,
         };
-    }
-
-    private function isBmoUser(User $user): bool
-    {
-        return strcasecmp((string) $user->email, self::BMO_EMAIL) === 0;
     }
 
     private function isStJohnsUser(User $user): bool

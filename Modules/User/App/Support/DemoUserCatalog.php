@@ -77,13 +77,6 @@ final class DemoUserCatalog
                 'is_admin' => false,
             ],
             [
-                'email' => 'j@j.com',
-                'name' => 'BMO Community Banking Careers',
-                'password' => $password,
-                'phone' => '+13235550109',
-                'is_admin' => false,
-            ],
-            [
                 'email' => 'k@k.com',
                 'name' => "St. John's Community Health Careers",
                 'password' => $password,

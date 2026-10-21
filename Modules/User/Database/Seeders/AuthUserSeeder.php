@@ -61,18 +61,6 @@ class AuthUserSeeder extends Seeder
     {
         $email = (string) ($record['email'] ?? '');
 
-        if ($email === 'j@j.com') {
-            return [
-                'phone' => (string) ($record['phone'] ?? ''),
-                'city' => 'Los Angeles',
-                'country' => 'United States',
-                'website' => 'https://jobs.bmo.com/us/en',
-                'bio' => 'BMO Community Banking Careers connects Los Angeles candidates with customer-facing banking, branch leadership, small business, and operations roles. BMO is a top ten North American bank serving 13 million customers, founded in 1817 and guided by its purpose to Boldly Grow the Good in business and life. The employer profile highlights personalized career development, competitive rewards and benefits, wellness support, inclusive teams, and community impact through financial education, economic mobility, and volunteer engagement.',
-                'is_verified' => true,
-                'resume_access_enabled' => true,
-            ];
-        }
-
         if ($email === 'k@k.com') {
             return [
                 'phone' => (string) ($record['phone'] ?? ''),
