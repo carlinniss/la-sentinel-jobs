@@ -171,7 +171,7 @@
         </div>
 
         <div>
-            <div class="rounded-2xl border border-[var(--oc-border)] p-5 sticky top-24">
+            <div class="job-apply-panel rounded-2xl border border-[var(--oc-border)] bg-[var(--oc-surface)] p-5">
                 <h1 class="text-left text-2xl font-bold leading-tight text-[var(--oc-text)]">{{ $displayTitle }}</h1>
                 <p @class([
                     'mt-2 text-left',
