@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'free' => 'Free',
+    'free' => 'Pay on request',
     'contact_seller' => 'Contact Employer',
     'view' => 'View',
     'post_listing' => 'Post Job',

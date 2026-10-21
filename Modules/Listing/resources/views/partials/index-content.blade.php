@@ -437,7 +437,7 @@
                                         @if(!is_null($priceValue) && $priceValue > 0)
                                             {{ $formatCompensation($listing) }}
                                         @else
-                                            Free
+                                            {{ __('listing::messages.price_on_request') }}
                                         @endif
                                     </p>
                                     <h3 class="listing-title mt-2 text-sm font-semibold text-slate-900">
